@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Context Lens",
+    "description": "See session context the way Claude Code shows it: a usage ring next to the composer opens a compact category breakdown, and the 'Context Lens' tab at the top of the conversation gives the full detail: per-category tokens, calibration, auto-compact threshold, every message, tool definitions and usage, system prompt sections, skills and growth trend."
+  }
+}

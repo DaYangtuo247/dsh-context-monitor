@@ -1,0 +1,36 @@
+{
+  "name": "dsh-context-lens",
+  "version": "0.1.0",
+  "description": "Context usage for DeepSeek Harness sessions: a compact Claude-Code-style breakdown popover in the composer, plus a detailed 'Context Lens' tab in the conversation's top view row with every category, node, tool, system prompt section, skill and growth trend.",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "README.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-theme",
+        "@deepseek-ai/dsh-client-ui-conversation"
+      ]
+    }
+  }
+}
