@@ -346,7 +346,6 @@ const CAT_EN = {
   buffer: 'Autocompact buffer',
   free: 'Free space',
 }
-const SPLIT_CATS = new Set(['assistantText', 'reasoning', 'toolCalls'])
 
 /** Category name; outside the English UI the English term follows in muted type. */
 function CatName({ t, k }) {
@@ -356,76 +355,6 @@ function CatName({ t, k }) {
   return h('span', { className: 'clx-catname' },
     h('span', { className: 'zh' }, label),
     term ? h('span', { className: 'en' }, term) : null)
-}
-
-/** Nodes holding a category, with the share of each node that belongs to it. */
-function catNodes(data, k) {
-  const out = []
-  for (const n of data.nodes || []) {
-    let tok = 0
-    if (n.split) {
-      if (!SPLIT_CATS.has(k)) continue
-      const cal = n.tokens ? (n.tokensCal ?? n.tokens) / n.tokens : 1
-      tok = (n.split[k] || 0) * cal
-    } else if (n.category === k) {
-      tok = n.tokensCal ?? n.tokens ?? 0
-    }
-    if (tok >= 0.5) out.push({ n, tok })
-  }
-  return out.sort((a, b) => b.tok - a.tok)
-}
-
-function CategoryDetail({ k, data, t, sessionId, onShowAll }) {
-  const [openSeq, setOpenSeq] = useState(null)
-  const [limit, setLimit] = useState(8)
-  const color = CAT_COLOR[k] || CAT_COLOR.other
-  if (k === 'systemTools' || k === 'mcpTools') {
-    const tools = (data.tools || []).filter((x) => (k === 'mcpTools') === (x.kind === 'mcp'))
-    const max = Math.max(1, ...tools.map((x) => x.tokensCal))
-    return h('div', { className: 'clx-catdetail', style: { '--cat': color } },
-      h('div', { className: 'clx-muted', style: { fontSize: 12, marginBottom: 6 } }, fmt(t('ov.cat.tools'), { n: tools.length })),
-      tools.slice(0, limit).map((x) => h('div', { key: x.name, className: 'clx-catitem', title: x.description },
-        h('div', { className: 'main' },
-          h('div', { className: 'name' }, x.name, x.kind === 'mcp' ? h('span', { className: 'clx-muted' }, ` · ${x.server}`) : null),
-          x.description ? h('div', { className: 'desc' }, x.description) : null,
-          h('div', { className: 'clx-minibar' }, h('span', { style: { width: `${Math.max(1, x.tokensCal / max * 100)}%`, background: color } }))),
-        h('span', { className: 'tok' }, fmtK(x.tokensCal)))),
-      tools.length > limit ? h('button', { className: 'clx-rich-more', onClick: () => setLimit(limit + 30) }, fmt(t('msg.more'), { n: Math.min(30, tools.length - limit) })) : null)
-  }
-  if (k === 'skills') {
-    const skills = data.skills || []
-    const max = Math.max(1, ...skills.map((x) => x.tokensCal))
-    return h('div', { className: 'clx-catdetail', style: { '--cat': color } },
-      h('div', { className: 'clx-muted', style: { fontSize: 12, marginBottom: 6 } }, t('ov.cat.skills')),
-      skills.map((x) => h('div', { key: x.name, className: 'clx-catitem' },
-        h('div', { className: 'main' },
-          h('div', { className: 'name' }, x.name),
-          h('div', { className: 'desc' }, x.description),
-          h('div', { className: 'clx-minibar' }, h('span', { style: { width: `${Math.max(1, x.tokensCal / max * 100)}%`, background: color } }))),
-        h('span', { className: 'tok' }, fmtK(x.tokensCal)))))
-  }
-  const list = catNodes(data, k)
-  const max = Math.max(1, ...list.map((x) => x.tok))
-  const files = k === 'memory' ? (data.memoryFiles || []) : []
-  const fileMax = Math.max(1, ...files.map((x) => x.tokens))
-  return h('div', { className: 'clx-catdetail', style: { '--cat': color } },
-    files.length ? h('div', { style: { marginBottom: 8 } },
-      h('div', { className: 'clx-muted', style: { fontSize: 12, marginBottom: 6 } }, fmt(t('ov.cat.memory'), { n: files.length })),
-      files.map((x) => h('div', { key: x.path, className: 'clx-catitem' },
-        h('div', { className: 'main' },
-          h('div', { className: 'name' }, x.path, x.loads > 1 ? h('span', { className: 'clx-muted' }, ` ×${x.loads}`) : null),
-          h('div', { className: 'clx-minibar' }, h('span', { style: { width: `${Math.max(1, x.tokens / fileMax * 100)}%`, background: color } }))),
-        h('span', { className: 'tok' }, fmtK(x.tokens))))) : null,
-    k === 'injected' && (data.injectedKinds || []).length ? h('div', { className: 'clx-chips', style: { marginBottom: 6 } },
-      data.injectedKinds.map((x) => h('span', { key: x.kind, className: 'clx-chip', style: { cursor: 'default' } }, `${x.kind} ×${x.count} · ${fmtK(x.tokens)}`))) : null,
-    SPLIT_CATS.has(k) ? h('div', { className: 'clx-muted', style: { fontSize: 11.5, marginBottom: 4 } }, t('ov.cat.splitNote')) : null,
-    list.length ? list.slice(0, limit).map(({ n, tok }) => h('div', { key: n.seq, className: `clx-node${openSeq === n.seq ? ' open' : ''}`, style: { '--cat': CAT_COLOR[n.category] || CAT_COLOR.other } },
-      h(NodeRowSimple, { n: { ...n, tokensCal: tok }, t, max, open: openSeq === n.seq, onClick: () => setOpenSeq(openSeq === n.seq ? null : n.seq) }),
-      openSeq === n.seq ? h(NodeDetail, { sessionId, seq: n.seq, t }) : null))
-      : h('div', { className: 'clx-muted', style: { fontSize: 12 } }, t('ov.cat.empty')),
-    h('div', { className: 'clx-catfoot' },
-      list.length > limit ? h('button', { className: 'clx-chipbtn', onClick: () => setLimit(limit + 20) }, fmt(t('msg.more'), { n: Math.min(20, list.length - limit) })) : null,
-      list.length ? h('button', { className: 'clx-chipbtn', onClick: () => onShowAll(k) }, fmt(t('ov.cat.showAll'), { n: list.length })) : null))
 }
 
 const reducedMotion = () => {
@@ -499,117 +428,730 @@ function HeroBar({ cats, s, t, active, pick, onHover, onPick }) {
       legendItem('free', h('i', { className: 'clx-dot free' }), t('g.free'))))
 }
 
-function Overview({ data, t, onJump, onShowCat, sessionId }) {
-  const [openCat, setOpenCat] = useState(null)
+/** The breakdown's flow data (steps, turns, live state), refreshed while a turn runs. */
+function useFlow(sessionId, liveKey) {
+  const [st, setSt] = useState<any>({ data: null, error: null, sid: null })
+  const [tick, setTick] = useState(0)
+  useEffect(() => {
+    if (!sessionId) return undefined
+    let dead = false
+    call('flow', { sessionId }).then(
+      (v) => { if (!dead) setSt({ data: v, error: null, sid: sessionId }) },
+      (e) => { if (!dead) setSt((s) => ({ ...s, error: String(e?.message || e) })) },
+    )
+    return () => { dead = true }
+  }, [sessionId, liveKey, tick])
+  const data = st.sid === sessionId ? st.data : null
+  const busy = !!data?.live && data.live.phase !== 'idle'
+  useEffect(() => {
+    if (!busy) return undefined
+    const id = setTimeout(() => setTick((x) => x + 1), 2500)
+    return () => clearTimeout(id)
+  }, [busy, data])
+  return { flow: data, flowError: st.error }
+}
+
+/** One line of what the conversation is doing right now. */
+function LiveLine({ flow, t }) {
+  const live = flow?.live
+  const ph = live?.phase || 'idle'
+  const now = useNow(ph !== 'idle')
+  if (!live) return null
+  const where = live.turn ? (live.step ? fmt(t('flow.where'), { t: live.turn, s: live.step }) : fmt(t('msg.turn'), { n: live.turn })) : null
+  const last = live.lastSeq !== undefined
+    ? `${t(`flow.n.${live.lastStage}`) || ''} ${live.lastTitle || ''}`.trim()
+    : ''
+  return h('div', { className: 'clx-liveline' },
+    h('i', { className: `clx-live-dot${ph === 'idle' ? '' : ' on'}`, style: { background: LIVE_COLOR[ph] } }),
+    h('b', null, t(`flow.live.${ph}`)),
+    where ? h('span', { className: 'clx-muted' }, where) : null,
+    last ? h('span', { className: 'clx-liveline-last', title: last }, last) : null,
+    live.lastTime ? h('span', { className: 'clx-muted clx-liveline-ago' }, fmt(t('flow.ago'), { d: fmtDur(Math.max(0, now - live.lastTime)) })) : null)
+}
+
+function Stat({ k, v, sub = undefined, tone = '' }) {
+  return h('div', { className: `clx-stat${tone ? ` ${tone}` : ''}` },
+    h('div', { className: 'k' }, k),
+    h('div', { className: 'v' }, v, sub ? h('small', null, sub) : null))
+}
+
+/** Context composition at every step that sent a request, grouped for stacking. */
+/** Stacking order for the per-step bars: fixed preamble at the bottom, the conversation on top. */
+const SERIES_CATS = ['system', 'systemTools', 'mcpTools', 'skills', 'memory', 'injected', 'summary', 'user', 'reasoning', 'assistantText', 'toolCalls', 'toolResults', 'other']
+
+function useStepSeries(bd, flow) {
+  return useMemo(() => {
+    const steps = flow?.steps || []
+    return steps.map((st, i) => {
+      const comp = compositionAt(bd, st)
+      const groups = SERIES_CATS.map((k) => comp.by[k] || 0)
+      return { st, i, comp, groups }
+    })
+  }, [bd, flow])
+}
+
+/** What one request added to the context compared with the one before it. */
+function stepDiff(bd, series, idx) {
+  const cur = series[idx]
+  if (!cur) return null
+  const prev = idx > 0 ? series[idx - 1] : null
+  const cutOf = (x) => x.st.requestSeq ?? x.st.endSeq ?? x.st.startSeq
+  const cut = cutOf(cur)
+  const prevCut = prev ? cutOf(prev) : 0
+  const added = (bd.nodes || []).filter((n) => n.seq >= prevCut && n.seq < cut)
+  const addedTok = added.reduce((a, n) => a + n.tokensCal, 0)
+  const byCat = SERIES_CATS.map((k, gi) => ({ k, v: cur.groups[gi], d: prev ? cur.groups[gi] - prev.groups[gi] : cur.groups[gi] })).filter((x) => Math.abs(x.d) >= 1)
+  const compacted = (bd.compactionEvents || []).filter((c) => c.seq >= prevCut && c.seq <= Math.max(cut, cur.st.endSeq ?? cut))
+  const delta = prev ? cur.comp.total - prev.comp.total : cur.comp.total
+  return { idx, cur, prev, cut, prevCut, added, addedTok, byCat, compacted, delta, last: idx === series.length - 1 }
+}
+
+const dsign = (v) => (Math.abs(v) < 0.5 ? "±0" : `${v > 0 ? "+" : "−"}${fmtK(Math.abs(v))}`)
+
+/** The step every page follows: a strip of requests, and what the picked one changed. */
+function StepBar({ series, diff, onSel, t, onNav, stepOnly, setStepOnly, nav }) {
+  const scroller = useRef(null)
+  useLayoutEffect(() => {
+    const el = scroller.current
+    const b = el?.querySelector(".on")
+    if (el && b) el.scrollLeft = Math.max(0, b.offsetLeft - el.clientWidth / 2)
+  }, [diff?.idx, series.length])
+  if (!diff) return null
+  const peak = Math.max(1, ...series.map((x) => x.comp.total))
+  const st = diff.cur.st
+  const go = (i) => onSel(Math.min(series.length - 1, Math.max(0, i)))
+  return h("div", { className: "clx-stepbar" },
+    h("div", { className: "clx-stepbar-top" },
+      h("button", { className: "clx-chipbtn", disabled: diff.idx <= 0, onClick: () => go(diff.idx - 1), "aria-label": "‹" }, "‹"),
+      h("button", { className: "clx-chipbtn", disabled: diff.last, onClick: () => go(diff.idx + 1), "aria-label": "›" }, "›"),
+      h("b", null, fmt(t("flow.where"), { t: st.turn, s: st.step })),
+      h("span", { className: "clx-stchip" }, h("span", { className: "k" }, t("st.ctx")), fmtK(diff.cur.comp.total)),
+      h("span", { className: `clx-stchip${diff.delta > 0 ? " up" : ""}` }, h("span", { className: "k" }, t("st.delta")), dsign(diff.delta)),
+      diff.compacted.length ? h("span", { className: "clx-stchip warn" }, "✂ ", t("sd.compacted")) : null,
+      st.tools.length ? h("span", { className: "clx-stepbar-tools", title: st.tools.join(", ") }, groupNames(st.tools)) : null,
+      diff.last ? h("span", { className: "clx-muted clx-stepbar-now" }, t("sd.now")) : h("button", { className: "clx-chipbtn clx-stepbar-now", onClick: () => onSel(null) }, t("sd.backNow"))),
+    h("div", { className: "clx-stepbar-strip", ref: scroller },
+      series.map((x) => h("button", {
+        key: x.st.startSeq, type: "button", className: `b${x.i === diff.idx ? " on" : ""}${x.i > diff.idx ? " later" : ""}`,
+        title: `${fmt(t("flow.where"), { t: x.st.turn, s: x.st.step })} · ${fmtK(x.comp.total)}`, onClick: () => onSel(x.i),
+      }, h("i", { style: { height: `${Math.max(6, x.comp.total / peak * 100)}%` } })))),
+    h("div", { className: "clx-stepbar-diff" },
+      h("span", { className: "clx-muted" }, t("sd.added")),
+      diff.added.length
+        ? h("button", { className: `clx-chipbtn${stepOnly && nav === "messages" ? " on" : ""}`, "aria-pressed": stepOnly, onClick: () => { setStepOnly(true); onNav("messages") }, title: t("sd.onlyNew") },
+          fmt(t("sd.items"), { n: diff.added.length, k: fmtK(diff.addedTok) }))
+        : h("span", { className: "clx-muted" }, t("sd.none")),
+      diff.byCat.sort((a, b) => Math.abs(b.d) - Math.abs(a.d)).slice(0, 5).map((g) => h("span", { key: g.k, className: "clx-stchip" },
+        h("i", { className: "clx-dot", style: { background: CAT_COLOR[g.k] } }), t(`c.${g.k}`), h("em", { className: g.d > 0 ? "up" : "down" }, dsign(g.d)))),
+      stepOnly ? h("button", { className: "clx-chipbtn clx-stepbar-now", onClick: () => setStepOnly(false) }, t("sd.showAll")) : null))
+}
+
+/** Per-step stacked bars (what each request carried), with the picked step's detail under them. */
+/** The message a step is about: what the model said or called in it, else its first message. */
+function stepNode(bd, st) {
+  const inStep = (bd.nodes || []).filter((n) => n.seq >= st.startSeq && (st.endSeq === undefined || n.seq <= st.endSeq))
+  const own = inStep.find((n) => n.category === 'toolCalls' || n.category === 'assistantText' || n.category === 'reasoning')
+  return (own || inStep[0])?.seq ?? st.startSeq
+}
+
+function StepTrend({ data, flow, t, onJump, series, pickIdx, onSel }) {
+  const [hover, setHover] = useState(null)
+  const scroller = useRef(null)
+  const s = summarize(data)
+  const comp = s.comp
+  useLayoutEffect(() => {
+    const el = scroller.current
+    if (el) el.scrollLeft = el.scrollWidth
+  }, [series.length])
+  if (!series.length) return h(Trend, { data, t, onJump })
+  const peak = Math.max(1, ...series.map((x) => x.comp.total))
+  const yMax = Math.max(peak * 1.08, comp?.thresholdTokens && comp.thresholdTokens < peak * 1.6 ? comp.thresholdTokens * 1.04 : 0)
+  const cur = series[hover ?? pickIdx]
+  const prev = cur && cur.i > 0 ? series[cur.i - 1] : null
+  const st = cur.st
+  const u = st.usage
+  const delta = prev ? cur.comp.total - prev.comp.total : cur.comp.total
+  const thY = comp?.thresholdTokens && comp.thresholdTokens <= yMax ? comp.thresholdTokens / yMax * 100 : null
+  const segs = SERIES_CATS.map((k, gi) => ({ key: k, label: t(`c.${k}`), color: CAT_COLOR[k], tokens: cur.groups[gi], d: prev ? cur.groups[gi] - prev.groups[gi] : cur.groups[gi] }))
+  return h('div', { className: 'clx-card clx-steptrend' },
+    h('div', { className: 'clx-card-head' },
+      h(CardTitle, { icon: 'trend', text: t('st.title') }),
+      h('span', { className: 'clx-muted' }, fmt(t('st.count'), { n: series.length }))),
+    h('div', { className: 'clx-stbars-wrap' },
+      thY !== null ? h('div', { className: 'clx-stbars-th', style: { bottom: `${thY}%` } }, h('span', null, `${t('trend.threshold')} ${fmtK(comp.thresholdTokens)}`)) : null,
+      h('div', { className: 'clx-stbars', ref: scroller, onMouseLeave: () => setHover(null) },
+        series.map((x) => {
+          const newTurn = x.i === 0 || series[x.i - 1].st.turn !== x.st.turn
+          const on = x.i === pickIdx
+          return h('button', {
+            key: x.st.startSeq, type: 'button',
+            className: `clx-stbar${on ? ' on' : ''}${newTurn ? ' turn' : ''}${x.st.errors ? ' err' : ''}`,
+            title: `${fmt(t('flow.where'), { t: x.st.turn, s: x.st.step })} · ${fmtK(x.comp.total)}`,
+            onMouseEnter: () => setHover(x.i),
+            onClick: () => onSel(x.i),
+          },
+            h('span', { className: 'col', style: { height: `${Math.max(2, x.comp.total / yMax * 100)}%` } },
+              SERIES_CATS.map((k, gi) => (x.groups[gi] > 0 ? h('i', { key: k, style: { flexGrow: x.groups[gi], background: CAT_COLOR[k] } }) : null))),
+            newTurn ? h('span', { className: 'lbl' }, `T${x.st.turn}`) : null)
+        }))),
+    h('div', { className: 'clx-stdetail' },
+      h('div', { className: 'clx-stdetail-head' },
+        h('b', null, fmt(t('flow.where'), { t: st.turn, s: st.step })),
+        st.status !== 'done' ? h('span', { className: st.status === 'error' ? 'clx-err' : st.status === 'running' ? 'clx-live' : 'clx-warn' }, t(`flow.status.${st.status}`)) : null,
+        h('span', { className: 'clx-stchip' }, h('span', { className: 'k' }, t('st.ctx')), fmtK(cur.comp.total)),
+        h('span', { className: `clx-stchip${delta > 0 ? ' up' : ''}` }, h('span', { className: 'k' }, t('st.delta')), dsign(delta)),
+        u ? h('span', { className: 'clx-stchip' }, h('span', { className: 'k' }, t('st.output')), fmtK(u.output || 0)) : null,
+        u ? h('span', { className: 'clx-stchip' }, h('span', { className: 'k' }, t('st.cache')), pct(u.cacheRead || 0, st.promptTokens || 0, 0)) : null,
+        h('button', { className: 'clx-chipbtn clx-stdetail-go', onClick: () => onJump(stepNode(data, st)) }, `${t('st.viewMsgs')} ›`)),
+      st.tools.length ? h('div', { className: 'clx-stdetail-tools', title: st.tools.join(', ') }, h('span', { className: 'clx-muted' }, `${t('flow.calls')} `), groupNames(st.tools)) : null,
+      h(UsageBar, { segments: segs, win: s.win, buffer: 0 }),
+      h('div', { className: 'clx-stlegend' }, [...segs].sort((p, q) => q.tokens - p.tokens).filter((g) => g.tokens >= 1 || Math.abs(g.d) >= 1).map((g) => h('span', { key: g.key },
+        h('i', { className: 'clx-dot', style: { background: g.color } }), g.label,
+        h('b', null, fmtK(g.tokens)),
+        prev && Math.abs(g.d) >= 1 ? h('em', { className: g.d > 0 ? 'up' : 'down' }, dsign(g.d)) : null))),
+      !cur.comp.exact ? h('div', { className: 'clx-muted', style: { fontSize: 11 } }, t('flow.ctxEstNoUsage')) : null))
+}
+
+/** Where the context sits against the compaction triggers, and the policy behind them. */
+function CompactionCard({ data, comp, s, t }) {
+  const win = s.win || 1
+  const at = (v) => `${Math.min(100, Math.max(0, v / win * 100))}%`
+  const marks = [
+    comp.thresholdTokens ? { k: 'th', v: comp.thresholdTokens, label: t('ov.threshold'), cls: 'warn' } : null,
+    comp.emergencyTokens ? { k: 'em', v: comp.emergencyTokens, label: t('ov.emergency'), cls: 'err' } : null,
+  ].filter(Boolean)
+  const over = comp.thresholdTokens && s.used >= comp.thresholdTokens
+  const ratio = typeof comp.thresholdRatio === 'number' ? `${Math.round(comp.thresholdRatio * 100)}%` : null
+  return h('div', { className: 'clx-card clx-infocard' },
+    h('div', { className: 'clx-card-head' },
+      h(CardTitle, { icon: 'compress', text: t('ov.compaction') }),
+      h('span', { className: 'clx-pill' }, comp.engine || '—'),
+      h('span', { className: `clx-pill ${comp.auto ? 'on' : 'off'}` }, `${t('ov.auto')} · ${comp.auto ? t('ov.on') : t('ov.off')}`)),
+    h('div', { className: 'clx-cgauge' },
+      h('div', { className: 'track' },
+        h('span', { className: `fill${over ? ' over' : ''}`, style: { width: at(s.used) } }),
+        marks.map((x) => h('i', { key: x.k, className: x.cls, style: { left: at(x.v) }, title: `${x.label} ${fmtInt(x.v)}` }))),
+      h('div', { className: 'scale' },
+        h('span', null, `${t('ov.used')} ${fmtK(s.used)}`),
+        marks.map((x) => h('span', { key: x.k, className: x.cls, style: { left: at(x.v) } }, fmtK(x.v))),
+        h('span', { className: 'end' }, fmtK(s.win)))),
+    h('div', { className: 'clx-tiles' },
+      comp.thresholdTokens ? h(Stat, { k: t('ov.threshold'), v: fmtK(comp.thresholdTokens), sub: ratio ? ` ${ratio}` : undefined }) : null,
+      h(Stat, { k: t('ov.remaining'), v: comp.remainingTokens > 0 ? fmtK(comp.remainingTokens) : t('pop.over'), tone: comp.remainingTokens > 0 ? '' : 'warn' }),
+      comp.emergencyTokens ? h(Stat, { k: t('ov.emergency'), v: fmtK(comp.emergencyTokens), sub: comp.emergencyRatio ? ` ${Math.round(comp.emergencyRatio * 100)}%` : undefined }) : null,
+      h(Stat, { k: t('ov.buffer'), v: fmtK(comp.bufferTokens) }),
+      comp.headroomTokens !== undefined ? h(Stat, { k: t('ov.headroom'), v: fmtK(comp.headroomTokens) }) : null,
+      comp.retainBudget !== undefined ? h(Stat, { k: t('ov.retain'), v: comp.retainTokens !== undefined ? fmtK(comp.retainTokens) : fmtK(comp.retainBudget), sub: comp.retainTokens === undefined ? ` ${Math.round((comp.retainRatio || 0) * 100)}%` : undefined }) : null,
+      comp.summaryMaxTokens ? h(Stat, { k: t('ov.summaryMax'), v: fmtK(comp.summaryMaxTokens) }) : null,
+      h(Stat, { k: t('ov.compactions'), v: String((data.compactionEvents || []).length) }),
+      comp.override ? h(Stat, { k: t('ov.override'), v: comp.override.model, sub: ` ${comp.override.provider}` }) : null),
+    h('div', { className: 'clx-note' },
+      comp.engine === 'billion-context' ? `${t('ov.biliNote')}${comp.defaults ? ` ${t('ov.biliDefaults')}` : ''}` : t('ov.formula')))
+}
+
+/** How "used" was measured, how the estimate was calibrated to it, and what the last request cost. */
+function MeasureCard({ data, s, t }) {
+  const m = data.measured || {}
+  const u = m.lastRequest
+  const inTot = u ? (u.inputTokens || 0) + (u.cacheReadTokens || 0) + (u.cacheWriteTokens || 0) : 0
+  const seg = (v, cls) => (v > 0 ? h('span', { className: cls, style: { flexGrow: v } }) : null)
+  const types = Object.entries<any>(data.typeCounts || {}).sort((a, b) => b[1] - a[1])
+  return h('div', { className: 'clx-card clx-infocard' },
+    h('div', { className: 'clx-card-head' },
+      h(CardTitle, { icon: 'gauge', text: t('ov.measure') }),
+      h('span', { className: 'clx-pill' }, t(`pop.src.${m.usedSource || 'estimate'}`)),
+      h('span', { className: 'clx-pill', title: t('ov.baseline') }, t(`ov.baseline.${m.baselineKind || 'none'}`))),
+    h('div', { className: 'clx-tiles' },
+      h(Stat, { k: t('ov.used'), v: fmtK(m.totalTokens) }),
+      h(Stat, { k: t('ov.rawTotal'), v: fmtK(m.rawTotalTokens), sub: m.rawTotalTokens > m.totalTokens ? ` −${pct(m.rawTotalTokens - m.totalTokens, m.rawTotalTokens, 0)}` : undefined }),
+      h(Stat, { k: t('ov.estSum'), v: fmtK(m.estimatedSum) }),
+      h(Stat, { k: t('ov.factor'), v: `×${(m.factor || 1).toFixed(3)}` }),
+      h(Stat, { k: t('ov.baseline'), v: fmtK(m.baselineTokens) }),
+      h(Stat, { k: t('ov.delta'), v: fmtK(m.surfaceDeltaTokens) }),
+      h(Stat, { k: t('ov.window'), v: fmtK(data.contextWindow) }),
+      h(Stat, { k: t('ov.maxOut'), v: fmtK(data.maxTokens) })),
+    u ? h('div', { className: 'clx-req' },
+      h('div', { className: 'clx-req-head' },
+        h('span', null, fmt(t('ov.lastReq'), { seq: u.seq, time: fmtTime(u.time) })),
+        h('b', null, `${t('ov.hit')} ${pct(u.cacheReadTokens || 0, inTot, 0)}`)),
+      h('div', { className: 'clx-req-bar' }, seg(u.cacheReadTokens, 'cr'), seg(u.cacheWriteTokens, 'cw'), seg(u.inputTokens, 'in'), seg(u.outputTokens, 'out')),
+      h('div', { className: 'clx-req-legend' },
+        h('span', null, h('i', { className: 'cr' }), t('ov.cacheRead'), h('b', null, fmtK(u.cacheReadTokens || 0))),
+        h('span', null, h('i', { className: 'cw' }), t('ov.cacheWrite'), h('b', null, fmtK(u.cacheWriteTokens || 0))),
+        h('span', null, h('i', { className: 'in' }), t('ov.uncached'), h('b', null, fmtK(u.inputTokens || 0))),
+        h('span', null, h('i', { className: 'out' }), t('ov.output'), h('b', null, fmtK(u.outputTokens || 0))))) : null,
+    types.length ? h('div', { className: 'clx-types', title: t('ov.types') },
+      h('span', { className: 'clx-muted' }, `${t('ov.types')} · ${fmtInt(data.eventCount)}`),
+      types.slice(0, 8).map(([k, v]) => h('span', { key: k, className: 'clx-type' }, k, h('b', null, fmtInt(v)))),
+      types.length > 8 ? h('span', { className: 'clx-type more', title: types.slice(8).map(([k, v]) => `${k} ${v}`).join('\n') }, `+${types.length - 8}`) : null) : null,
+    h('div', { className: 'clx-note' }, t('ov.calNote')))
+}
+
+// ================================================================== dashboard cards
+// Every card on every page opens the same way: an icon, a title, a figure on the right, and (on
+// the overview) a link to the page that has the whole story.
+const CARD_ICON = {
+  stats: ['M4 20V10', 'M10 20V4', 'M16 20v-7', 'M22 20H2'],
+  donut: ['M12 3a9 9 0 1 0 9 9h-9z', 'M15 3.5A9 9 0 0 1 20.5 9H15z'],
+  trend: ['M3 17l5-5 4 3 8-8', 'M15 7h5v5'],
+  tools: ['M14.5 6.5a4 4 0 0 0-5 5L4 17l3 3 5.5-5.5a4 4 0 0 0 5-5l-2.5 2.5-2.5-.5-.5-2.5z'],
+  messages: ['M4 5h16v11H9l-5 4z'],
+  sources: ['M5 4h9a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z', 'M5 17a3 3 0 0 1 3-3h9'],
+  compress: ['M4 9h16', 'M4 15h16', 'M9 4l3 3 3-3', 'M9 20l3-3 3 3'],
+  gauge: ['M4 15a8 8 0 1 1 16 0', 'M12 15l4-4'],
+  flow: ['M6 4h5v5H6z', 'M13 15h5v5h-5z', 'M8.5 9v3.5h7V15'],
+  cmd: ['M4 6l5 5-5 5', 'M12 18h8'],
+}
+
+function CardTitle({ icon, text }) {
+  return h('h4', { className: 'clx-ctitle' },
+    h('span', { className: 'ic' }, h('svg', { width: 14, height: 14, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.9, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true },
+      (CARD_ICON[icon] || []).map((d, i) => h('path', { key: i, d })))),
+    text)
+}
+
+function CardHead({ icon, title, meta = null, more = null, t }) {
+  return h('div', { className: 'clx-card-head' },
+    h(CardTitle, { icon, text: title }),
+    meta ? h('span', { className: 'clx-chead-meta' }, meta) : null,
+    more ? h('button', { className: 'clx-more', onClick: more }, `${t('ov.more')} ›`) : null)
+}
+
+/** Category shares as a ring, the used total in its middle; the legend opens that category's messages. */
+function CompositionCard({ data, s, t, onShowCat, stepLabel = null }) {
+  const [hov, setHov] = useState(null)
+  const parts = CATS.map((k) => ({ k, v: s.byCat[k]?.tokens || 0, n: s.byCat[k]?.count || 0 })).filter((x) => x.v > 0).sort((a, b) => b.v - a.v)
+  const total = parts.reduce((a, b) => a + b.v, 0) || 1
+  const R = 50
+  const C = 2 * Math.PI * R
+  let off = 0
+  const segs = parts.map((x) => {
+    const len = x.v / total * C
+    const seg = { ...x, dash: `${Math.max(0, len - (parts.length > 1 ? 1.2 : 0))} ${C}`, off: -off }
+    off += len
+    return seg
+  })
+  const cur = hov ? parts.find((x) => x.k === hov) : null
+  return h('div', { className: 'clx-card' },
+    h(CardHead, { t, icon: 'donut', title: t('ov.composition'), meta: `${stepLabel ? stepLabel + ' · ' : ''}${fmtK(s.used)} · ${pct(s.used, s.win)}` }),
+    h('div', { className: 'clx-donutwrap' },
+      h('svg', { className: 'clx-donut', viewBox: '0 0 128 128', width: 128, height: 128 },
+        h('circle', { cx: 64, cy: 64, r: R, fill: 'none', stroke: 'var(--dsw-alias-border-l1)', strokeWidth: 16 }),
+        segs.map((x) => h('circle', {
+          key: x.k, cx: 64, cy: 64, r: R, fill: 'none', stroke: CAT_COLOR[x.k], strokeWidth: hov === x.k ? 20 : 16,
+          strokeDasharray: x.dash, strokeDashoffset: x.off, transform: 'rotate(-90 64 64)', opacity: hov && hov !== x.k ? 0.35 : 1,
+          onMouseEnter: () => setHov(x.k), onMouseLeave: () => setHov(null), onClick: () => onShowCat(x.k), style: { cursor: 'pointer' },
+        }, h('title', null, `${t(`c.${x.k}`)} ${fmtInt(x.v)}`))),
+        h('text', { x: 64, y: 62, textAnchor: 'middle', className: 'clx-donut-v' }, cur ? fmtK(cur.v) : fmtK(s.used)),
+        h('text', { x: 64, y: 78, textAnchor: 'middle', className: 'clx-donut-k' }, cur ? t(`c.${cur.k}`) : t('ov.usedShort'))),
+      h('div', { className: 'clx-dlegend' }, parts.map((x) => h('button', {
+        key: x.k, type: 'button', className: hov === x.k ? 'on' : undefined, title: `${CAT_EN[x.k]} · ${fmtInt(x.v)} · ${t('ov.openCat')}`,
+        onMouseEnter: () => setHov(x.k), onMouseLeave: () => setHov(null), onClick: () => onShowCat(x.k),
+      },
+        h('i', { className: 'clx-dot', style: { background: CAT_COLOR[x.k] } }),
+        h('span', { className: 'nm' }, t(`c.${x.k}`)),
+        h('span', { className: 'pc' }, pct(x.v, total, 1)),
+        h('span', { className: 'tk' }, fmtK(x.v)))))))
+}
+
+/** The heaviest tools of the session, as on the tools page. */
+function ToolsPeek({ data, t, onNav }) {
+  const stats = [...(data.toolStats || [])].sort((a, b) => (b.callTokens + b.resultTokens) - (a.callTokens + a.resultTokens))
+  const errsBy = {}
+  for (const x of data.invocations || []) if (x.isError) errsBy[x.name] = (errsBy[x.name] || 0) + 1
+  const max = Math.max(1, ...stats.map((x) => x.callTokens + x.resultTokens))
+  const cmds = data.commands || []
+  const calls = stats.reduce((a, x) => a + x.calls, 0)
+  return h('div', { className: 'clx-card clx-peek' },
+    h(CardHead, { t, icon: 'tools', title: t('nav.tools'), meta: fmt(t('ov.peek.tools'), { n: stats.length, c: calls }), more: () => onNav('tools') }),
+    stats.length ? stats.slice(0, 5).map((x) => h(ToolLine, {
+      key: x.name, name: x.name, color: CAT_COLOR.toolResults, sel: false, onClick: () => onNav('tools'),
+      title: `${t('pair.call')} ${fmtInt(x.callTokens)} + ${t('pair.result')} ${fmtInt(x.resultTokens)}`,
+      bar: h(React.Fragment, null,
+        h('span', { style: { width: `${x.callTokens / max * 100}%`, background: CAT_COLOR.toolCalls } }),
+        h('span', { style: { width: `${x.resultTokens / max * 100}%`, background: CAT_COLOR.toolResults } })),
+      count: `×${x.calls}`, errs: errsBy[x.name], tok: fmtK(x.callTokens + x.resultTokens),
+    })) : h('div', { className: 'clx-tempty clx-muted' }, t('tools.noUse')),
+    cmds.length ? h('div', { className: 'clx-peek-foot' },
+      h(CardTitle, { icon: 'cmd', text: t('cmd.title') }),
+      h('span', null, fmt(t('ov.peek.cmds'), { n: cmds.length, d: fmtMs(cmds.reduce((a, c) => a + (c.durationMs || 0), 0)), f: cmds.filter((c) => c.status === 'failed').length }))) : null)
+}
+
+/** The biggest messages in the context: where the tokens actually sit. */
+function MessagesPeek({ data, t, onJump, onNav }) {
+  const nodes = data.nodes || []
+  const top = [...nodes].sort((a, b) => b.tokensCal - a.tokensCal).slice(0, 6)
+  const sum = nodes.reduce((a, n) => a + n.tokensCal, 0)
+  return h('div', { className: 'clx-card clx-peek' },
+    h(CardHead, { t, icon: 'messages', title: t('ov.peek.bigMsgs'), meta: fmt(t('msg.count'), { n: nodes.length, t: fmtK(sum) }), more: () => onNav('messages') }),
+    top.map((n) => h('div', { key: n.seq, className: 'clx-mrow clx-peekrow', role: 'button', tabIndex: 0, onClick: () => onJump(n.seq), title: `#${n.seq}` },
+      h('span', { className: 'clx-mrow-kind', style: { '--cat': CAT_COLOR[n.category] || CAT_COLOR.other } }, t(`k.${n.category}`)),
+      h('span', { className: 'clx-mrow-text' }, n.tool ? h('b', { className: 'clx-mrow-tool' }, `${n.tool} `) : null, n.preview || '—'),
+      h('span', { className: 'clx-peek-pct' }, pct(n.tokensCal, sum, 0)),
+      h('span', { className: 'clx-mrow-tok' }, fmtK(n.tokensCal)))))
+}
+
+/** Memory files, skills and runtime facts in three lines. */
+function SourcesPeek({ sessionId, liveKey, bd, t, onNav }) {
+  const { data: src } = useSources(sessionId, liveKey)
+  const rows = useMemo(() => (src ? skillRows(src) : []), [src])
+  if (!src) return h('div', { className: 'clx-card clx-peek' }, h(CardHead, { t, icon: 'sources', title: t('nav.sources'), more: () => onNav('sources') }), h('div', { className: 'clx-muted' }, t('loading')))
+  const active = (src.memory?.files || []).filter((f) => f.status === 'active')
+  const memTok = active.reduce((a, f) => a + (f.tokens || 0), 0)
+  const loaded = rows.filter((r) => r.loads.length)
+  const inCat = rows.filter((r) => r.cat).length
+  const catTok = (bd?.skills || []).reduce((a, x) => a + (x.tokensCal || 0), 0)
+  const rt = (src.runtime?.sections || []).length + (src.timeContext ? 1 : 0)
+  const line = (color, name, badge, tok) => h(SrcLine, { key: name, color, name, badge, tok, sel: false, onClick: () => onNav('sources') })
+  return h('div', { className: 'clx-card clx-peek' },
+    h(CardHead, { t, icon: 'sources', title: t('nav.sources'), meta: fmtK(memTok + catTok), more: () => onNav('sources') }),
+    line(CAT_COLOR.memory, t('nav.memory'), active.length ? active.map((f) => f.displayPath).slice(0, 2).join(', ') + (active.length > 2 ? ` +${active.length - 2}` : '') : t('src.memoryZero'), active.length ? fmtK(memTok) : '—'),
+    line(CAT_COLOR.skills, t('src.skills'), rows.length ? fmt(t('ov.peek.skills'), { l: loaded.length, c: inCat, n: rows.length }) : t('src.skillsZero'), catTok ? fmtK(catTok) : '—'),
+    line(CAT_COLOR.injected, t('src.runtime'), fmt(t('src.itemsN'), { n: rt }), ''))
+}
+
+/** What happened inside one step: what the model said, what it called, what came back. */
+function stepStory(bd, st) {
+  const inRange = (q) => q !== undefined && q >= st.startSeq && (st.endSeq === undefined || q <= st.endSeq)
+  const said = []
+  for (const n of bd.nodes || []) {
+    if (!inRange(n.seq) || !n.split) continue
+    if ((n.split.assistantText || 0) > 0 || (n.split.reasoning || 0) > 0) {
+      const kind = (n.split.assistantText || 0) >= (n.split.reasoning || 0) ? "answer" : "thinking"
+      if (n.preview && !(n.tools || []).length || (n.preview && n.preview !== (n.tools || []).join(", "))) said.push({ seq: n.seq, kind, text: n.preview, tok: n.tokensCal })
+    }
+  }
+  const calls = (bd.invocations || []).filter((x) => inRange(x.callSeq) || (x.callSeq === undefined && inRange(x.resultSeq)))
+  return { said, calls }
+}
+
+function StepStory({ bd, st, t, onJump }) {
+  if (!st) return null
+  const { said, calls } = stepStory(bd, st)
+  if (!said.length && !calls.length) return h("div", { className: "clx-muted clx-tempty" }, t("sd.storyNone"))
+  return h("div", { className: "clx-story" },
+    said.map((x) => h("div", { key: "s" + x.seq, className: "clx-story-row said", role: "button", onClick: () => onJump(x.seq) },
+      h("span", { className: "k" }, t(x.kind === "answer" ? "sd.said" : "sd.thought")), h("span", { className: "tx" }, x.text))),
+    calls.map((x, i) => h("div", { key: "c" + i, className: `clx-story-row call${x.isError ? " err" : ""}`, role: "button", onClick: () => onJump(x.resultSeq ?? x.callSeq) },
+      h("span", { className: "k" }, t("sd.called")),
+      h("span", { className: "tx" },
+        h("b", null, x.name), " ", h("code", null, x.args || ""),
+        x.resultSeq !== undefined
+          ? h("span", { className: "res" }, x.isError ? "⚠ " : "→ ", h("span", { className: "tk" }, fmtK(x.resultTokens || 0)), " ", x.resultPreview || "")
+          : h("span", { className: "res clx-muted" }, "…")))))
+}
+
+/** The prompt the model read, in the order it read it; picking a step shows that request. */
+function PromptView({ data, t, diff, series, onSel, sessionId, ctx, cwd, onJump, onAsk }) {
+  const [open, setOpen] = useState<number | null>(null)
+  const [hide, setHide] = useState<Record<string, boolean>>({})
+  const [toolsOpen, setToolsOpen] = useState(false)
+  const all = data.nodes || []
+  const cut = diff && !diff.last ? diff.cut : Infinity
+  const sent = all.filter((n) => n.seq < cut)
+  const later = all.length - sent.length
+  const laterTok = all.filter((n) => n.seq >= cut).reduce((a, n) => a + n.tokensCal, 0)
+  const sys = sent.filter((n) => n.category === "system")
+  const rest = sent.filter((n) => n.category !== "system")
+  const tools = data.tools || []
+  const toolTok = tools.reduce((a, x) => a + (x.tokensCal || 0), 0)
+  const total = sent.reduce((a, n) => a + n.tokensCal, 0) + toolTok || 1
+  const present = {}
+  for (const n of sent) present[n.category] = (present[n.category] || 0) + 1
+  const shown = (n) => !hide[n.category]
+  const cutOf = (x) => x.st.requestSeq ?? x.st.endSeq ?? x.st.startSeq
+  const dividers = new Map()
+  for (const x of series) {
+    const c = cutOf(x)
+    const first = rest.find((n) => n.seq >= c)
+    const key = first ? first.seq : "end"
+    if (!dividers.has(key)) dividers.set(key, [])
+    dividers.get(key).push(x)
+  }
+  const goto = (id) => document.getElementById(id)?.scrollIntoView({ block: "center", behavior: "smooth" })
+  const segs = [
+    ...sys.map((n) => ({ id: `pv-${n.seq}`, w: n.tokensCal, c: CAT_COLOR.system, title: `${t("c.system")} · ${fmtInt(n.tokensCal)}` })),
+    { id: "pv-tools", w: toolTok, c: CAT_COLOR.systemTools, title: `${t("c.systemTools")} · ${fmtInt(toolTok)}` },
+    ...rest.map((n) => ({ id: `pv-${n.seq}`, w: n.tokensCal, c: CAT_COLOR[n.category] || CAT_COLOR.other, title: `#${n.seq} ${t(`c.${n.category}`)} · ${fmtInt(n.tokensCal)}` })),
+  ].filter((x) => x.w > 0)
+  const itemEl = (n) => {
+    const isOpen = open === n.seq
+    const color = CAT_COLOR[n.category] || CAT_COLOR.other
+    const fresh = diff && n.seq >= diff.prevCut && n.seq < diff.cut
+    return h("div", { key: n.seq, id: `pv-${n.seq}`, className: `clx-pv-item${isOpen ? " open" : ""}${fresh ? " fresh" : ""}`, style: { "--cat": color } },
+      h("div", { className: "clx-pv-head", role: "button", tabIndex: 0, onClick: () => setOpen(isOpen ? null : n.seq),
+        onKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setOpen(isOpen ? null : n.seq) } } },
+        h(Chevron, { open: isOpen, size: 10 }),
+        h("span", { className: "clx-mrow-kind", style: { "--cat": color } }, t(`k.${n.category}`)),
+        n.tool ? h("b", { className: "clx-mrow-tool" }, n.tool) : null,
+        (n.tools || []).length ? h("b", { className: "clx-mrow-tool" }, groupNames(n.tools)) : null,
+        fresh ? h("span", { className: "clx-pill" }, t("sd.fresh")) : null,
+        h("span", { className: "sq" }, `#${n.seq}`),
+        h("button", { className: "clx-pv-ask", title: t("az.askThis"), onClick: (e) => { e.stopPropagation(); onAsk(n.seq) } }, "✦"),
+        h("span", { className: "tk" }, fmtK(n.tokensCal), h("small", null, ` ${pct(n.tokensCal, total, 1)}`))),
+      isOpen ? h("div", { className: "clx-pv-body" }, h(NodeDetail, { sessionId, seq: n.seq, t, ctx, cwd }))
+        : h("div", { className: "clx-pv-text", onClick: () => setOpen(n.seq) }, n.preview || "—"))
+  }
+  const rows = []
+  for (const n of sys) if (shown(n)) rows.push(itemEl(n))
+  rows.push(h("div", { key: "tools", id: "pv-tools", className: `clx-pv-item tools${toolsOpen ? " open" : ""}`, style: { "--cat": CAT_COLOR.systemTools } },
+    h("div", { className: "clx-pv-head", role: "button", tabIndex: 0, onClick: () => setToolsOpen(!toolsOpen) },
+      h(Chevron, { open: toolsOpen, size: 10 }),
+      h("span", { className: "clx-mrow-kind", style: { "--cat": CAT_COLOR.systemTools } }, t("c.systemTools")),
+      h("span", { className: "clx-muted" }, fmt(t("sd.toolDefs"), { n: tools.length })),
+      h("span", { className: "tk" }, fmtK(toolTok), h("small", null, ` ${pct(toolTok, total, 1)}`))),
+    h("div", { className: "clx-pv-text" }, tools.slice().sort((a, b) => b.tokensCal - a.tokensCal).slice(0, toolsOpen ? 999 : 12).map((x) => h("code", { key: x.name, className: "clx-pv-tool" }, x.name, h("small", null, ` ${fmtK(x.tokensCal)}`))),
+      !toolsOpen && tools.length > 12 ? h("span", { className: "clx-muted" }, ` +${tools.length - 12}`) : null)))
+  for (const n of rest) {
+    const ds = dividers.get(n.seq)
+    if (ds) for (const x of ds) rows.push(h("div", { key: `d${x.st.startSeq}`, className: `clx-pv-div${diff && x.i === diff.idx ? " on" : ""}`, role: "button", onClick: () => onSel(x.i) },
+      h("span", null, fmt(t("flow.where"), { t: x.st.turn, s: x.st.step })), h("span", { className: "clx-muted" }, `${t("sd.request")} · ${fmtK(x.comp.total)}`)))
+    if (shown(n)) rows.push(itemEl(n))
+  }
+  const endDs = dividers.get("end")
+  if (endDs) for (const x of endDs) rows.push(h("div", { key: `d${x.st.startSeq}`, className: `clx-pv-div${diff && x.i === diff.idx ? " on" : ""}`, role: "button", onClick: () => onSel(x.i) },
+    h("span", null, fmt(t("flow.where"), { t: x.st.turn, s: x.st.step })), h("span", { className: "clx-muted" }, `${t("sd.request")} · ${fmtK(x.comp.total)}`)))
+  return h("div", { className: "clx-pv" },
+    h("div", { className: "clx-card" },
+      h(CardHead, { t, icon: "messages", title: t("sd.promptTitle"), meta: `${fmtK(total)} · ${fmt(t("sd.itemsN"), { n: sent.length })}` }),
+      h("div", { className: "clx-muted", style: { fontSize: 11.5, marginBottom: 6 } }, diff && !diff.last ? fmt(t("sd.promptAt"), { t: diff.cur.st.turn, s: diff.cur.st.step }) : t("sd.promptNow")),
+      h("div", { className: "clx-pv-map" }, segs.map((x, i) => h("button", { key: i, type: "button", title: x.title, style: { flexGrow: x.w, background: x.c }, onClick: () => goto(x.id) }))),
+      h("div", { className: "clx-pv-chips" }, CATS.filter((k) => present[k]).map((k) => h("button", {
+        key: k, type: "button", className: `clx-chipbtn${hide[k] ? "" : " on"}`, "aria-pressed": !hide[k], onClick: () => setHide({ ...hide, [k]: !hide[k] }),
+      }, h("i", { className: "clx-dot", style: { background: CAT_COLOR[k] } }), ` ${t(`c.${k}`)} ${present[k]}`)))),
+    diff ? h("div", { className: "clx-card" },
+      h(CardHead, { t, icon: "flow", title: t("sd.story"), meta: fmt(t("flow.where"), { t: diff.cur.st.turn, s: diff.cur.st.step }) }),
+      h(StepStory, { bd: data, st: diff.cur.st, t, onJump })) : null,
+    h("div", { className: "clx-pv-list" }, rows),
+    later > 0 ? h("div", { className: "clx-muted clx-pv-later" }, fmt(t("sd.later"), { n: later, k: fmtK(laterTok) })) : null)
+}
+
+/** Ask the session's model about this context. Off until enabled; each send is one explicit call. */
+const AZ_ASKS = ['az.q1', 'az.q2', 'az.q3', 'az.q4']
+
+function AnalyzeView({ data, t, sessionId, onJump, seqs, setSeqs }) {
+  const key = `dsh-context-lens:az:${sessionId}`
+  const [enabled, setEnabledState] = useState(() => { try { return sessionStorage.getItem(key) === "1" } catch { return false } })
+  const setEnabled = (v) => { setEnabledState(v); try { sessionStorage.setItem(key, v ? "1" : "0") } catch {} }
+  const [msgs, setMsgs] = useState<any[]>([])
+  const [input, setInput] = useState("")
+  const [inc, setInc] = useState({ system: false, tools: false })
+  const [prev, setPrev] = useState<any>(null)
+  const [busy, setBusy] = useState(false)
+  const job = useRef<string | null>(null)
+  const endRef = useRef<any>(null)
+  const lang = /[一-鿿]/.test(t("nav.prompt")) ? "zh" : "en"
+  const include = { ...inc, seqs }
+
+  // the estimate costs nothing: it only measures what a send would carry
+  useEffect(() => {
+    let dead = false
+    const id = setTimeout(() => {
+      call("analyze-preview", { sessionId, include, question: input, history: msgs.filter((m) => !m.busy).map((m) => ({ role: m.role, text: m.text })) })
+        .then((v) => { if (!dead) setPrev(v) }, () => { if (!dead) setPrev(null) })
+    }, 350)
+    return () => { dead = true; clearTimeout(id) }
+  }, [sessionId, inc.system, inc.tools, seqs.join(","), msgs.length, input.length > 0])
+  useEffect(() => () => { if (job.current) call("analyze-stop", { jobId: job.current }).catch(() => {}) }, [])
+  useEffect(() => { endRef.current?.scrollIntoView({ block: "nearest" }) }, [msgs])
+
+  const patch = (id, v) => setMsgs((xs) => xs.map((m) => (m.id === id ? { ...m, ...v } : m)))
+  const send = async (q?: string) => {
+    const question = (q ?? input).trim()
+    if (!question || busy) return
+    const history = msgs.filter((m) => !m.busy && !m.error).map((m) => ({ role: m.role, text: m.text }))
+    const uid = `u${Date.now()}`
+    const aid = `a${Date.now()}`
+    setMsgs((xs) => [...xs, { id: uid, role: "user", text: question }, { id: aid, role: "assistant", text: "", busy: true }])
+    setInput("")
+    setBusy(true)
+    try {
+      const { jobId, inputTokens } = await call("analyze-start", { sessionId, question, history, include, lang })
+      job.current = jobId
+      patch(aid, { inputTokens })
+      for (;;) {
+        await new Promise((r) => setTimeout(r, 450))
+        if (job.current !== jobId) break
+        const v = await call("analyze-poll", { jobId })
+        patch(aid, { text: v.text, reasoning: v.reasoning, usage: v.usage, error: v.error, busy: !v.done })
+        if (v.done) break
+      }
+    } catch (e) {
+      patch(aid, { error: String(e?.message || e), busy: false })
+    } finally {
+      job.current = null
+      setBusy(false)
+    }
+  }
+  const stop = () => { if (job.current) call("analyze-stop", { jobId: job.current }).catch(() => {}) }
+
+  if (!enabled) {
+    return h("div", { className: "clx-card clx-az-intro" },
+      h(CardHead, { t, icon: "gauge", title: t("az.title"), meta: prev?.model ? `${prev.model}` : null }),
+      h("ul", null,
+        h("li", null, t("az.i1")), h("li", null, t("az.i2")), h("li", null, t("az.i3")),
+        prev?.tokens ? h("li", null, fmt(t("az.i4"), { k: fmtK(prev.tokens), m: prev.model || "" })) : null),
+      prev && !prev.ready ? h("div", { className: "clx-err", style: { fontSize: 12 } }, t("az.noLlm")) : null,
+      h("button", { className: "clx-chipbtn clx-az-go", disabled: !!prev && !prev.ready, onClick: () => setEnabled(true) }, t("az.enable")))
+  }
+  const tokens = prev?.tokens || 0
+  const refs = (text) => [...new Set([...String(text || "").matchAll(/#(\d{1,6})/g)].map((m) => Number(m[1])))].filter((n) => (data.nodes || []).some((x) => x.seq === n)).slice(0, 8)
+  return h("div", { className: "clx-az" },
+    h("div", { className: "clx-card clx-az-bar" },
+      h("span", { className: "clx-pill" }, t("az.on")),
+      prev?.model ? h("span", { className: "clx-muted" }, prev.model) : null,
+      h("span", { className: "clx-muted" }, t("az.attach")),
+      h("button", { className: `clx-chipbtn${inc.system ? " on" : ""}`, "aria-pressed": inc.system, onClick: () => setInc({ ...inc, system: !inc.system }) }, t("az.sys")),
+      h("button", { className: `clx-chipbtn${inc.tools ? " on" : ""}`, "aria-pressed": inc.tools, onClick: () => setInc({ ...inc, tools: !inc.tools }) }, t("az.toolDesc")),
+      seqs.map((q) => h("button", { key: q, className: "clx-chipbtn on", title: t("az.detach"), onClick: () => setSeqs(seqs.filter((x) => x !== q)) }, `#${q} ×`)),
+      h("span", { className: "clx-az-tok clx-muted" }, tokens ? fmt(t("az.cost"), { k: fmtK(tokens) }) : ""),
+      msgs.length ? h("button", { className: "clx-chipbtn", disabled: busy, onClick: () => setMsgs([]) }, t("az.clear")) : null,
+      h("button", { className: "clx-chipbtn", disabled: busy, onClick: () => { setEnabled(false); setMsgs([]) } }, t("az.off"))),
+    msgs.length === 0 ? h("div", { className: "clx-card" },
+      h("div", { className: "clx-muted", style: { fontSize: 12, marginBottom: 8 } }, t("az.hint")),
+      h("div", { className: "clx-az-asks" }, AZ_ASKS.map((k) => h("button", { key: k, className: "clx-chipbtn", disabled: busy, onClick: () => send(t(k)) }, t(k))))) : null,
+    msgs.map((m) => m.role === "user"
+      ? h("div", { key: m.id, className: "clx-az-user" }, m.text)
+      : h("div", { key: m.id, className: "clx-card clx-az-ans" },
+        m.reasoning ? h("details", { className: "clx-az-think", open: m.busy && !m.text }, h("summary", null, t("az.thinking")), h("div", null, m.reasoning)) : null,
+        m.text ? h(RichText, { text: m.text, hint: "md", t, bare: true }) : m.busy ? h("div", { className: "clx-muted" }, t("az.working")) : null,
+        m.error ? h("div", { className: "clx-err" }, fmt(t("failed"), { msg: m.error })) : null,
+        !m.busy && refs(m.text).length ? h("div", { className: "clx-az-refs" }, h("span", { className: "clx-muted" }, t("az.refs")), refs(m.text).map((n) => h("button", { key: n, className: "clx-chipbtn", onClick: () => onJump(n) }, `#${n}`))) : null,
+        m.usage ? h("div", { className: "clx-muted clx-az-use" }, fmt(t("az.usage"), { i: fmtK((m.usage.inputTokens || 0) + (m.usage.cacheReadTokens || 0)), o: fmtK(m.usage.outputTokens || 0) })) : null)),
+    h("div", { ref: endRef }),
+    h("div", { className: "clx-card clx-az-input" },
+      h("textarea", {
+        value: input, rows: 2, placeholder: t("az.placeholder"), onChange: (e) => setInput(e.target.value),
+        onKeyDown: (e) => { if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); send() } },
+      }),
+      busy ? h("button", { className: "clx-chipbtn", onClick: stop }, t("az.stop"))
+        : h("button", { className: "clx-chipbtn on", disabled: !input.trim(), onClick: () => send() }, t("az.send"))))
+}
+
+/** Plain-language findings: what is making the context heavy, and what to do about it. */
+function diagnose(data, s, series, t) {
+  const out = []
+  const used = s.used || 0
+  if (!used) return out
+  const comp = s.comp
+  const tok = (k) => s.byCat[k]?.tokens || 0
+  // runway to the compaction trigger, from the recent growth
+  if (comp?.auto && comp.thresholdTokens && series.length >= 3) {
+    const recent = series.slice(-6)
+    const g = (recent[recent.length - 1].comp.total - recent[0].comp.total) / (recent.length - 1)
+    const left = comp.thresholdTokens - used
+    if (g > 50 && left > 0) {
+      const n = Math.ceil(left / g)
+      if (n <= 50) out.push({ id: "runway", level: n <= 5 ? "warn" : "info", text: fmt(t("dg.runway"), { g: fmtK(g), n, r: fmtK(left) }), nav: "overview" })
+    } else if (left <= 0) out.push({ id: "runway", level: "warn", text: t("dg.over"), nav: "overview" })
+  }
+  // what is there before any work happens
+  const fixed = tok("system") + tok("systemTools") + tok("mcpTools") + tok("skills") + tok("memory")
+  if (fixed / used >= 0.25) {
+    out.push({ id: "fixed", level: fixed / used >= 0.4 ? "warn" : "info", text: fmt(t("dg.fixed"), { k: fmtK(fixed), p: pct(fixed, used, 0), tk: fmtK(tok("systemTools") + tok("mcpTools")), sk: fmtK(tok("skills") + tok("memory")) }), nav: "tools" })
+  }
+  // tool results dominate
+  const res = tok("toolResults")
+  if (res / used >= 0.45) {
+    const top = [...(data.toolStats || [])].sort((a, b) => b.resultTokens - a.resultTokens)[0]
+    out.push({ id: "results", level: "warn", text: fmt(t("dg.results"), { p: pct(res, used, 0), name: top?.name || "—", k: fmtK(top?.resultTokens || 0) }), nav: "tools" })
+  }
+  // one message that is a big share
+  const big = [...(data.nodes || [])].sort((a, b) => b.tokensCal - a.tokensCal)[0]
+  if (big && big.tokensCal >= 2000 && big.tokensCal / used >= 0.1) {
+    out.push({ id: "big", level: big.tokensCal / used >= 0.2 ? "warn" : "info", text: fmt(t("dg.big"), { seq: big.seq, p: pct(big.tokensCal, used, 0), k: fmtK(big.tokensCal), what: (big.tool ? big.tool + " " : "") + (big.preview || "").slice(0, 60) }), seq: big.seq })
+  }
+  // the same call made again and again
+  const seen = new Map()
+  for (const x of data.invocations || []) {
+    const key = x.name + " " + (x.args || "")
+    seen.set(key, (seen.get(key) || 0) + 1)
+  }
+  const rep = [...seen.entries()].filter(([, n]) => n >= 3).sort((a, b) => b[1] - a[1])[0]
+  if (rep) out.push({ id: "repeat", level: "warn", text: fmt(t("dg.repeat"), { n: rep[1], what: rep[0].slice(0, 70) }), nav: "tools" })
+  // tool definitions nobody called
+  const called = new Set((data.toolStats || []).map((x) => x.name))
+  const idle = (data.tools || []).filter((x) => !called.has(x.name))
+  const idleTok = idle.reduce((a, x) => a + (x.tokensCal || 0), 0)
+  if (idle.length >= 3 && idleTok >= 1500) out.push({ id: "idle", level: "info", text: fmt(t("dg.idle"), { n: idle.length, k: fmtK(idleTok) }), nav: "tools" })
+  // failing calls
+  const errs = (data.invocations || []).filter((x) => x.isError)
+  if (errs.length) out.push({ id: "errors", level: "warn", text: fmt(t("dg.errors"), { n: errs.length, names: [...new Set(errs.map((x) => x.name))].slice(0, 3).join(", ") }), nav: "tools" })
+  // cache
+  const u = data.measured?.lastRequest
+  if (u) {
+    const inTot = (u.inputTokens || 0) + (u.cacheReadTokens || 0) + (u.cacheWriteTokens || 0)
+    if (inTot >= 4000 && (u.cacheReadTokens || 0) / inTot < 0.5) out.push({ id: "cache", level: "info", text: fmt(t("dg.cache"), { p: pct(u.cacheReadTokens || 0, inTot, 0) }), nav: "overview" })
+  }
+  return out
+}
+
+function DiagnosisCard({ data, s, series, t, onJump, onNav }) {
+  const items = useMemo(() => diagnose(data, s, series, t), [data, s, series, t])
+  return h("div", { className: "clx-card clx-diag span2" },
+    h(CardHead, { t, icon: "gauge", title: t("dg.title"), meta: items.length ? fmt(t("dg.count"), { n: items.length }) : null }),
+    items.length
+      ? items.map((x) => h("div", { key: x.id, className: `clx-diag-row ${x.level}`, role: x.seq !== undefined || x.nav !== "overview" ? "button" : undefined,
+        onClick: () => (x.seq !== undefined ? onJump(x.seq) : x.nav !== "overview" ? onNav(x.nav) : undefined) },
+        h("i", { className: "clx-dot" }), h("span", { className: "tx" }, x.text),
+        x.seq !== undefined || x.nav !== "overview" ? h("span", { className: "go" }, `${t("dg.view")} ›`) : null))
+      : h("div", { className: "clx-muted clx-tempty" }, t("dg.ok")))
+}
+
+function Overview({ data, flow, t, onJump, onShowCat, onNav, sessionId, liveKey, series, diff, onSel }) {
   const [pick, setPick] = useState(null)
   const [hov, setHov] = useState(null)
   const s = summarize(data)
   const m = data.measured || {}
   const usage = m.lastRequest
   const cats = CATS.map((k) => ({ key: k, label: t(`c.${k}`), color: CAT_COLOR[k], ...(s.byCat[k] || { tokens: 0, raw: 0, count: 0 }) }))
-  const shown = cats.filter((c) => c.tokens > 0 || c.count > 0).sort((a, b) => b.tokens - a.tokens)
-  const catMax = Math.max(1, ...shown.map((c) => c.tokens))
   const comp = s.comp
   const inputTotal = usage ? (usage.inputTokens || 0) + (usage.cacheReadTokens || 0) + (usage.cacheWriteTokens || 0) : 0
   const warn = comp && comp.thresholdTokens ? (s.used >= comp.thresholdTokens ? 2 : s.used >= comp.thresholdTokens * 0.85 ? 1 : 0) : 0
   const usedAnim = useCountUp(s.used)
-  const side = (k, v, cls = '') => h('div', { className: 'clx-hero-kv' }, h('span', { className: 'k' }, k), h('span', { className: `v${cls ? ` ${cls}` : ''}` }, v))
-  return h('div', { className: 'clx-ov' },
-    h('div', { className: 'clx-card clx-hero-card' },
+  const turnCount = (flow?.turns || []).length || new Set((data.nodes || []).map((n) => n.turn).filter((x) => x !== undefined)).size
+  const stepCount = flow ? (flow.steps || []).length + (flow.stepsTruncated || 0) : null
+  const calls = (data.invocations || []).length
+  const errs = (data.invocations || []).filter((x) => x.isError).length
+  const g = flow?.goal
+  const sView = diff && !diff.last
+    ? { ...s, used: diff.cur.comp.total, byCat: Object.fromEntries(CATS.map((k) => [k, { tokens: diff.cur.comp.by[k] || 0, count: 0 }])) }
+    : s
+  return h('div', { className: 'clx-dash' },
+    h('div', { className: 'clx-card clx-hero-card span2' },
+      h(CardHead, { t, icon: 'stats', title: t('ov.statsTitle'), meta: [data.model, data.reasoningEffort].filter(Boolean).join(' · ') }),
+      h(LiveLine, { flow, t }),
       h('div', { className: 'clx-hero' },
-        h(Ring, { ratio: s.win ? usedAnim / s.win : 0, size: 76, stroke: 8, warn }),
+        h(Ring, { ratio: s.win ? usedAnim / s.win : 0, size: 58, stroke: 7, warn }),
         h('div', { className: 'clx-hero-main' },
-          h('div', null, h('span', { className: 'clx-hero-pct' }, pct(usedAnim, s.win)), h('span', { className: 'clx-sub' }, ` ${t('pop.used')}`)),
-          h('div', { className: 'clx-sub', style: { fontVariantNumeric: 'tabular-nums' } }, `${fmtInt(Math.round(usedAnim))} / ${fmtInt(s.win)} tokens`),
-          h('div', { className: 'clx-muted', style: { fontSize: 12 } }, t(`pop.src.${m.usedSource || 'estimate'}`))),
-        h('div', { className: 'clx-hero-side' },
-          side(t('ov.model'), [data.model, data.reasoningEffort].filter(Boolean).join(' · ') || '—'),
-          side(t('ov.maxOut'), fmtK(data.maxTokens)),
-          comp && comp.thresholdTokens ? side(t('ov.threshold'), `${fmtK(comp.thresholdTokens)} · ${comp.engine || ''}`) : null,
-          comp && comp.auto && comp.thresholdTokens ? side(t('ov.remaining'), comp.remainingTokens > 0 ? fmtK(comp.remainingTokens) : t('pop.over'), comp.remainingTokens > 0 ? '' : 'clx-warn') : null)),
-      h(HeroBar, {
-        cats, s, t, active: hov || pick, pick,
-        onHover: setHov,
-        onPick: (k) => setPick(pick === k ? null : k),
-      })),
-
-    h('div', { className: 'clx-card' },
-      h('div', { className: 'clx-card-head' }, h('h4', null, t('ov.categories')), h('span', { className: 'clx-muted' }, t('ov.cat.hint'))),
-      h('div', { className: 'clx-catrow head' },
-        h('span', null, t('ov.col.cat')), h('span', null, ''), h('span', null, t('ov.col.tokens')), h('span', null, t('ov.col.used')), h('span', null, t('ov.col.count'))),
-      shown.map((c, i) => {
-        const open = openCat === c.key
-        return h('div', { key: c.key, id: `clx-cat-${c.key}`, className: `clx-catblock${open ? ' open' : ''}${(hov || pick) === c.key ? ' hl' : ''}`, style: { '--i': i, '--cat': c.color } },
-          h('div', {
-            className: 'clx-catrow', role: 'button', tabIndex: 0, 'aria-expanded': open,
-            title: `${CAT_EN[c.key]} · ${t('ov.col.window')} ${pct(c.tokens, s.win)} · ${t('ov.col.raw')} ${fmtInt(c.raw)}`,
-            onClick: () => setOpenCat(open ? null : c.key),
-            onKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpenCat(open ? null : c.key) } },
-          },
-            h('span', { className: 'clx-catcell' }, h(Chevron, { open }), h('i', { className: 'clx-dot', style: { background: c.color } }), h(CatName, { t, k: c.key })),
-            h('span', { className: 'clx-catbar' }, h('span', { style: { width: `${Math.max(1, c.tokens / catMax * 100)}%`, background: c.color } })),
-            h('span', { className: 'num' }, fmtK(c.tokens)),
-            h('span', { className: 'num clx-muted' }, pct(c.tokens, s.used)),
-            h('span', { className: 'num clx-muted' }, c.count || '')),
-          open ? h(CategoryDetail, { k: c.key, data, t, sessionId, onShowAll: onShowCat }) : null)
-      }),
-      h('div', { className: 'clx-catrow static', style: { '--i': shown.length } },
-        h('span', { className: 'clx-catcell' }, h('span', { className: 'clx-caret' }), h('i', { className: 'clx-dot clx-hatch' }), h(CatName, { t, k: 'buffer' })),
-        h('span', { className: 'clx-muted', style: { fontSize: 11.5 } }, pct(s.buffer, s.win)),
-        h('span', { className: 'num' }, fmtK(s.buffer)), h('span', null), h('span', null)),
-      h('div', { className: 'clx-catrow static', style: { '--i': shown.length } },
-        h('span', { className: 'clx-catcell' }, h('span', { className: 'clx-caret' }), h('i', { className: 'clx-dot free' }), h(CatName, { t, k: 'free' })),
-        h('span', { className: 'clx-muted', style: { fontSize: 11.5 } }, pct(s.free, s.win)),
-        h('span', { className: 'num' }, fmtK(s.free)), h('span', null), h('span', null))),
-
-    h(Trend, { data, t, onJump }),
-
-    comp ? h('div', { className: 'clx-card' },
-      h('h4', null, t('ov.compaction')),
-      h('div', { className: 'clx-kv' },
-        kv(t('ov.engine'), comp.engine || '—'),
-        kv(t('ov.auto'), comp.auto ? t('ov.on') : t('ov.off')),
-        kv(t('ov.ratio'), typeof comp.thresholdRatio === 'number' ? `${Math.round(comp.thresholdRatio * 100)}%` : '—'),
-        comp.headroomTokens !== undefined ? kv(t('ov.headroom'), fmtInt(comp.headroomTokens)) : null,
-        kv(t('ov.threshold'), fmtInt(comp.thresholdTokens)),
-        comp.emergencyTokens ? kv(t('ov.emergency'), `${fmtInt(comp.emergencyTokens)} (${Math.round(comp.emergencyRatio * 100)}%)`) : null,
-        kv(t('ov.buffer'), fmtInt(comp.bufferTokens)),
-        kv(t('ov.remaining'), fmtInt(comp.remainingTokens)),
-        comp.retainBudget !== undefined ? kv(t('ov.retain'), comp.retainTokens !== undefined ? fmtInt(comp.retainTokens) : `${Math.round((comp.retainRatio || 0) * 100)}% ≈ ${fmtK(comp.retainBudget)}`) : null,
-        comp.summaryMaxTokens ? kv(t('ov.summaryMax'), fmtInt(comp.summaryMaxTokens)) : null,
-        comp.override ? kv(t('ov.override'), `${comp.override.provider}/${comp.override.model}`) : null,
-        kv(t('ov.compactions'), String((data.compactionEvents || []).length))),
-      h('div', { className: 'clx-muted', style: { fontSize: 11.5, marginTop: 8 } },
-        comp.engine === 'billion-context' ? `${t('ov.biliNote')}${comp.defaults ? ` ${t('ov.biliDefaults')}` : ''}` : t('ov.formula'))) : null,
-
-    h('div', { className: 'clx-card' },
-      h(React.Fragment, null,
-        h('h4', null, t('ov.details')),
-        h('h5', { className: 'clx-subh' }, t('ov.measure')),
-        h('div', { className: 'clx-kv' },
-          kv(t('ov.used'), fmtInt(m.totalTokens)),
-          kv(t('ov.usedSource'), t(`pop.src.${m.usedSource || 'estimate'}`)),
-          kv(t('ov.rawTotal'), fmtInt(m.rawTotalTokens)),
-          m.rawTotalTokens > m.totalTokens ? kv(t('ov.saved'), `${fmtInt(m.rawTotalTokens - m.totalTokens)} (${pct(m.rawTotalTokens - m.totalTokens, m.rawTotalTokens, 0)})`) : null,
-          kv(t('ov.baseline'), t(`ov.baseline.${m.baselineKind || 'none'}`)),
-          kv(t('ov.baselineTokens'), fmtInt(m.baselineTokens)),
-          kv(t('ov.delta'), fmtInt(m.surfaceDeltaTokens)),
-          kv(t('ov.estSum'), fmtInt(m.estimatedSum)),
-          kv(t('ov.factor'), `×${(m.factor || 1).toFixed(3)}`),
-          kv(t('ov.window'), fmtInt(data.contextWindow)),
-          kv(t('ov.events'), `${fmtInt(data.eventCount)} / ${fmtInt((data.nodes || []).length)}`)),
-        h('div', { className: 'clx-muted', style: { fontSize: 11.5, marginTop: 8 } }, t('ov.calNote')),
-        usage ? h(React.Fragment, null,
-          h('h5', { className: 'clx-subh sep' }, fmt(t('ov.lastReq'), { seq: usage.seq, time: fmtTime(usage.time) })),
-          h('div', { className: 'clx-kv' },
-            kv(t('ov.uncached'), fmtInt(usage.inputTokens)),
-            kv(t('ov.cacheRead'), fmtInt(usage.cacheReadTokens)),
-            kv(t('ov.cacheWrite'), fmtInt(usage.cacheWriteTokens)),
-            kv(t('ov.output'), fmtInt(usage.outputTokens)),
-            kv(t('ov.hit'), pct(usage.cacheReadTokens || 0, inputTotal)))) : null,
-        h('h5', { className: 'clx-subh sep' }, t('ov.types')),
-        h('div', { className: 'clx-kv' },
-          Object.entries<any>(data.typeCounts || {}).sort((a, b) => b[1] - a[1]).map(([k, v]) => kv(k, fmtInt(v)))))))
+          h('div', null,
+            h('span', { className: 'clx-hero-pct' }, fmtK(usedAnim)),
+            h('span', { className: 'clx-sub' }, ` / ${fmtK(s.win)} · ${pct(usedAnim, s.win)}`)),
+          h('div', { className: 'clx-muted', style: { fontSize: 11.5 } }, t(`pop.src.${m.usedSource || 'estimate'}`))),
+        h('div', { className: 'clx-stats' },
+          h(Stat, { k: t('ov.stat.turns'), v: fmtInt(turnCount) }),
+          h(Stat, { k: t('ov.stat.steps'), v: stepCount === null ? '—' : fmtInt(stepCount) }),
+          h(Stat, { k: t('ov.stat.calls'), v: fmtInt(calls), sub: errs ? ` ⚠${errs}` : undefined, tone: errs ? 'warn' : '' }),
+          usage ? h(Stat, { k: t('ov.stat.hit'), v: pct(usage.cacheReadTokens || 0, inputTotal, 0) }) : null,
+          comp && comp.auto && comp.thresholdTokens
+            ? h(Stat, { k: t('ov.stat.left'), v: comp.remainingTokens > 0 ? fmtK(comp.remainingTokens) : t('pop.over'), tone: warn ? 'warn' : '' })
+            : null)),
+      h(HeroBar, { cats, s, t, active: hov || pick, pick, onHover: setHov, onPick: (k) => setPick(pick === k ? null : k) }),
+      g ? h('div', { className: 'clx-goalline' },
+        h('b', null, t('flow.goal')),
+        h('span', { className: 'clx-pill' }, `${t(`flow.phase.${g.phase}`) || g.phase} · ${g.roundsStarted ?? 0}/${g.maxGoalRounds ?? '∞'}`),
+        h('span', { className: 'txt' }, g.objective)) : null),
+    h(DiagnosisCard, { data, s, series, t, onJump, onNav }),
+    h(CompositionCard, { data, s: sView, t, onShowCat, stepLabel: diff && !diff.last ? fmt(t('flow.where'), { t: diff.cur.st.turn, s: diff.cur.st.step }) : null }),
+    h(StepTrend, { data, flow, t, onJump, series, pickIdx: diff ? diff.idx : 0, onSel }),
+    h(ToolsPeek, { data, t, onNav }),
+    h(MessagesPeek, { data, t, onJump, onNav }),
+    h(SourcesPeek, { sessionId, liveKey, bd: data, t, onNav }),
+    comp ? h(CompactionCard, { data, comp, s, t }) : null,
+    h('div', { className: 'span2' }, h(MeasureCard, { data, s, t })),
+    h('section', { className: 'clx-card span2 clx-flowsec' },
+      h(CardHead, { t, icon: 'flow', title: t('nav.flow'), meta: flow?.live ? t(`flow.live.${flow.live.phase || 'idle'}`) : null }),
+      h(FlowTab, { sessionId, liveKey, bd: data, t, onJump })))
 }
 
 function kv(k, v, title = undefined) {
@@ -623,34 +1165,10 @@ function groupNames(names) {
   return [...m].map(([k, v]) => (v > 1 ? `${k}×${v}` : k)).join(', ')
 }
 
-function catLabel(t, n) {
-  return t(`c.${n.category}`)
-}
-
 /** The one expand affordance used everywhere: a chevron that turns down when open. */
 function Chevron({ open, size = 12 }) {
   return h('span', { className: `clx-chev${open ? ' open' : ''}`, 'aria-hidden': true },
     h('svg', { width: size, height: size, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2.2, strokeLinecap: 'round', strokeLinejoin: 'round' }, h('path', { d: 'M9 6l6 6-6 6' })))
-}
-
-function NodeRowSimple({ n, t, max, onClick, open }) {
-  const color = CAT_COLOR[n.category] || CAT_COLOR.other
-  return h('div', {
-    className: `clx-node-row${open ? ' open' : ''}`, onClick, role: 'button', tabIndex: 0, 'aria-expanded': !!open,
-    onKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick?.() } },
-  },
-    h(Chevron, { open }),
-    h('span', { className: 'seq' }, `#${n.seq}`),
-    h('div', { className: 'main' },
-      h('div', { className: 'line1' },
-        h('span', { className: 'clx-tag' }, h('i', { className: 'clx-dot', style: { background: color } }), catLabel(t, n)),
-        n.tool ? h('span', null, `· ${n.callSeq !== undefined ? fmt(t('pair.of'), { name: n.tool, seq: n.callSeq }) : n.tool}`) : null,
-        n.tools && n.tools.length ? h('span', { style: { overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } }, `· ${fmt(t('pair.calls'), { names: groupNames(n.tools) })}`) : null,
-        n.source && n.source !== 'user' && n.source !== 'model' && n.category !== 'toolResults' ? h('span', null, `· ${n.source}`) : null,
-        n.time ? h('span', { style: { marginLeft: 'auto' } }, fmtTime(n.time)) : null),
-      h('div', { className: 'prev' }, n.preview || h('span', { className: 'clx-muted' }, '—')),
-      h('div', { className: 'clx-minibar' }, h('span', { style: { width: `${Math.max(1, n.tokensCal / max * 100)}%`, background: color } }))),
-    h('span', { className: 'tok' }, fmtK(n.tokensCal)))
 }
 
 // ================================================================== rich content
@@ -905,19 +1423,59 @@ function ToolInvocations({ data, name, sessionId, t, ctx, cwd }) {
     }))
 }
 
-function Messages({ data, t, focus, sessionId, preset, ctx, cwd }) {
+/** A message on one line: what kind it is, what it says, what it costs. A call carries its results. */
+function MsgRow({ n, t, open, onClick, invs, merged }) {
+  // a message that made calls reads as the call, whatever else it says
+  const kind = invs && invs.length ? 'toolCalls' : n.category
+  const color = CAT_COLOR[kind] || CAT_COLOR.other
+  let text: any = n.preview || ''
+  let extra = null
+  let tok = n.tokensCal
+  if (invs && invs.length) {
+    const first = invs[0]
+    text = h(React.Fragment, null,
+      h('b', { className: 'clx-mrow-tool' }, first.name),
+      ` ${first.args || ''}`,
+      invs.length > 1 ? h('span', { className: 'clx-muted' }, `  +${groupNames(invs.slice(1).map((x) => x.name))}`) : null)
+    if (merged) {
+      const res = invs.reduce((s, x) => s + (x.resultTokens || 0), 0)
+      const errs = invs.filter((x) => x.isError).length
+      const pending = invs.some((x) => x.resultSeq === undefined)
+      tok += res
+      extra = h('span', { className: `clx-mrow-res${errs ? ' err' : ''}`, title: `${t('pair.call')} ${fmtInt(n.tokensCal)} + ${t('pair.result')} ${fmtInt(res)}` },
+        h('i', { className: 'clx-dot', style: { background: CAT_COLOR.toolResults } }),
+        errs ? `⚠ ${t('pair.error')}` : pending ? t('pair.pending') : fmtK(res))
+    }
+  } else if (n.category === 'toolResults' && n.tool) {
+    text = h(React.Fragment, null, h('b', { className: 'clx-mrow-tool' }, n.tool), ` ${n.preview || ''}`)
+  }
+  return h('div', {
+    className: `clx-mrow${open ? ' open' : ''}`, onClick, role: 'button', tabIndex: 0, 'aria-expanded': !!open,
+    title: `#${n.seq}${n.time ? ` · ${new Date(n.time).toLocaleString()}` : ''}`,
+    onKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick?.() } },
+  },
+    h(Chevron, { open, size: 10 }),
+    h('span', { className: 'clx-mrow-kind', style: { '--cat': color } }, t(`k.${kind}`)),
+    h('span', { className: 'clx-mrow-text' }, text || h('span', { className: 'clx-muted' }, '—')),
+    extra,
+    h('span', { className: 'clx-mrow-tok' }, fmtK(tok)))
+}
+
+
+function Messages({ data, flow, t, focus, sessionId, preset, ctx, cwd, diff, stepOnly }) {
   const [query, setQuery] = useState('')
   const [sort, setSort] = useState('order')
-  const [cats, setCats] = useState(() => new Set())
-  const [limit, setLimit] = useState(200)
+  const [cat, setCat] = useState('')
+  const [limit, setLimit] = useState(300)
   const [openSeq, setOpenSeq] = useState(focus ?? null)
-  useEffect(() => { if (focus !== undefined && focus !== null) setOpenSeq(focus) }, [focus])
+  const [openTurns, setOpenTurns] = useState<Record<string, boolean>>({})
+  const fromJump = useRef(false)
+  useEffect(() => { if (focus !== undefined && focus !== null) { fromJump.current = true; setOpenSeq(focus) } }, [focus])
   useEffect(() => {
     if (!preset) return
-    setCats(new Set([preset.cat]))
+    setCat(preset.cat)
     setSort('size')
     setQuery('')
-    requestAnimationFrame(() => document.querySelector('.clx-pane')?.scrollIntoView({ block: 'start' }))
   }, [preset])
   const nodes = data.nodes || []
   const present = useMemo(() => {
@@ -925,47 +1483,179 @@ function Messages({ data, t, focus, sessionId, preset, ctx, cwd }) {
     for (const n of nodes) m[n.category] = (m[n.category] || 0) + n.tokensCal
     return m
   }, [nodes])
+  // calls by the node that made them, so a call row can carry its results
+  const invsBySeq = useMemo(() => {
+    const m = new Map()
+    for (const x of data.invocations || []) {
+      if (x.callSeq === undefined) continue
+      if (!m.has(x.callSeq)) m.set(x.callSeq, [])
+      m.get(x.callSeq).push(x)
+    }
+    return m
+  }, [data.invocations])
+  const stepMode = !!diff && !diff.last
+  const inStep = (n) => !!diff && n.seq >= diff.prevCut && n.seq < diff.cut
+  const stepFilter = !!stepOnly && !!diff
+  const filtering = !!query.trim() || !!cat || stepFilter
   const list = useMemo(() => {
     const q = query.trim().toLowerCase()
-    const inCat = (n) => cats.has(n.category) || (n.split && Object.entries<any>(n.split).some(([k, v]) => v > 0 && cats.has(k)))
-    let out = nodes.filter((n) => (cats.size === 0 || inCat(n))
+    const inCat = (n) => n.category === cat || (n.split && (n.split[cat] || 0) > 0)
+    let out = nodes.filter((n) => (!cat || inCat(n)) && (!stepFilter || inStep(n))
       && (!q || (n.preview || '').toLowerCase().includes(q) || (n.tool || '').toLowerCase().includes(q)
         || (n.tools || []).some((x) => x.toLowerCase().includes(q)) || String(n.seq) === q))
     if (sort === 'size') out = [...out].sort((a, b) => b.tokensCal - a.tokensCal)
     return out
-  }, [nodes, query, sort, cats])
+  }, [nodes, query, sort, cat, stepFilter, diff?.prevCut, diff?.cut])
+  // in order, a result whose call is listed folds into the call's row
+  const shownSet = useMemo(() => new Set(list.map((n) => n.seq)), [list])
+  const rows = useMemo(() => (sort === 'order'
+    ? list.filter((n) => !(n.category === 'toolResults' && n.callSeq !== undefined && shownSet.has(n.callSeq) && invsBySeq.has(n.callSeq)))
+    : list), [list, sort, shownSet, invsBySeq])
+  const total = list.reduce((s, n) => s + n.tokensCal, 0)
+
+  // turn → step grouping (order only)
+  const stepsByTurn = useMemo(() => {
+    const m = new Map()
+    for (const st of flow?.steps || []) {
+      if (!m.has(st.turn)) m.set(st.turn, [])
+      m.get(st.turn).push(st)
+    }
+    return m
+  }, [flow])
+  const turnInfo = useMemo(() => new Map((flow?.turns || []).map((x) => [x.turn, x])), [flow])
+  const stepOf = (n) => {
+    const ss = stepsByTurn.get(n.turn)
+    if (!ss) return null
+    let hit = null
+    for (const st of ss) if (st.startSeq <= n.seq) hit = st
+    return hit
+  }
+  const lastTurn = useMemo(() => {
+    let x
+    for (const n of nodes) if (n.turn !== undefined) x = n.turn
+    return x
+  }, [nodes])
+  const focusTurn = useMemo(() => {
+    const n = openSeq !== null ? nodes.find((y) => y.seq === openSeq) : null
+    if (!n) return undefined
+    if (n.category === 'toolResults' && n.callSeq !== undefined) return nodes.find((y) => y.seq === n.callSeq)?.turn ?? n.turn
+    return n.turn
+  }, [openSeq, nodes])
+  const keyOf = (turn) => (turn === undefined ? 'pre' : String(turn))
+  const isOpen = (k) => openTurns[k] ?? (filtering || k === keyOf(lastTurn) || k === keyOf(focusTurn))
+  const from = sort === 'order' ? Math.max(0, rows.length - limit) : 0
+  const visible = sort === 'order' ? rows.slice(from) : rows.slice(0, limit)
+
+  // a jump opens its row, and a result jump lands on the call that carries it
   useEffect(() => {
     if (openSeq === null || openSeq === undefined) return
-    const idx = list.findIndex((n) => n.seq === openSeq)
-    if (idx >= limit) setLimit(idx + 50)
-    requestAnimationFrame(() => document.getElementById(`clx-node-${openSeq}`)?.scrollIntoView({ block: 'center' }))
+    const n = nodes.find((y) => y.seq === openSeq)
+    if (n && sort === 'order' && n.category === 'toolResults' && n.callSeq !== undefined && invsBySeq.has(n.callSeq) && shownSet.has(n.callSeq)) {
+      setOpenSeq(n.callSeq)
+      return
+    }
+    const idx = rows.findIndex((y) => y.seq === openSeq)
+    if (sort === 'order' && idx >= 0 && idx < rows.length - limit) setLimit(rows.length - idx + 20)
+    else if (sort !== 'order' && idx >= limit) setLimit(idx + 50)
+    if (!fromJump.current) return
+    fromJump.current = false
+    requestAnimationFrame(() => requestAnimationFrame(() => document.getElementById(`clx-node-${openSeq}`)?.scrollIntoView({ block: 'center' })))
   }, [openSeq])
-  const max = useMemo(() => Math.max(1, ...nodes.map((n) => n.tokensCal)), [nodes])
-  const shownSeqs = useMemo(() => new Set(list.slice(0, limit).map((n) => n.seq)), [list, limit])
-  const total = list.reduce((s, n) => s + n.tokensCal, 0)
-  const toggle = (k) => setCats((prev) => {
-    const next = new Set(prev)
-    if (next.has(k)) next.delete(k)
-    else next.add(k)
-    return next
-  })
+
+  const rowEl = (n, i) => {
+    const open = openSeq === n.seq
+    const invs = invsBySeq.get(n.seq)
+    return h('div', { key: n.seq, id: `clx-node-${n.seq}`, className: `clx-mnode${open ? ' open' : ''}${diff && inStep(n) && !stepFilter ? ' instep' : ''}${stepMode && diff && n.seq >= diff.cut ? ' later' : ''}`, style: { '--cat': CAT_COLOR[invs ? 'toolCalls' : n.category] || CAT_COLOR.other } },
+      h(MsgRow, { n, t, open, invs, merged: sort === 'order', onClick: () => setOpenSeq(open ? null : n.seq) }),
+      open ? h('div', { className: 'clx-mopen' },
+        h(NodeDetail, { sessionId, seq: n.seq, t, ctx, cwd }),
+        h('button', { className: 'clx-mopen-close', onClick: () => { setOpenSeq(null); requestAnimationFrame(() => { const el = document.getElementById(`clx-node-${n.seq}`); if (el && el.getBoundingClientRect().top < 60) el.scrollIntoView({ block: 'center' }) }) } }, t('msg.collapse'))) : null)
+  }
+
+  let body
+  if (sort !== 'order') {
+    body = h('div', { className: 'clx-mlist' }, visible.map(rowEl))
+  } else {
+    // consecutive runs of one turn, then of one step inside it
+    const groups = []
+    for (const n of visible) {
+      const k = keyOf(n.turn)
+      let g = groups[groups.length - 1]
+      if (!g || g.key !== k) groups.push(g = { key: k, turn: n.turn, items: [], tok: 0 })
+      g.items.push(n)
+      g.tok += n.tokensCal + (invsBySeq.get(n.seq) || []).reduce((s, x) => s + (x.resultTokens || 0), 0)
+    }
+    body = h('div', { className: 'clx-mlist' }, groups.map((g, gi) => {
+      const opened = isOpen(g.key)
+      const tu: any = g.turn !== undefined ? turnInfo.get(g.turn) || {} : {}
+      const ss = g.turn !== undefined ? stepsByTurn.get(g.turn) || [] : []
+      const children = []
+      if (opened) {
+        let curStep
+        for (const n of g.items) {
+          const st = stepOf(n)
+          if (st && st !== curStep) {
+            curStep = st
+            children.push(h('div', { key: `s${st.startSeq}`, className: 'clx-mstep' },
+              h('span', { className: 'n' }, fmt(t('msg.step'), { n: st.step })),
+              st.tools.length ? h('span', { className: 'tools' }, groupNames(st.tools)) : h('span', { className: 'tools clx-muted' }, st.stages.includes('assistant') ? t('flow.textOnly') : ''),
+              st.errors ? h('span', { className: 'clx-err' }, `⚠${st.errors}`) : null,
+              st.promptTokens ? h('span', { className: 'ctx', title: t('st.ctx') }, fmtK(st.promptTokens)) : null))
+          }
+          children.push(rowEl(n, 0))
+        }
+      }
+      return h('section', { key: `${g.key}-${gi}`, className: `clx-mturn${opened ? ' open' : ''}` },
+        h('div', {
+          className: 'clx-mturn-head', role: 'button', tabIndex: 0, 'aria-expanded': opened,
+          onClick: () => setOpenTurns({ ...openTurns, [g.key]: !opened }),
+          onKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpenTurns({ ...openTurns, [g.key]: !opened }) } },
+        },
+          h(Chevron, { open: opened }),
+          h('b', null, g.turn === undefined ? t('msg.pre') : fmt(t('msg.turn'), { n: g.turn })),
+          h('span', { className: 'clx-mturn-prompt' }, tu.prompt || ''),
+          h('span', { className: 'clx-mturn-meta' },
+            [ss.length ? fmt(t('msg.stepsN'), { n: ss.length }) : fmt(t('msg.itemsN'), { n: g.items.length }), tu.start && tu.end ? fmtDur(tu.end - tu.start) : null].filter(Boolean).join(' · ')),
+          h('span', { className: 'clx-mturn-tok' }, fmtK(g.tok))),
+        opened ? h('div', { className: 'clx-mturn-body' }, children) : null)
+    }))
+  }
+
+  const allTok = nodes.reduce((a, n) => a + n.tokensCal, 0)
+  const biggest = nodes.reduce((a, n) => (!a || n.tokensCal > a.tokensCal ? n : a), null)
+  const turnsN = (flow?.turns || []).length || new Set(nodes.map((n) => n.turn).filter((x) => x !== undefined)).size
   return h(React.Fragment, null,
-    h('div', { className: 'clx-msgtools' },
-      h('input', { value: query, placeholder: t('msg.search'), onChange: (e) => setQuery(e.target.value) }),
-      h('button', { className: 'clx-chipbtn', 'aria-pressed': sort === 'order', onClick: () => setSort('order') }, t('msg.sort.order')),
-      h('button', { className: 'clx-chipbtn', 'aria-pressed': sort === 'size', onClick: () => setSort('size') }, t('msg.sort.size'))),
-    h('div', { className: 'clx-chips' },
-      h('button', { className: 'clx-chip', 'aria-pressed': cats.size === 0, onClick: () => setCats(new Set()) }, t('msg.all')),
-      CATS.filter((k) => present[k]).map((k) => h('button', { key: k, className: 'clx-chip', 'aria-pressed': cats.has(k), onClick: () => toggle(k) },
-        h('i', { className: 'clx-dot', style: { background: CAT_COLOR[k] } }), `${t(`c.${k}`)} ${fmtK(present[k])}`))),
-    h('div', { className: 'clx-muted', style: { fontSize: 12, marginBottom: 4 } },
-      fmt(t('msg.count'), { n: list.length, t: fmtK(total) }),
-      data.nodesTruncated ? ` · ${fmt(t('msg.trunc'), { n: data.nodesTruncated })}` : ''),
-    list.slice(0, limit).map((n, i) => h('div', { key: n.seq, id: `clx-node-${n.seq}`, className: `clx-node${openSeq === n.seq ? ' open' : ''}${sort === 'order' && n.callSeq !== undefined && shownSeqs.has(n.callSeq) ? ' paired' : ''}`, style: { '--cat': CAT_COLOR[n.category] || CAT_COLOR.other, '--i': Math.min(i, 24) } },
-      h(NodeRowSimple, { n, t, max, open: openSeq === n.seq, onClick: () => setOpenSeq(openSeq === n.seq ? null : n.seq) }),
-      openSeq === n.seq ? h(NodeDetail, { sessionId, seq: n.seq, t, ctx, cwd }) : null)),
-    list.length > limit ? h('button', { className: 'clx-chipbtn', style: { marginTop: 8 }, onClick: () => setLimit(limit + 200) },
-      fmt(t('msg.more'), { n: Math.min(200, list.length - limit) })) : null)
+    h('div', { className: 'clx-tiles clx-tsum' },
+      h(Stat, { k: t('msg.sum.nodes'), v: fmtInt(nodes.length) }),
+      h(Stat, { k: t('msg.sum.tok'), v: fmtK(allTok) }),
+      h(Stat, { k: t('msg.sum.turns'), v: fmtInt(turnsN) }),
+      h(Stat, { k: t('msg.sum.steps'), v: flow ? fmtInt((flow.steps || []).length) : '—' }),
+      h(Stat, { k: t('msg.sum.calls'), v: fmtInt((data.invocations || []).length) }),
+      biggest ? h('div', { className: 'clx-stat clx-stat-link', role: 'button', tabIndex: 0, onClick: () => { fromJump.current = true; setOpenSeq(biggest.seq) }, title: biggest.preview },
+        h('div', { className: 'k' }, t('msg.sum.max')),
+        h('div', { className: 'v' }, fmtK(biggest.tokensCal), h('small', null, ` #${biggest.seq}`))) : null),
+  h('div', { className: 'clx-msgs' },
+    h('div', { className: 'clx-mmain' },
+    h('div', { className: 'clx-msgbar' },
+      h('div', { className: 'clx-msgsearch' },
+        h('svg', { width: 13, height: 13, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', 'aria-hidden': true }, h('circle', { cx: 11, cy: 11, r: 6.5 }), h('path', { d: 'M16 16l4 4' })),
+        h('input', { value: query, placeholder: t('msg.search'), onChange: (e) => setQuery(e.target.value) }),
+        query ? h('button', { className: 'clx-msgclear', 'aria-label': '×', onClick: () => setQuery('') }, '×') : null),
+      h('span', { className: 'clx-segmini' },
+        h('button', { className: 'clx-chipbtn', 'aria-pressed': sort === 'order', onClick: () => setSort('order') }, t('msg.sort.order')),
+        h('button', { className: 'clx-chipbtn', 'aria-pressed': sort === 'size', onClick: () => setSort('size') }, t('msg.sort.size'))),
+      h('label', { className: 'clx-msgcat', style: { '--cat': cat ? CAT_COLOR[cat] : 'transparent' } },
+        h('i', { className: 'clx-dot' }),
+        h('select', { value: cat, onChange: (e) => setCat(e.target.value) },
+          h('option', { value: '' }, t('msg.allCats')),
+          CATS.filter((k) => present[k]).map((k) => h('option', { key: k, value: k }, `${t(`c.${k}`)} · ${fmtK(present[k])}`)))),
+      h('span', { className: 'clx-msgcount' },
+        fmt(t('msg.count'), { n: list.length, t: fmtK(total) }),
+        data.nodesTruncated ? ` · ${fmt(t('msg.trunc'), { n: data.nodesTruncated })}` : '')),
+    sort === 'order' && from > 0 ? h('button', { className: 'clx-chipbtn clx-mmore', onClick: () => setLimit(limit + 300) }, fmt(t('msg.earlier'), { n: Math.min(300, from) })) : null,
+    rows.length ? body : h('div', { className: 'clx-muted', style: { fontSize: 12, padding: '12px 2px' } }, t('msg.none')),
+    sort !== 'order' && rows.length > limit ? h('button', { className: 'clx-chipbtn clx-mmore', onClick: () => setLimit(limit + 300) },
+      fmt(t('msg.more'), { n: Math.min(300, rows.length - limit) })) : null)))
 }
 
 /** A tool's full definition, fetched when its row is opened. */
@@ -1185,70 +1875,128 @@ function Commands({ data, t, sessionId }) {
         list.length > limit ? h('button', { className: 'clx-chipbtn', style: { marginTop: 8 }, onClick: () => setLimit(limit + 100) }, fmt(t('cmd.more'), { n: Math.min(100, list.length - limit) })) : null)))
 }
 
-function Tools({ data, t, sessionId, ctx, cwd }) {
-  const [openDef, setOpenDef] = useState(null)
-  const [openUse, setOpenUse] = useState(null)
-  const tools = data.tools || []
-  const shellSet = new Set(data.shellTools || [])
-  const stats = (data.toolStats || []).filter((x) => !shellSet.has(x.name))
-  const kind = (x) => (x.kind === 'mcp' ? `MCP · ${x.server}` : t('tools.system'))
-  const defMax = Math.max(1, ...tools.map((x) => x.tokensCal))
-  const useMax = Math.max(1, ...stats.map((x) => x.callTokens + x.resultTokens))
-  const toggle = (cur, set, k) => set(cur === k ? null : k)
-  const keyOpen = (fn) => (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fn() } }
+/** One tool on one line: name, what it costs, how often it ran. */
+function ToolLine({ name, color, kind, bar, count, errs, tok, sel, onClick, title, hot = false }) {
+  return h('div', {
+    className: `clx-tl${sel ? ' sel' : ''}${hot ? ' hot' : ''}`, role: 'button', tabIndex: 0, 'aria-pressed': !!sel, onClick, title,
+    onKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick() } },
+  },
+    h('i', { className: 'clx-dot', style: { background: color } }),
+    h('code', { className: 'nm' }, name),
+    h('span', { className: 'kd' }, kind || ''),
+    h('span', { className: 'bar' }, bar),
+    count !== undefined ? h('span', { className: 'ct' }, count) : null,
+    errs ? h('span', { className: 'er' }, `⚠${errs}`) : h('span', { className: 'er' }),
+    h('span', { className: 'tk' }, tok))
+}
+
+/** A tool opened: its calls this session (each with its result), then its definition. */
+function ToolPanel({ data, name, t, sessionId, ctx, cwd }) {
+  const def = (data.tools || []).find((x) => x.name === name)
+  const st = (data.toolStats || []).find((x) => x.name === name)
+  const errs = (data.invocations || []).filter((x) => x.name === name && x.isError).length
   return h(React.Fragment, null,
-    h('div', { className: 'clx-card' },
+    h('div', { className: 'clx-mside-head' },
+      h('code', { className: 'clx-mrow-tool', style: { fontSize: 13 } }, name),
+      def ? h('span', { className: 'clx-pill' }, def.kind === 'mcp' ? `MCP · ${def.server}` : t('tools.system')) : null,
+      st ? h('span', { className: 'clx-muted' }, `${fmt(t('tools.callsN'), { n: st.calls })}${errs ? ` · ⚠${errs}` : ''}`) : null,
+      h('span', { className: 'clx-mside-tok' }, [def ? `${t('tools.defTok')} ${fmtK(def.tokensCal)}` : null, st ? `${t('tools.useTok')} ${fmtK(st.callTokens + st.resultTokens)}` : null].filter(Boolean).join(' · '))),
+    h('div', { className: 'clx-mside-body' },
+      st && st.calls ? h(ToolInvocations, { data, name, sessionId, t, ctx, cwd }) : null,
+      def ? h('div', { className: 'clx-tp-def' },
+        h('div', { className: 'clx-tp-h' }, t('tools.definition')),
+        h(ToolDetail, { sessionId, name, t })) : h('div', { className: 'clx-muted', style: { fontSize: 12 } }, t('tools.noDef'))))
+}
+
+function Tools({ data, t, sessionId, ctx, cwd, diff }) {
+  const hotTools = useMemo(() => new Set(diff && !diff.last ? diff.cur.st.tools : diff ? diff.cur.st.tools : []), [diff])
+  const [rootRef, rootW] = useWidth(800)
+  const wide = rootW >= 760
+  const [sel, setSel] = useState(null)
+  const [q, setQ] = useState('')
+  const [allDefs, setAllDefs] = useState(false)
+  const tools = data.tools || []
+  const stats = useMemo(() => [...(data.toolStats || [])].sort((a, b) => (b.callTokens + b.resultTokens) - (a.callTokens + a.resultTokens)), [data.toolStats])
+  const errsBy = useMemo(() => {
+    const m = {}
+    for (const x of data.invocations || []) if (x.isError) m[x.name] = (m[x.name] || 0) + 1
+    return m
+  }, [data.invocations])
+  const defBy = useMemo(() => new Map<string, any>(tools.map((x) => [x.name, x])), [tools])
+  const query = q.trim().toLowerCase()
+  const match = (x) => !query || x.name.toLowerCase().includes(query) || (x.description || '').toLowerCase().includes(query)
+  const used = stats.filter((x) => match({ name: x.name, description: defBy.get(x.name)?.description }))
+  const defs = [...tools].sort((a, b) => b.tokensCal - a.tokensCal).filter(match)
+  const defsShown = allDefs || query ? defs : defs.slice(0, 10)
+  const useMax = Math.max(1, ...stats.map((x) => x.callTokens + x.resultTokens))
+  const defMax = Math.max(1, ...tools.map((x) => x.tokensCal))
+  const callsTotal = stats.reduce((s, x) => s + x.calls, 0)
+  const resTotal = stats.reduce((s, x) => s + x.resultTokens, 0)
+  const errTotal = Object.values<any>(errsBy).reduce((a, b) => a + b, 0)
+  const mcp = tools.filter((x) => x.kind === 'mcp').length
+  const cmds = data.commands || []
+  // on a wide pane the most used tool is open from the start
+  const current = sel ?? (wide && stats[0] ? stats[0].name : null)
+  const pick = (name) => setSel(current === name && !wide ? null : name)
+  const panel = (name) => h(ToolPanel, { key: name, data, name, t, sessionId, ctx, cwd })
+  const inline = (name) => (!wide && current === name ? h('div', { className: 'clx-tl-inline' }, panel(name)) : null)
+
+  const list = h('div', { className: 'clx-tlists' },
+    h('div', { className: 'clx-msgsearch clx-tsearch' },
+      h('svg', { width: 13, height: 13, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', 'aria-hidden': true }, h('circle', { cx: 11, cy: 11, r: 6.5 }), h('path', { d: 'M16 16l4 4' })),
+      h('input', { value: q, placeholder: t('tools.search'), onChange: (e) => setQ(e.target.value) }),
+      q ? h('button', { className: 'clx-msgclear', onClick: () => setQ('') }, '×') : null),
+
+    h('div', { className: 'clx-card clx-tcard' },
       h('div', { className: 'clx-card-head' },
-        h('h4', null, `${t('tools.defs')} · ${tools.length} · ${fmtK(data.toolsTokens)}`),
-        h('span', { className: 'clx-muted' }, t('tools.expandHint'))),
-      tools.length ? h(React.Fragment, null,
-        h('div', { className: 'clx-trow head' },
-          h('span', null), h('span', null, t('tools.col.name')), h('span', null, t('tools.col.kind')), h('span', null, t('tools.col.params')), h('span', null), h('span', null, 'Tokens')),
-        tools.map((x, i) => {
-          const open = openDef === x.name
-          const color = x.kind === 'mcp' ? CAT_COLOR.mcpTools : CAT_COLOR.systemTools
-          const fn = () => toggle(openDef, setOpenDef, x.name)
-          return h('div', { key: x.name, className: `clx-tblock${open ? ' open' : ''}`, style: { '--cat': color, '--i': Math.min(i, 24) } },
-            h('div', { className: 'clx-trow', role: 'button', tabIndex: 0, 'aria-expanded': open, title: x.description, onClick: fn, onKeyDown: keyOpen(fn) },
-              h(Chevron, { open }),
-              h('span', { className: 'clx-tname' }, h('i', { className: 'clx-dot', style: { background: color } }), h('code', null, x.name)),
-              h('span', { className: 'clx-muted' }, kind(x)),
-              h('span', { className: 'num' }, x.params),
-              h('span', { className: 'clx-catbar' }, h('span', { style: { width: `${Math.max(1, x.tokensCal / defMax * 100)}%`, background: color } })),
-              h('span', { className: 'num' }, fmtInt(x.tokensCal))),
-            open ? h(ToolDetail, { sessionId, name: x.name, t }) : null)
-        })) : h('div', { className: 'clx-muted' }, t('tools.none'))),
+        h('h4', null, t('tools.usage')),
+        h('span', { className: 'clx-tlegend' },
+          h('span', null, h('i', { style: { background: CAT_COLOR.toolCalls } }), t('pair.call')),
+          h('span', null, h('i', { style: { background: CAT_COLOR.toolResults } }), t('pair.result')))),
+      used.length ? used.map((x) => h(React.Fragment, { key: x.name },
+        h(ToolLine, {
+          name: x.name, color: CAT_COLOR.toolResults, sel: current === x.name, onClick: () => pick(x.name), hot: hotTools.has(x.name),
+          title: `${t('pair.call')} ${fmtInt(x.callTokens)} + ${t('pair.result')} ${fmtInt(x.resultTokens)} · ${t('tools.col.max')} ${fmtInt(x.maxResult)}`,
+          bar: h(React.Fragment, null,
+            h('span', { style: { width: `${x.callTokens / useMax * 100}%`, background: CAT_COLOR.toolCalls } }),
+            h('span', { style: { width: `${x.resultTokens / useMax * 100}%`, background: CAT_COLOR.toolResults } })),
+          count: `×${x.calls}`, errs: errsBy[x.name], tok: fmtK(x.callTokens + x.resultTokens),
+        }),
+        inline(x.name))) : h('div', { className: 'clx-muted clx-tempty' }, query ? t('msg.none') : t('tools.noUse'))),
 
-    h('div', { className: 'clx-card' },
-      h('div', { className: 'clx-card-head' }, h('h4', null, t('tools.usage')), stats.length ? h('span', { className: 'clx-muted' }, t('tools.expandHint')) : null),
-      stats.length ? h(React.Fragment, null,
-        h('div', { className: 'clx-urow head' },
-          h('span', null), h('span', null, t('tools.col.name')), h('span', null, t('tools.col.calls')), h('span', null, t('tools.col.callTok')),
-          h('span', null, t('tools.col.results')), h('span', null, t('tools.col.resTok')), h('span', null, t('tools.col.max'))),
-        stats.map((x, i) => {
-          const open = openUse === x.name
-          const fn = () => toggle(openUse, setOpenUse, x.name)
-          return h('div', { key: x.name, className: `clx-tblock${open ? ' open' : ''}`, style: { '--cat': CAT_COLOR.toolResults, '--i': Math.min(i, 24) } },
-            h('div', { className: 'clx-urow', role: 'button', tabIndex: 0, 'aria-expanded': open, onClick: fn, onKeyDown: keyOpen(fn) },
-              h(Chevron, { open }),
-              h('span', { className: 'clx-tname' }, h('code', null, x.name),
-                h('span', { className: 'clx-ubar' },
-                  h('span', { style: { width: `${x.callTokens / useMax * 100}%`, background: CAT_COLOR.toolCalls } }),
-                  h('span', { style: { width: `${x.resultTokens / useMax * 100}%`, background: CAT_COLOR.toolResults } }))),
-              h('span', { className: 'num' }, x.calls),
-              h('span', { className: 'num clx-muted' }, fmtInt(x.callTokens)),
-              h('span', { className: 'num' }, x.results),
-              h('span', { className: 'num clx-muted' }, fmtInt(x.resultTokens)),
-              h('span', { className: 'num clx-muted' }, fmtInt(x.maxResult))),
-            open ? h(ToolInvocations, { data, name: x.name, sessionId, t, ctx, cwd }) : null)
-        })) : h('div', { className: 'clx-muted' }, t('tools.none'))),
+    h('div', { className: 'clx-card clx-tcard' },
+      h('div', { className: 'clx-card-head' },
+        h('h4', null, t('tools.defsShort')),
+        h('span', { className: 'clx-muted' }, t('tools.defsNote'))),
+      defsShown.map((x) => {
+        const color = x.kind === 'mcp' ? CAT_COLOR.mcpTools : CAT_COLOR.systemTools
+        return h(React.Fragment, { key: x.name },
+          h(ToolLine, {
+            name: x.name, color, kind: x.kind === 'mcp' ? `MCP · ${x.server}` : null, sel: current === x.name, onClick: () => pick(x.name), title: x.description,
+            bar: h('span', { style: { width: `${x.tokensCal / defMax * 100}%`, background: color } }),
+            count: fmt(t('tools.paramsShort'), { n: x.params }), tok: fmtK(x.tokensCal),
+          }),
+          inline(x.name))
+      }),
+      !query && defs.length > 10 ? h('button', { className: 'clx-chipbtn clx-tmore', onClick: () => setAllDefs(!allDefs) },
+        allDefs ? t('ui.collapseAll') : fmt(t('tools.showAllDefs'), { n: defs.length })) : null,
+      (data.deferred || []).length ? h('div', { className: 'clx-tdeferred' },
+        h('span', { className: 'clx-muted' }, fmt(t('tools.deferredN'), { n: data.deferred.length })),
+        data.deferred.map((x) => h('code', { key: x.name, title: x.description }, x.name))) : null))
 
-    h(Commands, { data, t, sessionId }),
-
-    (data.deferred || []).length ? h('div', { className: 'clx-card' },
-      h('h4', null, `${t('tools.deferred')} · ${data.deferred.length}`),
-      h('table', { className: 'clx-table' }, h('tbody', null, data.deferred.map((x) => h('tr', { key: x.name, title: x.description },
-        h('td', null, h('code', { className: 'clx-tcode' }, x.name)), h('td', { className: 'clx-muted wrap', style: { textAlign: 'left' } }, kind(x))))))) : null)
+  return h('div', { className: 'clx-tools', ref: rootRef },
+    h('div', { className: 'clx-tiles clx-tsum' },
+      h(Stat, { k: t('tools.sum.defs'), v: fmtInt(tools.length), sub: mcp ? ` MCP ${mcp}` : undefined }),
+      h(Stat, { k: t('tools.sum.defTok'), v: fmtK(data.toolsTokens) }),
+      h(Stat, { k: t('tools.sum.used'), v: fmtInt(stats.length) }),
+      h(Stat, { k: t('tools.sum.calls'), v: fmtInt(callsTotal), sub: errTotal ? ` ⚠${errTotal}` : undefined, tone: errTotal ? 'warn' : '' }),
+      h(Stat, { k: t('tools.sum.resTok'), v: fmtK(resTotal) }),
+      h(Stat, { k: t('tools.sum.cmds'), v: fmtInt(cmds.length), sub: cmds.length ? ` ${fmtMs(cmds.reduce((s, c) => s + (c.durationMs || 0), 0))}` : undefined })),
+    wide
+      ? h('div', { className: 'clx-tsplit' }, list,
+        h('aside', { className: 'clx-mside' }, current ? panel(current) : h('div', { className: 'clx-mside-empty' }, t('tools.pick'))))
+      : list,
+    h(Commands, { data, t, sessionId }))
 }
 
 function useSources(sessionId, liveKey) {
@@ -1273,16 +2021,6 @@ function Disclosure({ head, children, open: initial, color }) {
     },
       h('span', { className: 'clx-disc-caret' }, h(Chevron, { open })), head),
     open ? h('div', { className: 'clx-disc-body' }, children) : null)
-}
-
-function oneLineText(text, cap) {
-  const x = String(text || '').replace(/\s+/g, ' ').trim()
-  const first = /^(.{12,}?[。.!?！？])(\s|$)/.exec(x)?.[1] || x
-  return first.length > cap ? `${first.slice(0, cap - 1)}…` : first
-}
-function fmtBytes(n) {
-  if (!(n >= 0)) return '—'
-  return n < 1024 ? `${n} B` : n < 1048576 ? `${(n / 1024).toFixed(1)} KB` : `${(n / 1048576).toFixed(1)} MB`
 }
 
 
@@ -1371,146 +2109,6 @@ function FilePreview({ ctx, sessionId, cwd, file, t }) {
     note ? h('span', { className: 'clx-filepreview-note' }, t(`ft.${note}`)) : null)
 }
 
-// ------------------------------------------------------------- file structure
-const FT_COLOR = {
-  root: '#4FA35B', memory: '#C9772F', git: '#8A8F98', dir: '#5DA9A0', skills: CAT_COLOR.skills,
-  config: '#2BA3A0', data: '#4E8FD6', skill: CAT_COLOR.skills,
-}
-const FT_GROUP = {
-  projectRoot: 'root', workdirRoot: 'root', dshHome: 'root', agentsHome: 'root',
-  memProject: 'memory', memClaude: 'memory', memLocal: 'memory', memNested: 'memory', memGlobal: 'memory', memShared: 'memory',
-  git: 'git', gitMissing: 'git',
-  projDsh: 'dir', projAgents: 'dir', subDir: 'dir', cwdDir: 'dir', profiles: 'dir', profile: 'dir',
-  skillsProjectDsh: 'skills', skillsProjectAgents: 'skills', skillsUser: 'skills', skillsShared: 'skills',
-  patchGlobal: 'config', patchProfile: 'config', env: 'config', sessions: 'data', skillItem: 'skill',
-}
-const FILE_PATH = 'M4 1.5h5.2L12.5 4.8v9.2a.5.5 0 0 1-.5.5H4a.5.5 0 0 1-.5-.5V2a.5.5 0 0 1 .5-.5zM9 1.7V5h3.3M5.6 8h4.8M5.6 10.5h4.8'
-function FtIcon({ dir, color }) {
-  return dir
-    ? h('svg', { viewBox: '0 0 16 16', width: 15, height: 15, 'aria-hidden': true, className: 'clx-ft-icon' }, h('path', { d: 'M1.5 4a1 1 0 0 1 1-1h3.7l1.5 1.6h5.8a1 1 0 0 1 1 1v6.9a1 1 0 0 1-1 1H2.5a1 1 0 0 1-1-1z', fill: color, opacity: .9 }))
-    : h('svg', { viewBox: '0 0 16 16', width: 14, height: 14, 'aria-hidden': true, className: 'clx-ft-icon' }, h('path', { d: FILE_PATH, fill: `color-mix(in srgb, ${color} 14%, transparent)`, stroke: color, strokeWidth: 1.1, strokeLinejoin: 'round' }))
-}
-
-function FileTree({ src, t, onJump, ctx, sessionId }) {
-  const st = src.structure
-  const [more, setMore] = useState(() => new Set())
-  const [onlyExisting, setOnlyExisting] = useState(false)
-  const [noteLine, preview] = useSidebarPreview(ctx, sessionId, src.cwd, t)
-  const regByPath = useMemo(() => {
-    const m = new Map()
-    for (const r of src.skills?.registry || []) if (r.path) m.set(r.path.replace(/\/SKILL\.md$/i, ''), r)
-    return m
-  }, [src])
-  if (!st || !st.trees?.length) return null
-  const homeRe = st.home ? new RegExp(`^${st.home.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?=/|$)`) : null
-  const tilde = (p) => (homeRe ? p.replace(homeRe, '~') : p)
-  const rows = []
-  // guides: one entry per ancestor level (true = that ancestor has later siblings → draw a line)
-  const walk = (n, guides, last, depth) => {
-    rows.push({ n, guides, last, depth })
-    let kids = (n.children || []).filter((k) => !onlyExisting || k.exists)
-    if (n.items) {
-      const all = more.has(n.path)
-      const shown = all ? n.items : n.items.slice(0, 5)
-      kids = shown.map((x) => ({ name: x.bundle ? `${x.name}/` : `${x.name}.md`, role: 'skillItem', path: x.path, dir: x.bundle, exists: true, skill: x }))
-      const rest = (n.count || n.items.length) - shown.length
-      if (rest > 0 || all) kids = [...kids, { more: true, rest, parent: n.path, all }]
-    }
-    kids.forEach((k, i) => walk(k, depth === 0 ? [] : [...guides, !last], i === kids.length - 1, depth + 1))
-  }
-  st.trees.forEach((r) => walk(r, [], true, 0))
-  const toggleMore = (p) => setMore((prev) => { const next = new Set(prev); if (next.has(p)) next.delete(p); else next.add(p); return next })
-  return h('div', { className: 'clx-card clx-ftcard' },
-    h('div', { className: 'clx-card-head' },
-      h('h4', null, t('ft.title')),
-      h('span', { className: 'clx-ft-legend' },
-        h('span', { className: 'clx-ft-st loaded' }, `✓ ${t('ft.loaded')}`),
-        h('span', { className: 'clx-ft-st' }, t('ft.exists')),
-        h('span', { className: 'clx-ft-st missing' }, t('ft.missing')),
-        h('button', { className: 'clx-chip', 'aria-pressed': onlyExisting, onClick: () => setOnlyExisting(!onlyExisting) }, t('ft.onlyExisting')))),
-    h('div', { className: 'clx-mem-hint' }, t('ft.hint')),
-    noteLine,
-    h('div', { className: 'clx-ft' }, rows.map(({ n, guides, last, depth }, i) => {
-      const conn = depth === 0 ? null : h(React.Fragment, null,
-        guides.map((g, j) => h('span', { key: j, className: `clx-ft-g${g ? ' pipe' : ''}` })),
-        h('span', { className: `clx-ft-g ${last ? 'elbow' : 'tee'}` }))
-      if (n.more) {
-        return h('div', { key: `more-${n.parent}`, className: 'clx-ft-row more' },
-          h('span', { className: 'clx-ft-tree' }, conn,
-            h('button', { className: 'clx-linkbtn', onClick: () => toggleMore(n.parent) }, n.all ? t('ft.less') : fmt(t('ft.more'), { n: n.rest }))))
-      }
-      const group = FT_GROUP[n.role] || 'dir'
-      const color = FT_COLOR[group]
-      const reg = n.skill ? regByPath.get(n.path) || regByPath.get(n.path.replace(/\.md$/i, '')) : undefined
-      const desc = n.role === 'skillItem'
-        ? (reg?.description ? oneLineText(reg.description, 80) : t('ft.r.skillItem'))
-        : n.role === 'profile' ? `${t('ft.r.profile')} · ${st.profile}` : t(`ft.r.${n.role}`)
-      const jumpSeq = n.loaded && n.seq !== undefined ? n.seq : undefined
-      const status = n.loaded ? h('span', {
-        className: `clx-ft-st loaded${jumpSeq !== undefined ? ' link' : ''}`,
-        ...(jumpSeq !== undefined ? {
-          role: 'button', tabIndex: 0, title: fmt(t('ft.jump'), { seq: jumpSeq }),
-          onClick: (e) => { e.stopPropagation(); onJump(jumpSeq) },
-          onKeyDown: (e) => { if (e.target === e.currentTarget && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); e.stopPropagation(); onJump(jumpSeq) } },
-        } : null),
-      }, `✓ ${t('ft.loaded')}${n.tokens ? ` · ≈${fmtK(n.tokens)}` : ''}`)
-        : !n.exists ? h('span', { className: 'clx-ft-st missing' }, t('ft.missing'))
-        : n.count !== undefined ? h('span', { className: 'clx-ft-st' }, fmt(t('ft.skills'), { n: n.count }))
-        : n.size !== undefined && group !== 'skill' ? h('span', { className: 'clx-ft-st' }, fmtBytes(n.size)) : null
-      // existing files open in dsh's own right Sidebar preview instead of being
-      // rendered here; directories and missing files stay plain rows.
-      const previewable = !!n.exists && !n.dir
-      return h('div', {
-        key: `${n.path}-${i}`, className: `clx-ft-row${n.exists ? '' : ' missing'}${depth === 0 ? ' top' : ''}${previewable ? ' open' : ''}`,
-        style: { '--ft': color, '--i': Math.min(i, 30) }, title: previewable ? `${n.path}\n${t('ft.preview')}` : n.path,
-        ...(previewable ? {
-          role: 'button', tabIndex: 0, 'aria-label': `${n.name} · ${t('ft.preview')}`,
-          onClick: () => preview(n.path),
-          onKeyDown: (e) => { if (e.target === e.currentTarget && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); preview(n.path) } },
-        } : null),
-      },
-        h('span', { className: 'clx-ft-tree' }, conn,
-          h(FtIcon, { dir: n.dir, color }),
-          h('span', { className: `clx-ft-name${n.dir ? ' dir' : ''}` }, depth === 0 ? `${tilde(n.path)}/` : n.name),
-          status),
-        h('span', { className: 'clx-ft-lead' }),
-        h('span', { className: 'clx-ft-pill' }, desc))
-    })))
-}
-
-function MemoryCard({ src, t, onJump, ctx, sessionId }) {
-  const mem = src.memory
-  const [noteLine, preview] = useSidebarPreview(ctx, sessionId, src.cwd, t)
-  const active = mem.files.filter((f) => f.status === 'active')
-  const total = active.reduce((s, f) => s + (f.tokens || 0), 0)
-  const statusCls = { active: 'clx-ok', removed: 'clx-warn', replaced: 'clx-muted' }
-  const notice = mem.events.filter((e) => e.budgetNotice).slice(-1)[0]?.budgetNotice
-  return h('div', { className: 'clx-card clx-memcard' },
-    h('div', { className: 'clx-card-head' },
-      h('h4', null, t('nav.memory')),
-      h('span', { className: 'clx-muted' }, active.length ? fmt(t('src.memoryCount'), { n: active.length, t: fmtK(total) }) : t('src.memoryZero'))),
-    mem.files.length ? h('div', { className: 'clx-mem-hint', title: t('src.memoryHint') }, t('src.memoryHintShort')) : null,
-    noteLine,
-    mem.files.length ? h('div', { className: 'clx-mem-files' }, mem.files.map((f) => h(Disclosure, {
-      key: f.displayPath,
-      color: CAT_COLOR.memory,
-      open: mem.files.length <= 2,
-      head: h('div', { className: 'clx-src-row' },
-        h('span', { className: 'clx-src-name' }, f.displayPath),
-        h('span', { className: statusCls[f.status] || 'clx-muted' }, t(`src.mem.${f.status}`)),
-        f.updates ? h('span', { className: 'clx-muted' }, fmt(t('src.updates'), { n: f.updates })) : null,
-        h('span', { className: 'clx-src-tok' }, f.tokens ? `≈${fmtK(f.tokens)}` : '—')),
-    },
-      h('div', { className: 'clx-src-meta' },
-        f.path ? h('span', null, f.path) : null,
-        f.path ? h('a', { className: 'clx-link', title: f.path, onClick: () => preview(f.path) }, `↗ ${t('ft.preview')}`) : null,
-        h('a', { onClick: () => onJump(f.lastSeq) }, `#${f.lastSeq} ${t('src.inMessages')}`)),
-      f.status === 'removed' ? h('div', { className: 'clx-muted' }, t('src.mem.removedHint'))
-        : h(RichText, { text: f.content || '', hint: 'md', t, defaultOpen: true, bare: true })))) : null,
-    notice ? h('div', { className: 'clx-warn', style: { fontSize: 12, margin: '6px 2px' } }, notice) : null,
-    !mem.files.length ? h('div', { className: 'clx-mem-empty' }, t('src.memoryNoneTree')) : null)
-}
-
 function SkillBody({ sessionId, name, t }) {
   const [state, setState] = useState<any>({ loading: true })
   useEffect(() => {
@@ -1527,11 +2125,152 @@ function SkillBody({ sessionId, name, t }) {
   return h(RichText, { bare: true, text: v.content, hint: 'md', t, label: 'SKILL.md', meta: `${fmtInt(v.chars)} ${t('ui.chars')} · ≈${fmtK(v.tokensEst)} tok${v.truncated ? ` · ${t('msg.truncated')}` : ''}` })
 }
 
-function SkillsCard({ src, bd, sessionId, t, onJump }) {
-  const sk = src.skills
-  const [query, setQuery] = useState('')
+const RT_NAME = {
+  'working-directory:current': 'rt.cwd', 'sandbox:policy': 'rt.sandbox', 'approval:policy': 'rt.approval',
+  'harness:source': 'rt.harness', 'app:web-surface': 'rt.web', 'time-context': 'rt.time',
+}
+/** What this agent reads and where, laid out by the rules of the plugins that read it. */
+function AgentLayout({ src, t, onJump, ctx, sessionId }) {
+  const L = src.layout
+  const [noteLine, preview] = useSidebarPreview(ctx, sessionId, src.cwd, t)
+  if (!L) return h('div', { className: 'clx-muted' }, t('lay.none'))
+  const home = L.home || ''
+  const tilde = (p) => (home && String(p).startsWith(home) ? `~${String(p).slice(home.length)}` : String(p))
+  const row = (f, label = undefined) => {
+    const st = f.loaded ? 'loaded' : f.exists ? 'exists' : 'missing'
+    return h('div', { key: f.path, className: `clx-lay-row ${st}`, title: f.path },
+      h('i', { className: 'st' }),
+      h('span', { className: 'nm' }, label || f.name),
+      h('span', { className: 'ss' }, f.loaded ? `${t('ft.loaded')}${f.tokens ? ` · ≈${fmtK(f.tokens)}` : ''}` : f.exists ? t('lay.notLoaded') : t('ft.missing')),
+      h('span', { className: 'ac' },
+        f.exists ? h('button', { className: 'clx-more', onClick: () => preview(f.path) }, t('ft.previewShort')) : null,
+        f.loaded && f.seq !== undefined ? h('button', { className: 'clx-more', onClick: () => onJump(f.seq) }, `#${f.seq}`) : null))
+  }
+  const gl = L.global || []
+  const loadedN = [...gl, ...(L.levels || []).flatMap((l) => l.files), ...(L.deeper || [])].filter((f) => f.loaded).length
+  const SRC_LABEL = { 'project-dsh': 'lay.sk.projectDsh', 'project-agents': 'lay.sk.projectAgents', custom: 'lay.sk.custom', 'user-dsh': 'lay.sk.userDsh', 'user-agents': 'lay.sk.userAgents', bundled: 'lay.sk.bundled' }
+  return h('div', { className: 'clx-lay' },
+    noteLine,
+    h('section', null,
+      h('div', { className: 'clx-lay-h' }, h('b', null, t('nav.memory')), h('span', { className: 'clx-muted' }, fmt(t('lay.memSum'), { n: loadedN }))),
+      h('div', { className: 'clx-lay-rule' }, t('lay.memRule')),
+      h('div', { className: 'clx-lay-group' },
+        h('div', { className: 'clx-lay-gh' }, t('lay.global'), h('span', { className: 'clx-muted' }, t('lay.globalNote'))),
+        gl.map((g) => row(g, tilde(g.path)))),
+      h('div', { className: 'clx-lay-group' },
+        h('div', { className: 'clx-lay-gh' }, t('lay.project'), h('span', { className: 'clx-muted' }, L.root ? fmt(t('lay.rootBy'), { m: L.rootMarker }) : t('lay.noRoot'))),
+        (L.levels || []).map((lv) => {
+          const present = lv.files.filter((f) => f.exists || f.loaded)
+          const absent = lv.files.filter((f) => !f.exists && !f.loaded)
+          return h('div', { key: lv.dir, className: 'clx-lay-level' },
+            h('div', { className: 'clx-lay-dir', title: lv.dir },
+              h('span', { className: 'p' }, `${tilde(lv.dir)}/`),
+              lv.isRoot ? h('span', { className: 'clx-pill' }, t('lay.root')) : null,
+              lv.isCwd ? h('span', { className: 'clx-pill on' }, t('lay.cwd')) : null),
+            present.map((f) => row(f)),
+            absent.length ? h('div', { className: 'clx-lay-absent' }, `${t('lay.canPlace')} `, absent.map((f) => h('code', { key: f.name }, f.name))) : null)
+        })),
+      (L.deeper || []).length ? h('div', { className: 'clx-lay-group' },
+        h('div', { className: 'clx-lay-gh' }, t('lay.deeper'), h('span', { className: 'clx-muted' }, t('lay.deeperNote'))),
+        L.deeper.map((f) => row(f, `${f.rel ? `${f.rel}/` : ''}${f.name}`))) : null),
+    h('section', null,
+      h('div', { className: 'clx-lay-h' }, h('b', null, t('lay.skillRoots')), h('span', { className: 'clx-muted' }, t('lay.skillRule'))),
+      (L.skillRoots || []).map((r, i) => h('div', { key: `${r.source}-${r.path}`, className: `clx-lay-row ${r.registered ? 'loaded' : r.exists ? 'exists' : 'missing'}`, title: r.path },
+        h('span', { className: 'rk' }, i + 1),
+        h('span', { className: 'nm' }, t(SRC_LABEL[r.source] || r.source), h('code', null, tilde(r.path))),
+        h('span', { className: 'ss' }, !r.exists ? t('ft.missing') : r.registered ? fmt(t('lay.skillsN'), { n: r.registered }) : r.onDisk ? fmt(t('lay.onDisk'), { n: r.onDisk }) : t('lay.empty')),
+        h('span', { className: 'ac' }))),
+      (L.otherSkillSources || []).length ? h('div', { className: 'clx-lay-absent' }, `${t('lay.otherSources')} `, L.otherSkillSources.map((x) => h('code', { key: x.source }, `${x.source} ×${x.count}`))) : null))
+}
+
+/** Skills by name: registry, catalog entry and every load, most-loaded first. */
+function skillRows(src) {
+  const sk = src.skills || {}
+  const by = new Map()
+  const get = (name) => {
+    if (!by.has(name)) by.set(name, { name, loads: [] })
+    return by.get(name)
+  }
+  for (const s of sk.registry || []) Object.assign(get(s.name), { reg: s })
+  for (const e of sk.catalog?.entries || []) Object.assign(get(e.name), { cat: e })
+  for (const l of sk.loaded || []) get(l.name).loads.push(l)
+  return [...by.values()].sort((a, b) => (b.loads.length - a.loads.length) || ((b.cat ? 1 : 0) - (a.cat ? 1 : 0)) || a.name.localeCompare(b.name))
+}
+
+/** Every node of the file structure, flattened. */
+function treeNodes(st) {
+  const out = []
+  const walk = (n) => { out.push(n); for (const k of n.children || []) walk(k) }
+  for (const r of st?.trees || []) walk(r)
+  return out
+}
+
+function SrcLine({ color, name, badge, tok, sel, onClick, title, dim = false }) {
+  return h('div', {
+    className: `clx-tl clx-sl${sel ? ' sel' : ''}${dim ? ' dim' : ''}`, role: 'button', tabIndex: 0, 'aria-pressed': !!sel, onClick, title,
+    onKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick() } },
+  },
+    h('i', { className: 'clx-dot', style: { background: color } }),
+    h('span', { className: 'nm' }, name),
+    h('span', { className: 'bd' }, badge),
+    h('span', { className: 'tk' }, tok))
+}
+
+function MemPanel({ f, t, onJump, preview, noteLine }) {
+  return h(React.Fragment, null,
+    h('div', { className: 'clx-mside-head' },
+      h('b', { className: 'clx-sp-title' }, f.displayPath),
+      h('span', { className: `clx-pill ${f.status === 'active' ? 'on' : 'off'}` }, t(`src.mem.${f.status}`)),
+      f.updates ? h('span', { className: 'clx-muted' }, fmt(t('src.updates'), { n: f.updates })) : null,
+      h('span', { className: 'clx-mside-tok' }, f.tokens ? `≈${fmtK(f.tokens)} tok` : '')),
+    h('div', { className: 'clx-mside-body' },
+      h('div', { className: 'clx-sp-meta' },
+        f.path ? h('code', { title: f.path }, f.path) : null,
+        f.path ? h('button', { className: 'clx-chipbtn', onClick: () => preview(f.path) }, `↗ ${t('ft.preview')}`) : null,
+        f.lastSeq !== undefined ? h('button', { className: 'clx-chipbtn', onClick: () => onJump(f.lastSeq) }, `#${f.lastSeq} ${t('src.inMessages')}`) : null),
+      noteLine,
+      f.status === 'removed' ? h('div', { className: 'clx-muted' }, t('src.mem.removedHint'))
+        : h(RichText, { text: f.content || '', hint: 'md', t, defaultOpen: true, bare: true })))
+}
+
+function SkillPanel({ r, sk, sessionId, t, onJump, nodeTok, cost }) {
+  const desc = r.reg?.description ?? r.cat?.description ?? ''
+  return h(React.Fragment, null,
+    h('div', { className: 'clx-mside-head' },
+      h('b', { className: 'clx-sp-title' }, r.name),
+      r.loads.length ? h('span', { className: 'clx-pill on' }, fmt(t('src.loadedN'), { n: r.loads.length })) : null,
+      h('span', { className: 'clx-pill' }, r.cat ? t('src.inCatalog') : r.reg && !r.reg.modelInvocable ? t('src.userOnly') : t('src.notInCatalog')),
+      h('span', { className: 'clx-mside-tok', title: t('src.catCostHint') }, cost ? `${fmtK(cost)} tok` : '')),
+    h('div', { className: 'clx-mside-body' },
+      desc ? h('div', { className: 'clx-sp-desc' }, desc) : null,
+      h('div', { className: 'clx-sp-kv' },
+        h('span', null, h('i', null, t('src.k.provider')), r.reg?.provider || '—'),
+        h('span', null, h('i', null, t('src.k.source')), r.reg?.source || '—'),
+        h('span', null, h('i', null, t('src.k.invocation')), r.reg ? [r.reg.modelInvocable ? t('src.inv.model') : null, r.reg.userInvocable ? t('src.inv.user') : null].filter(Boolean).join(' · ') || '—' : '—')),
+      h('div', { className: 'clx-sp-meta' }, h('code', null, r.reg?.path || r.loads[0]?.base || '—')),
+      r.reg?.whenToUse ? h('div', { className: 'clx-sp-desc' }, h('span', { className: 'clx-muted' }, `${t('src.k.whenToUse')}: `), r.reg.whenToUse) : null,
+      r.loads.length ? h('div', { className: 'clx-sp-loads' },
+        h('div', { className: 'clx-tp-h' }, t('src.loads')),
+        r.loads.map((l) => h('div', { key: l.seq, className: 'clx-tl clx-sl', role: 'button', tabIndex: 0, onClick: () => onJump(l.seq) },
+          h('i', { className: 'clx-dot', style: { background: CAT_COLOR.skills } }),
+          h('span', { className: 'nm' }, `#${l.seq} · ${fmtTime(l.time)}`),
+          h('span', { className: 'bd' }, `${t(`src.via.${l.via}`)}${l.isError ? ' · ⚠' : ''}`),
+          h('span', { className: 'tk' }, fmtK(nodeTok[l.seq] ?? l.tokensEst))))) : null,
+      sk.registryAvailable ? h('div', { className: 'clx-tp-def' }, h(SkillBody, { sessionId, name: r.name, t })) : null))
+}
+
+/** 来源: what entered the context from outside the conversation, as a list on the left and the picked item on the right. */
+function SourcesTab({ sessionId, liveKey, bd, t, onJump, ctx }) {
+  const { data: src, error } = useSources(sessionId, liveKey)
+  const [rootRef, rootW] = useWidth(800)
+  const wide = rootW >= 760
+  const [sel, setSel] = useState(null)
+  const [q, setQ] = useState('')
   const [filter, setFilter] = useState('all')
-  const catalogCost = useMemo(() => {
+  const [allSkills, setAllSkills] = useState(false)
+  const [noteLine, preview] = useSidebarPreview(ctx, sessionId, src?.cwd, t)
+  const rows = useMemo(() => (src ? skillRows(src) : []), [src])
+  const cost = useMemo(() => {
     const m = {}
     for (const s of bd?.skills || []) m[s.name] = s.tokensCal
     return m
@@ -1541,95 +2280,126 @@ function SkillsCard({ src, bd, sessionId, t, onJump }) {
     for (const n of bd?.nodes || []) m[n.seq] = n.tokensCal
     return m
   }, [bd])
-  const rows = useMemo(() => {
-    const by = new Map()
-    const get = (name) => {
-      if (!by.has(name)) by.set(name, { name, loads: [] })
-      return by.get(name)
-    }
-    for (const s of sk.registry || []) Object.assign(get(s.name), { reg: s })
-    for (const e of sk.catalog?.entries || []) Object.assign(get(e.name), { cat: e })
-    for (const l of sk.loaded || []) get(l.name).loads.push(l)
-    return [...by.values()].sort((a, b) => (b.loads.length - a.loads.length) || a.name.localeCompare(b.name))
-  }, [src])
-  const loadedNames = rows.filter((r) => r.loads.length).length
-  const inCatalog = rows.filter((r) => r.cat).length
+  if (error && !src) return h('div', { className: 'clx-err' }, fmt(t('failed'), { msg: error }))
+  if (!src) return h('div', { className: 'clx-muted' }, t('loading'))
+
+  const sk = src.skills || {}
+  const files = src.memory?.files || []
+  const active = files.filter((f) => f.status === 'active')
+  const memTok = active.reduce((s, f) => s + (f.tokens || 0), 0)
+  const loaded = rows.filter((r) => r.loads.length)
+  const inCat = rows.filter((r) => r.cat)
+  const catTok = Object.values<any>(cost).reduce((a, b) => a + b, 0)
   const loadTok = (sk.loaded || []).reduce((s: number, l: any) => s + (nodeTok[l.seq] ?? l.tokensEst ?? 0), 0)
-  const catTok = Object.values<any>(catalogCost).reduce((a, b) => a + b, 0)
-  const q = query.trim().toLowerCase()
-  const shown = rows.filter((r) => (filter === 'all' || (filter === 'loaded' ? r.loads.length : filter === 'catalog' ? r.cat : !r.cat))
-    && (!q || r.name.toLowerCase().includes(q) || (r.reg?.description || r.cat?.description || '').toLowerCase().includes(q)))
-  return h('div', { className: 'clx-card' },
-    h('h4', null, `${t('src.skills')} · ${fmt(t('src.skillsSummary'), { n: rows.length, c: inCatalog, l: loadedNames, ct: fmtK(catTok), lt: fmtK(loadTok) })}`),
-    sk.registryAvailable ? null : h('div', { className: 'clx-warn', style: { fontSize: 12 } }, t('src.noRegistry')),
-    sk.registryError ? h('div', { className: 'clx-err', style: { fontSize: 12 } }, fmt(t('failed'), { msg: sk.registryError })) : null,
-    h('div', { className: 'clx-msgtools' },
-      h('input', { value: query, placeholder: t('src.skillSearch'), onChange: (e) => setQuery(e.target.value) }),
-      ['all', 'loaded', 'catalog', 'hidden'].map((k) => h('button', { key: k, className: 'clx-chipbtn', 'aria-pressed': filter === k, onClick: () => setFilter(k) }, t(`src.f.${k}`)))),
-    shown.length ? shown.map((r) => {
-      const desc = r.reg?.description ?? r.cat?.description ?? ''
-      return h(Disclosure, {
-        key: r.name,
-        color: CAT_COLOR.skills,
-        head: h('div', { className: 'clx-skill-head' },
-          h('div', { className: 'clx-src-row' },
-            h('span', { className: 'clx-src-name' }, r.name),
-            r.loads.length ? h('span', { className: 'clx-badge ok' }, fmt(t('src.loadedN'), { n: r.loads.length })) : null,
-            r.cat ? h('span', { className: 'clx-badge' }, t('src.inCatalog')) : h('span', { className: 'clx-badge dim' }, r.reg && !r.reg.modelInvocable ? t('src.userOnly') : t('src.notInCatalog')),
-            h('span', { className: 'clx-src-tok', title: t('src.catCostHint') }, catalogCost[r.name] ? fmtK(catalogCost[r.name]) : '')),
-          h('div', { className: 'clx-skill-desc' }, desc)),
-      },
-        h('div', { className: 'clx-src-path' }, h('span', { className: 'clx-muted' }, `${t('src.k.path')} `), r.reg?.path || r.loads[0]?.base || '—'),
-        h('div', { className: 'clx-kv', style: { marginBottom: 8 } },
-          kv(t('src.k.provider'), r.reg?.provider || '—'),
-          kv(t('src.k.source'), r.reg?.source || '—'),
-          kv(t('src.k.invocation'), r.reg ? [r.reg.modelInvocable ? t('src.inv.model') : null, r.reg.userInvocable ? t('src.inv.user') : null].filter(Boolean).join(' · ') || '—' : '—')),
-        r.reg?.whenToUse ? h('div', { style: { fontSize: 12.5, marginBottom: 8 } }, h('span', { className: 'clx-muted' }, `${t('src.k.whenToUse')}: `), r.reg.whenToUse) : null,
-        r.cat && r.reg && r.cat.description !== r.reg.description ? h('div', { style: { fontSize: 12, marginBottom: 8 } }, h('span', { className: 'clx-muted' }, `${t('src.k.catalogDesc')}: `), r.cat.description) : null,
-        r.loads.length ? h('div', { style: { fontSize: 12, marginBottom: 8 } },
-          h('div', { className: 'clx-muted' }, t('src.loads')),
-          r.loads.map((l) => h('div', { key: l.seq, className: 'clx-flow-log', onClick: () => onJump(l.seq) },
-            `#${l.seq} · ${fmtTime(l.time)} · ${t(`src.via.${l.via}`)} · ${fmtK(nodeTok[l.seq] ?? l.tokensEst)} tok${l.isError ? ' · ⚠' : ''}`))) : null,
-        sk.registryAvailable ? h(SkillBody, { sessionId, name: r.name, t }) : null)
-    }) : h('div', { className: 'clx-empty' }, t('src.skillsNone')))
-}
+  const rt = [...(src.runtime?.sections || []), ...(src.timeContext ? [{ name: 'time-context', text: src.timeContext.text }] : [])]
+  const L = src.layout
+  const layFiles = L ? [...(L.global || []), ...(L.levels || []).flatMap((l) => l.files), ...(L.deeper || [])] : []
+  const tree = L ? [1] : treeNodes(src.structure)
+  const treeLoaded = layFiles.filter((f) => f.loaded).length
+  const treeExists = layFiles.filter((f) => f.exists && !f.loaded).length
+  const query = q.trim().toLowerCase()
+  const skillShown = rows.filter((r) => (filter === 'all' || (filter === 'loaded' ? r.loads.length : filter === 'catalog' ? r.cat : !r.cat))
+    && (!query || r.name.toLowerCase().includes(query) || (r.reg?.description || r.cat?.description || '').toLowerCase().includes(query)))
+  const skillList = allSkills || query ? skillShown : skillShown.slice(0, 12)
+  const memShown = files.filter((f) => !query || f.displayPath.toLowerCase().includes(query))
 
-const RT_NAME = {
-  'working-directory:current': 'rt.cwd', 'sandbox:policy': 'rt.sandbox', 'approval:policy': 'rt.approval',
-  'harness:source': 'rt.harness', 'app:web-surface': 'rt.web', 'time-context': 'rt.time',
-}
-function RuntimeCard({ src, t, onJump }) {
-  const rt = src.runtime
-  if (!rt && !src.timeContext) return null
-  const items = [...(rt?.sections || []), ...(src.timeContext ? [{ name: 'time-context', text: src.timeContext.text }] : [])]
-  return h('div', { className: 'clx-card' },
-    h('div', { className: 'clx-card-head' },
-      h('h4', null, t('src.runtime')),
-      rt ? h('a', { className: 'clx-link', onClick: () => onJump(rt.seq) }, `#${rt.seq} ${t('src.inMessages')}`) : null),
-    h('div', { className: 'clx-mem-hint' }, t('src.runtimeHint')),
-    h('div', { className: 'clx-rt-list' }, items.map((s) => h('div', { key: s.name, className: 'clx-rt' },
-      h('span', { className: 'k', title: s.name }, RT_NAME[s.name] ? t(RT_NAME[s.name]) : s.name),
-      h('span', { className: 'v' }, s.text)))))
-}
+  const fallback = active[0] ? `m:${active[0].displayPath}` : loaded[0] ? `s:${loaded[0].name}` : rt.length ? 'rt' : tree.length ? 'ft' : null
+  const current = sel ?? (wide ? fallback : null)
+  const pick = (id) => setSel(current === id && !wide ? null : id)
 
-/** 记忆: the instruction files dsh-agent-instructions loaded, plus the runtime context. */
-function MemoryTab({ sessionId, liveKey, t, onJump, ctx }) {
-  const { data, error } = useSources(sessionId, liveKey)
-  if (error && !data) return h('div', { className: 'clx-err' }, fmt(t('failed'), { msg: error }))
-  if (!data) return h('div', { className: 'clx-muted' }, t('loading'))
-  return h('div', { className: 'clx-memtab' },
-    h('div', { className: 'clx-memtab-l' }, h(FileTree, { src: data, t, onJump, ctx, sessionId })),
-    h('div', { className: 'clx-memtab-r' },
-      h(MemoryCard, { src: data, t, onJump, ctx, sessionId }),
-      h(RuntimeCard, { src: data, t, onJump })))
-}
+  const panelFor = (id) => {
+    if (!id) return null
+    if (id.startsWith('m:')) {
+      const f = files.find((x) => `m:${x.displayPath}` === id)
+      return f ? h(MemPanel, { key: id, f, t, onJump, preview, noteLine }) : null
+    }
+    if (id.startsWith('s:')) {
+      const r = rows.find((x) => `s:${x.name}` === id)
+      return r ? h(SkillPanel, { key: id, r, sk, sessionId, t, onJump, nodeTok, cost: cost[r.name] }) : null
+    }
+    if (id === 'rt') {
+      return h(React.Fragment, { key: id },
+        h('div', { className: 'clx-mside-head' },
+          h('b', { className: 'clx-sp-title' }, t('src.runtime')),
+          src.runtime ? h('button', { className: 'clx-chipbtn', style: { marginLeft: 'auto' }, onClick: () => onJump(src.runtime.seq) }, `#${src.runtime.seq} ${t('src.inMessages')}`) : null),
+        h('div', { className: 'clx-mside-body' },
+          h('div', { className: 'clx-note', style: { marginBottom: 8 } }, t('src.runtimeHint')),
+          h('div', { className: 'clx-rt-list' }, rt.map((s) => h('div', { key: s.name, className: 'clx-rt' },
+            h('span', { className: 'k', title: s.name }, RT_NAME[s.name] ? t(RT_NAME[s.name]) : s.name),
+            h('span', { className: 'v' }, s.text))))))
+    }
+    if (id === 'ft') {
+      return h(React.Fragment, { key: id },
+        h('div', { className: 'clx-mside-head' }, h('b', { className: 'clx-sp-title' }, t('lay.title')), h('span', { className: 'clx-muted' }, t('lay.sub'))),
+        h('div', { className: 'clx-mside-body' }, h(AgentLayout, { src, t, onJump, ctx, sessionId })))
+    }
+    return null
+  }
+  const inline = (id) => (!wide && current === id ? h('div', { className: 'clx-tl-inline clx-sp-inline' }, panelFor(id)) : null)
 
-/** 技能: every skill this session's agent can see, what the model was offered, and what it loaded. */
-function SkillsTab({ sessionId, liveKey, bd, t, onJump }) {
-  const { data, error } = useSources(sessionId, liveKey)
-  if (error && !data) return h('div', { className: 'clx-err' }, fmt(t('failed'), { msg: error }))
-  if (!data) return h('div', { className: 'clx-muted' }, t('loading'))
-  return h(SkillsCard, { src: data, bd, sessionId, t, onJump })
+  const list = h('div', { className: 'clx-tlists' },
+    h('div', { className: 'clx-msgsearch clx-tsearch' },
+      h('svg', { width: 13, height: 13, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', 'aria-hidden': true }, h('circle', { cx: 11, cy: 11, r: 6.5 }), h('path', { d: 'M16 16l4 4' })),
+      h('input', { value: q, placeholder: t('src.search'), onChange: (e) => setQ(e.target.value) }),
+      q ? h('button', { className: 'clx-msgclear', onClick: () => setQ('') }, '×') : null),
+
+    h('div', { className: 'clx-card clx-tcard' },
+      h('div', { className: 'clx-card-head' },
+        h('h4', null, t('nav.memory')),
+        h('span', { className: 'clx-muted' }, active.length ? fmt(t('src.memoryCount'), { n: active.length, t: fmtK(memTok) }) : t('src.memoryZero'))),
+      memShown.length ? memShown.map((f) => {
+        const id = `m:${f.displayPath}`
+        return h(React.Fragment, { key: id },
+          h(SrcLine, {
+            color: CAT_COLOR.memory, name: f.displayPath, title: f.path, sel: current === id, onClick: () => pick(id), dim: f.status !== 'active',
+            badge: [t(`src.mem.${f.status}`), f.updates ? fmt(t('src.updates'), { n: f.updates }) : null].filter(Boolean).join(' · '),
+            tok: f.tokens ? fmtK(f.tokens) : '—',
+          }),
+          inline(id))
+      }) : h('div', { className: 'clx-tempty clx-muted' }, query ? t('msg.none') : t('src.memNoneShort'))),
+
+    h('div', { className: 'clx-card clx-tcard' },
+      h('div', { className: 'clx-card-head' },
+        h('h4', null, t('src.skills')),
+        h('span', { className: 'clx-muted' }, rows.length ? fmt(t('src.skillsShort'), { n: rows.length, l: loaded.length, lt: fmtK(loadTok), c: inCat.length, ct: fmtK(catTok) }) : '')),
+      rows.length ? h('div', { className: 'clx-sp-filters' },
+        ['all', 'loaded', 'catalog', 'hidden'].map((k) => h('button', { key: k, className: 'clx-chipbtn', 'aria-pressed': filter === k, onClick: () => setFilter(k) },
+          t(`src.f.${k}`), h('small', null, ` ${k === 'all' ? rows.length : k === 'loaded' ? loaded.length : k === 'catalog' ? inCat.length : rows.length - inCat.length}`)))) : null,
+      sk.registryAvailable === false ? h('div', { className: 'clx-note', style: { padding: '0 8px 4px' } }, t('src.noRegistry')) : null,
+      skillList.length ? skillList.map((r) => {
+        const id = `s:${r.name}`
+        return h(React.Fragment, { key: id },
+          h(SrcLine, {
+            color: r.loads.length ? CAT_COLOR.skills : r.cat ? 'color-mix(in srgb, #EDC948 45%, transparent)' : 'var(--dsw-alias-border-l3)',
+            name: r.name, title: r.reg?.description || r.cat?.description || '', sel: current === id, onClick: () => pick(id), dim: !r.cat && !r.loads.length,
+            badge: r.loads.length ? fmt(t('src.loadedN'), { n: r.loads.length }) : r.cat ? t('src.inCatalog') : r.reg && !r.reg.modelInvocable ? t('src.userOnly') : t('src.notInCatalog'),
+            tok: cost[r.name] ? fmtK(cost[r.name]) : '',
+          }),
+          inline(id))
+      }) : h('div', { className: 'clx-tempty clx-muted' }, rows.length ? t('src.skillsNone') : t('src.skillsZero')),
+      !query && skillShown.length > 12 ? h('button', { className: 'clx-chipbtn clx-tmore', onClick: () => setAllSkills(!allSkills) },
+        allSkills ? t('ui.collapseAll') : fmt(t('tools.showAllDefs'), { n: skillShown.length })) : null),
+
+    h('div', { className: 'clx-card clx-tcard' },
+      h('div', { className: 'clx-card-head' }, h('h4', null, t('src.env'))),
+      rt.length ? h(React.Fragment, null,
+        h(SrcLine, { color: CAT_COLOR.injected, name: t('src.runtime'), badge: fmt(t('src.itemsN'), { n: rt.length }), tok: '', sel: current === 'rt', onClick: () => pick('rt') }),
+        inline('rt')) : null,
+      tree.length ? h(React.Fragment, null,
+        h(SrcLine, { color: '#5DA9A0', name: t('lay.title'), badge: fmt(t('src.treeSum'), { e: treeExists, l: treeLoaded }), tok: '', sel: current === 'ft', onClick: () => pick('ft') }),
+        inline('ft')) : null))
+
+  return h('div', { className: 'clx-sources2', ref: rootRef },
+    h('div', { className: 'clx-tiles clx-tsum' },
+      h(Stat, { k: t('src.sum.mem'), v: fmtInt(active.length), sub: active.length ? ` ≈${fmtK(memTok)}` : undefined }),
+      h(Stat, { k: t('src.sum.loaded'), v: fmtInt(loaded.length), sub: loaded.length ? ` ${fmtK(loadTok)}` : undefined }),
+      h(Stat, { k: t('src.sum.catalog'), v: fmtInt(inCat.length), sub: catTok ? ` ${fmtK(catTok)}` : undefined }),
+      h(Stat, { k: t('src.sum.all'), v: fmtInt(rows.length) }),
+      h(Stat, { k: t('src.sum.rt'), v: fmtInt(rt.length) })),
+    wide
+      ? h('div', { className: 'clx-tsplit' }, list,
+        h('aside', { className: 'clx-mside' }, current ? panelFor(current) : h('div', { className: 'clx-mside-empty' }, t('src.pick'))))
+      : list)
 }
 
 /** Pixel width of an element, so charts draw at their real size (fixed text, fixed height). */
@@ -1977,7 +2747,7 @@ function StepRow({ s, win, sel, onPick, t }) {
       h('span', { className: 'clx-muted' }, s.promptTokens ? fmtK(s.promptTokens) : '—')))
 }
 
-function FlowTab({ sessionId, liveKey, bd, t }) {
+function FlowTab({ sessionId, liveKey, bd, t, onJump }) {
   const [data, setData] = useState(null)
   const [error, setError] = useState(null)
   const [selKey, setSelKey] = useState(null)
@@ -2081,7 +2851,8 @@ function FlowTab({ sessionId, liveKey, bd, t }) {
           [sel.startTime ? new Date(sel.startTime).toLocaleString() : null, dur !== undefined ? fmtDur(dur) : null, `#${sel.startSeq}${sel.endSeq ? `–${sel.endSeq}` : ''}`].filter(Boolean).join(' · ')),
         h('h4', null, t('flow.path')),
         h('div', { className: 'clx-flow-path' }, sel.stages.map((x, i) => h('span', { key: i, className: 'clx-flow-chip' }, h('b', null, i + 1), ` ${t(`flow.n.${x}`)}`))),
-        sel.tools.length ? h('div', { style: { fontSize: 12, marginTop: 8 } }, h('span', { className: 'clx-muted' }, `${t('flow.calls')}: `), sel.tools.join(', ')) : null,
+        h('h4', { style: { marginTop: 10 } }, t('sd.story')),
+        h(StepStory, { bd, st: sel, t, onJump }),
         sel.turnEnd ? h('div', { style: { fontSize: 12, marginTop: 4 } }, h('span', { className: 'clx-muted' }, `${t('flow.n.turnEnd')}: `), sel.turnEnd) : null,
         h('h4', { style: { marginTop: 12 } }, t('flow.ctxAt')),
         h('div', { className: 'clx-flow-big' },
@@ -2114,6 +2885,7 @@ function FlowTab({ sessionId, liveKey, bd, t }) {
         live?.lastSeq !== undefined ? h('div', { className: 'clx-flow-now', style: { fontSize: 12 } },
           h('span', { className: 'clx-muted' }, `${t('flow.lastEvent')} · #${live.lastSeq} · ${fmt(t('flow.ago'), { d: fmtDur(Math.max(0, now - live.lastTime)) })}`),
           h('div', { className: 'clx-flow-now-text' }, h('b', null, t(`flow.n.${live.lastStage}`)), ' ', live.lastTitle)) : null,
+        (curStep || steps[steps.length - 1]) ? h(React.Fragment, null, h('h4', { style: { marginTop: 10 } }, t('sd.story')), h(StepStory, { bd, st: curStep || steps[steps.length - 1], t, onJump })) : null,
         h('h4', { style: { marginTop: 12 } }, t('flow.ctxNow')),
         h('div', { className: 'clx-flow-big' },
           h('b', null, fmtK(s.used)),
@@ -2168,21 +2940,31 @@ function fmtDur(ms) {
   return `${Math.floor(m / 60)}h ${m % 60}m`
 }
 
-/** The Context Lens View: always the Conversation's own session. */
 const NAV_ICON = {
   overview: ['M12 3a9 9 0 1 0 9 9', 'M12 3a9 9 0 0 1 9 9h-9z'],
+  analyze: ['M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z', 'M19 16l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z'],
+  prompt: ['M6 3h9l4 4v14H6z', 'M9 11h7', 'M9 15h7', 'M9 7h3'],
   flow: ['M6 4h5v5H6z', 'M13 15h5v5h-5z', 'M8.5 9v3.5h7V15', 'M17 6.5h3'],
   messages: ['M4 6h16', 'M4 11h16', 'M4 16h10'],
   tools: ['M8 5 4 12l4 7', 'M16 5l4 7-4 7', 'M13.5 5l-3 14'],
-  skills: ['M12 3.5l2.4 5.1 5.6.7-4.1 3.9 1 5.6-4.9-2.7-4.9 2.7 1-5.6L4 9.3l5.6-.7z'],
-  memory: ['M5 4h9a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z', 'M5 17a3 3 0 0 1 3-3h9', 'M19 7v13'],
+  sources: ['M5 4h9a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z', 'M5 17a3 3 0 0 1 3-3h9', 'M19 7v13'],
 }
-const NAVS = ['overview', 'flow', 'messages', 'tools', 'skills', 'memory']
+const NAVS = ['overview', 'prompt', 'messages', 'tools', 'sources', 'analyze']
 const NAV_STORE = 'dsh-context-lens:nav'
+const NAV_OLD = { flow: 'overview', skills: 'sources', memory: 'sources', system: 'sources' }
 
 function NavIcon({ k }) {
-  return h('svg', { width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true },
+  return h('svg', { width: 15, height: 15, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true },
     (NAV_ICON[k] || []).map((d, i) => h('path', { key: i, d })))
+}
+
+/** Nearest ancestor that scrolls, so a section switch can start at the top. */
+function scrollParent(el) {
+  for (let p = el?.parentElement; p; p = p.parentElement) {
+    const oy = getComputedStyle(p).overflowY
+    if ((oy === 'auto' || oy === 'scroll') && p.scrollHeight > p.clientHeight) return p
+  }
+  return null
 }
 
 /** The Context Lens View: always the Conversation's own session, always live. */
@@ -2193,15 +2975,26 @@ function DetailPane(props) {
   const [nav, setNavState] = useState(() => {
     try {
       const v = localStorage.getItem(NAV_STORE)
-      return NAVS.includes(v) ? v : v === 'system' ? 'memory' : 'overview'
+      return NAVS.includes(v) ? v : NAV_OLD[v] || 'overview'
     } catch {
       return 'overview'
     }
   })
+  const paneRef = useRef(null)
   const setNav = (k) => {
     setNavState(k)
     try { localStorage.setItem(NAV_STORE, k) } catch {}
   }
+  // each section opens at its top, not at the scroll offset the last one left
+  const firstNav = useRef(true)
+  useLayoutEffect(() => {
+    if (firstNav.current) { firstNav.current = false; return }
+    const pane = paneRef.current
+    const sc = scrollParent(pane)
+    if (!pane || !sc) return
+    const top = pane.getBoundingClientRect().top - sc.getBoundingClientRect().top
+    if (top < 0) sc.scrollTop += top
+  }, [nav])
   const [focus, setFocus] = useState(null)
   // the selected section's pill slides between buttons
   const navRef = useRef(null)
@@ -2223,12 +3016,25 @@ function DetailPane(props) {
   const pressure = useSafeProjection(props, 'contextPressure')
   const liveKey = pressure ? `${pressure.pressureTokens}:${pressure.projectedTokens}` : ''
   const { data, error, loading, reload } = useBreakdown(sessionId, liveKey, !!sessionId, pressure ? 0 : 5000)
+  const live = data ? `${liveKey}|${data.logRevision}` : liveKey
+  const { flow } = useFlow(sessionId, live)
+  const series = useStepSeries(data, flow)
+  const [stepKey, setStepKey] = useState(null)
+  const [stepOnly, setStepOnly] = useState(false)
+  const [askSeqs, setAskSeqs] = useState<number[]>([])
+  const ask = (seq) => { setAskSeqs((a) => (a.includes(seq) ? a : [...a, seq].slice(-6))); setNav('analyze') }
+  const selIdx = series.length ? (stepKey === null ? series.length - 1 : Math.max(0, series.findIndex((x) => x.st.startSeq === stepKey))) : -1
+  const diff = useMemo(() => (data && selIdx >= 0 ? stepDiff(data, series, selIdx) : null), [data, series, selIdx])
+  const onSel = (i) => {
+    if (i === null || i >= series.length - 1) { setStepKey(null); setStepOnly(false) } else setStepKey(series[i].st.startSeq)
+  }
   const [updated, setUpdated] = useState(0)
   useEffect(() => { if (data) setUpdated(Date.now()) }, [data])
 
   const [preset, setPreset] = useState(null)
   const jump = (seq) => {
-    setFocus(seq)
+    setFocus(null)
+    requestAnimationFrame(() => setFocus(seq))
     setNav('messages')
   }
   const showCat = (cat) => {
@@ -2246,21 +3052,25 @@ function DetailPane(props) {
   } else if (!data.contextWindow && !data.measured?.totalTokens) {
     body = h('div', { className: 'clx-muted' }, t('pop.empty'))
   } else {
-    const live = `${liveKey}|${data.logRevision}`
     body = h(React.Fragment, null,
       error ? h('div', { className: 'clx-err', style: { fontSize: 12, marginBottom: 8 } }, fmt(t('failed'), { msg: error })) : null,
-      nav === 'overview' ? h(Overview, { data, t, onJump: jump, onShowCat: showCat, sessionId })
-        : nav === 'flow' ? h(FlowTab, { sessionId, liveKey: live, bd: data, t })
-          : nav === 'messages' ? h(Messages, { data, t, focus, sessionId, preset, ctx, cwd: data.cwd })
-            : nav === 'tools' ? h(Tools, { data, t, sessionId, ctx, cwd: data.cwd })
-              : nav === 'skills' ? h(SkillsTab, { sessionId, liveKey: live, bd: data, t, onJump: jump })
-                : nav === 'memory' ? h(MemoryTab, { sessionId, liveKey: live, t, onJump: jump, ctx })
-                : h(Overview, { data, t, onJump: jump, onShowCat: showCat, sessionId }))
+      nav === 'analyze' ? h(AnalyzeView, { data, t, sessionId, onJump: jump, seqs: askSeqs, setSeqs: setAskSeqs })
+      : nav === 'prompt' ? h(PromptView, { data, t, diff, series, onSel, sessionId, ctx, cwd: data.cwd, onJump: jump, onAsk: ask })
+      : nav === 'messages' ? h(Messages, { data, flow, t, focus, sessionId, preset, ctx, cwd: data.cwd, diff, stepOnly })
+        : nav === 'tools' ? h(Tools, { data, t, sessionId, ctx, cwd: data.cwd, diff })
+          : nav === 'sources' ? h(SourcesTab, { sessionId, liveKey: live, bd: data, t, onJump: jump, ctx })
+            : h(Overview, { data, flow, t, onJump: jump, onShowCat: showCat, onNav: setNav, sessionId, liveKey: live, series, diff, onSel }))
   }
   const s = data ? summarize(data) : null
+  const counts = data ? {
+    messages: (data.nodes || []).length,
+    tools: (data.invocations || []).length,
+  } : {}
   const toolbar = h('div', { className: 'clx-toolbar' }, h('div', { className: 'clx-col clx-toolbar-in' },
     h('nav', { className: 'clx-segnav', role: 'tablist', 'aria-label': t('tab.title'), ref: navRef },
-      NAVS.map((k) => h('button', { key: k, role: 'tab', 'aria-selected': nav === k, onClick: () => setNav(k) }, h(NavIcon, { k }), h('span', null, t(`nav.${k}`))))),
+      NAVS.map((k) => h('button', { key: k, role: 'tab', 'aria-selected': nav === k, onClick: () => setNav(k) },
+        h(NavIcon, { k }), h('span', null, t(`nav.${k}`)),
+        counts[k] ? h('small', { className: 'clx-navcount' }, counts[k] > 999 ? `${Math.floor(counts[k] / 1000)}k+` : counts[k]) : null))),
     h('div', { className: 'clx-toolbar-meta', title: updated ? fmt(t('live.updated'), { time: new Date(updated).toLocaleString() }) : '' },
       s && s.win ? h(React.Fragment, null,
         h(Ring, { ratio: s.used / s.win, size: 16, stroke: 2.6 }),
@@ -2269,7 +3079,7 @@ function DetailPane(props) {
       h('span', { className: 'clx-toolbar-live' },
         h('i', { className: `clx-live-dot${loading ? ' on' : ''}`, style: { background: error ? 'var(--dsw-alias-state-error-primary)' : 'var(--dsw-alias-state-success-primary)' } }),
         t('live.on')))))
-  return h('div', { className: 'clx-pane notranslate', translate: 'no' }, h(Style), toolbar, h('main', { className: 'clx-main' }, h('div', { className: 'clx-col' }, body)))
+  return h('div', { className: 'clx-pane notranslate', translate: 'no', ref: paneRef }, h(Style), toolbar, h('main', { className: 'clx-main' }, h('div', { className: 'clx-col' }, data && diff ? h(StepBar, { series, diff, onSel, t, onNav: setNav, stepOnly, setStepOnly, nav }) : null, body)))
 }
 
 // ================================================================== registration

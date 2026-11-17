@@ -692,6 +692,181 @@ const zh = {
     'ov.bar.ofWin': '占窗口 {p}',
     'ov.bar.ofUsed': '占已用 {p}',
     'ov.bar.items': '{n} 条',
+    'nav.sources': '来源',
+    'ov.stat.turns': '轮次',
+    'ov.stat.steps': '步数',
+    'ov.stat.calls': '工具调用',
+    'ov.stat.hit': '缓存命中',
+    'ov.stat.left': '距压缩',
+    'st.title': '上下文趋势',
+    'st.count': '{n} 次请求 · 点击柱子查看该步',
+    'st.ctx': '上下文',
+    'st.delta': '比前步',
+    'st.output': '输出',
+    'st.cache': '缓存',
+    'st.viewMsgs': '查看消息',
+    'ov.flowDiagram': '执行流程图',
+    'ov.flowDiagram.sub': '会话生命周期与当前所在阶段',
+    'msg.pre': '会话开场',
+    'msg.step': '第 {n} 步',
+    'msg.stepsN': '{n} 步',
+    'msg.itemsN': '{n} 条',
+    'msg.allCats': '全部分类',
+    'msg.earlier': '显示更早的 {n} 条',
+    'msg.none': '没有匹配的消息',
+    'k.system': '系统',
+    'k.systemTools': '工具定义',
+    'k.mcpTools': 'MCP',
+    'k.skills': '技能',
+    'k.memory': '记忆',
+    'k.injected': '注入',
+    'k.summary': '摘要',
+    'k.user': '用户',
+    'k.assistantText': '回复',
+    'k.reasoning': '思考',
+    'k.toolCalls': '调用',
+    'k.toolResults': '结果',
+    'k.other': '其他',
+    'tools.callsN': '调用 {n} 次',
+    'tools.defTok': '定义',
+    'tools.useTok': '使用',
+    'tools.definition': '工具定义',
+    'tools.noDef': '这个工具不在本会话的工具定义里（可能是延迟加载或已移除）。',
+    'tools.search': '搜索工具名 / 说明…',
+    'tools.noUse': '本会话还没有调用过工具',
+    'tools.defsShort': '工具定义',
+    'tools.defsNote': '每次请求都会发送，按 tokens 排序',
+    'tools.paramsShort': '{n} 参',
+    'tools.showAllDefs': '显示全部 {n} 个',
+    'tools.deferredN': '延迟加载 {n} 个（不占上下文）：',
+    'tools.sum.defs': '工具定义',
+    'tools.sum.defTok': '定义占用',
+    'tools.sum.used': '用过的工具',
+    'tools.sum.calls': '调用次数',
+    'tools.sum.resTok': '结果占用',
+    'tools.sum.cmds': '命令',
+    'tools.pick': '点击左侧一个工具，查看它的调用记录和定义',
+    'src.search': '搜索记忆文件 / 技能…',
+    'src.memNoneShort': '这个会话没有加载记忆文件，可在「环境 → 文件结构」查看可放置的位置',
+    'src.skillsShort': '{n} 个 · 已加载 {l}（{lt}）· 目录 {c}（{ct}）',
+    'src.skillsZero': '这个会话没有可用技能',
+    'src.env': '环境',
+    'src.itemsN': '{n} 项',
+    'src.treeSum': '已加载 {l} · 存在未加载 {e}',
+    'src.sum.mem': '记忆文件',
+    'src.sum.loaded': '已加载技能',
+    'src.sum.catalog': '技能目录',
+    'src.sum.all': '可见技能',
+    'src.sum.rt': '运行时信息',
+    'src.pick': '点击左侧一项查看内容',
+    'msg.collapse': '收起',
+    'nav.analyze': '分析',
+    'az.title': '上下文分析',
+    'az.i1': '用当前会话所用的模型，专门分析这个会话的上下文，找出 agent 的缺陷和浪费，给出改进建议',
+    'az.i2': '和当前对话完全独立：不会写入会话，也不影响它的上下文',
+    'az.i3': '默认关闭；只有你点“发送”时才调用模型，每次发送都会消耗 token',
+    'az.i4': '一次提问约发送 {k} 输入 token 给 {m}（会话内容会发给模型提供方）',
+    'az.noLlm': '当前环境没有可用的模型服务',
+    'az.enable': '启用分析',
+    'az.on': '已启用',
+    'az.attach': '附带：',
+    'az.sys': '系统提示全文',
+    'az.toolDesc': '工具描述',
+    'az.detach': '点击移除',
+    'az.cost': '本次约 {k} 输入',
+    'az.clear': '清空',
+    'az.off': '关闭分析',
+    'az.hint': '报告里已有构成、工具、步骤、最大消息等摘要；需要看原文时在上面勾选附带内容，或在提示词页点条目上的 ✦。',
+    'az.q1': '这个上下文为什么这么大？最该先精简什么？',
+    'az.q2': '找出 agent 的缺陷，并给出具体的改进方案',
+    'az.q3': '哪些工具、技能或记忆可以精简或延迟加载？',
+    'az.q4': '有没有重复读取、重复调用或无用输出？怎么避免？',
+    'az.thinking': '思考过程',
+    'az.working': '分析中…',
+    'az.refs': '提到的消息',
+    'az.usage': '输入 {i} · 输出 {o}',
+    'az.placeholder': '问点什么，例如“第 4 步为什么多了 3k？”（Enter 发送，Shift+Enter 换行）',
+    'az.stop': '停止',
+    'az.send': '发送',
+    'az.askThis': '问 AI：分析这一条',
+    'nav.prompt': '提示词',
+    'sd.storyNone': '这一步没有模型输出或工具调用',
+    'sd.said': '回答',
+    'sd.thought': '思考',
+    'sd.called': '调用',
+    'sd.story': '这一步发生了什么',
+    'sd.fresh': '本步新增',
+    'sd.toolDefs': '{n} 个工具定义',
+    'sd.request': '此处发出请求',
+    'sd.promptTitle': '模型读到的提示词',
+    'sd.itemsN': '{n} 条',
+    'sd.promptAt': '第 {t} 轮第 {s} 步发出请求时模型读到的全部内容，按读取顺序从上到下',
+    'sd.promptNow': '最新一次请求模型读到的全部内容，按读取顺序从上到下；点分隔线可切换到当时那一步',
+    'sd.later': '此步之后还有 {n} 条（{k}），当时模型还没看到',
+    'dg.title': '诊断',
+    'dg.count': '{n} 条发现',
+    'dg.view': '查看',
+    'dg.ok': '没发现明显问题：固定开销、工具结果和单条消息的占比都在正常范围',
+    'dg.runway': '最近每步平均增长 {g}，约 {n} 步后触发自动压缩（距阈值还剩 {r}）',
+    'dg.over': '已经超过自动压缩阈值，下一步会触发压缩',
+    'dg.fixed': '还没开始干活就占了 {k}（{p}）：工具定义 {tk}，技能和记忆 {sk}。工具越多、技能越多，每一步都要重复带着',
+    'dg.results': '工具结果占 {p}，最大来自 {name}（{k}）。读大文件或长输出是最常见的原因',
+    'dg.big': '消息 #{seq} 一条就占 {p}（{k}）：{what}',
+    'dg.repeat': '同一个调用重复了 {n} 次：{what}',
+    'dg.idle': '{n} 个工具定义从没被调用过，白占 {k}',
+    'dg.errors': '{n} 次工具调用出错（{names}）：出错的往往要重试，会多占上下文',
+    'dg.cache': '上一次请求缓存命中率只有 {p}，大部分输入没走缓存',
+    'sd.compacted': '此步压缩',
+    'sd.now': '当前（最新）',
+    'sd.backNow': '回到当前',
+    'sd.added': '本步新增',
+    'sd.items': '{n} 条 · {k}',
+    'sd.none': '无新消息',
+    'sd.onlyNew': '只在消息页看本步新增的内容',
+    'sd.showAll': '显示全部消息',
+    'lay.title': 'Agent 读取位置',
+    'lay.sub': '按 dsh 实际加载规则',
+    'lay.none': '无法读取加载位置',
+    'lay.notLoaded': '存在，未加载',
+    'lay.memSum': '已加载 {n} 个',
+    'lay.memRule': '全局只读 AGENTS.md（不读 CLAUDE.md）；项目里从项目根到工作目录，每一级都读 AGENTS.md 和 CLAUDE.md（两个都读，不是二选一），再叠加 .local 版本；同一级内容相同只算一次。~/.claude/CLAUDE.md 不会被读取。',
+    'lay.global': '全局',
+    'lay.globalNote': '所有项目生效，两处内容相同时只算一次',
+    'lay.project': '项目',
+    'lay.rootBy': '项目根由 {m} 确定',
+    'lay.noRoot': '没有 .git，只读工作目录这一级',
+    'lay.root': '项目根',
+    'lay.cwd': '工作目录',
+    'lay.canPlace': '未放置：',
+    'lay.deeper': '更深的目录',
+    'lay.deeperNote': '读写到这些目录里的文件后追加',
+    'lay.skillRoots': '技能目录',
+    'lay.skillRule': '按优先级从高到低，同名技能取靠前的',
+    'lay.sk.projectDsh': '项目 .dsh',
+    'lay.sk.projectAgents': '项目 .agents',
+    'lay.sk.custom': '自定义目录',
+    'lay.sk.userDsh': '用户 ~/.dsh',
+    'lay.sk.userAgents': '用户 ~/.agents',
+    'lay.sk.bundled': '内置',
+    'lay.skillsN': '{n} 个技能',
+    'lay.onDisk': '磁盘上 {n} 个',
+    'lay.empty': '空目录',
+    'lay.otherSources': '其他来源：',
+    'ov.composition': 'Token 构成',
+    'ov.usedShort': '已用',
+    'ov.openCat': '点击查看这一类的消息',
+    'ov.more': '查看全部',
+    'ov.peek.tools': '{n} 个工具 · {c} 次调用',
+    'ov.peek.cmds': '{n} 条 · 共 {d} · 失败 {f}',
+    'ov.peek.bigMsgs': '占用最大的消息',
+    'ov.peek.skills': '已加载 {l} · 目录 {c} · 共 {n}',
+    'ov.statsTitle': '上下文统计',
+    'msg.sum.nodes': '消息节点',
+    'msg.sum.tok': '消息占用',
+    'msg.sum.turns': '轮次',
+    'msg.sum.steps': '步数',
+    'msg.sum.calls': '工具调用',
+    'msg.sum.max': '最大一条',
 };
 const en = {
     'button.title': 'Context: {used} / {window} (click for breakdown)',
@@ -1104,11 +1279,186 @@ const en = {
     'ov.bar.ofWin': '{p} of window',
     'ov.bar.ofUsed': '{p} of used',
     'ov.bar.items': '{n} items',
+    'nav.sources': 'Sources',
+    'ov.stat.turns': 'Turns',
+    'ov.stat.steps': 'Steps',
+    'ov.stat.calls': 'Tool calls',
+    'ov.stat.hit': 'Cache hit',
+    'ov.stat.left': 'To compaction',
+    'st.title': 'Context per step',
+    'st.count': '{n} requests · click a bar for its step',
+    'st.ctx': 'Context',
+    'st.delta': 'vs prev',
+    'st.output': 'Output',
+    'st.cache': 'Cache',
+    'st.viewMsgs': 'Messages',
+    'ov.flowDiagram': 'Execution flow',
+    'ov.flowDiagram.sub': 'Session lifecycle and where it is now',
+    'msg.pre': 'Session start',
+    'msg.step': 'Step {n}',
+    'msg.stepsN': '{n} steps',
+    'msg.itemsN': '{n} items',
+    'msg.allCats': 'All categories',
+    'msg.earlier': 'Show {n} earlier',
+    'msg.none': 'No matching messages',
+    'k.system': 'System',
+    'k.systemTools': 'Tool defs',
+    'k.mcpTools': 'MCP',
+    'k.skills': 'Skills',
+    'k.memory': 'Memory',
+    'k.injected': 'Injected',
+    'k.summary': 'Summary',
+    'k.user': 'User',
+    'k.assistantText': 'Reply',
+    'k.reasoning': 'Thinking',
+    'k.toolCalls': 'Call',
+    'k.toolResults': 'Result',
+    'k.other': 'Other',
+    'tools.callsN': '{n} calls',
+    'tools.defTok': 'def',
+    'tools.useTok': 'use',
+    'tools.definition': 'Definition',
+    'tools.noDef': 'Not among this session\'s tool definitions (deferred or removed).',
+    'tools.search': 'Search tools…',
+    'tools.noUse': 'No tool calls in this session yet',
+    'tools.defsShort': 'Tool definitions',
+    'tools.defsNote': 'sent with every request, by tokens',
+    'tools.paramsShort': '{n} params',
+    'tools.showAllDefs': 'Show all {n}',
+    'tools.deferredN': '{n} deferred (not in context):',
+    'tools.sum.defs': 'Definitions',
+    'tools.sum.defTok': 'Definition tokens',
+    'tools.sum.used': 'Tools used',
+    'tools.sum.calls': 'Calls',
+    'tools.sum.resTok': 'Result tokens',
+    'tools.sum.cmds': 'Commands',
+    'tools.pick': 'Pick a tool on the left to see its calls and definition',
+    'src.search': 'Search memory files / skills…',
+    'src.memNoneShort': 'No memory files loaded; see Environment → File structure for where to put one',
+    'src.skillsShort': '{n} · {l} loaded ({lt}) · {c} in catalog ({ct})',
+    'src.skillsZero': 'No skills available in this session',
+    'src.env': 'Environment',
+    'src.itemsN': '{n} items',
+    'src.treeSum': '{l} loaded · {e} not loaded',
+    'src.sum.mem': 'Memory files',
+    'src.sum.loaded': 'Skills loaded',
+    'src.sum.catalog': 'In catalog',
+    'src.sum.all': 'Skills visible',
+    'src.sum.rt': 'Runtime facts',
+    'src.pick': 'Pick an item on the left to read it',
+    'msg.collapse': 'Collapse',
+    'nav.analyze': 'Analyze',
+    'az.title': 'Context analysis',
+    'az.i1': 'Uses the model this session runs on to analyze its context, find the agent\'s defects and waste, and suggest fixes',
+    'az.i2': 'Fully separate from the current conversation: nothing is written to the session and its context is untouched',
+    'az.i3': 'Off by default; the model is called only when you press Send, and every send costs tokens',
+    'az.i4': 'One question sends about {k} input tokens to {m} (session content goes to the model provider)',
+    'az.noLlm': 'No model service is available here',
+    'az.enable': 'Enable analysis',
+    'az.on': 'On',
+    'az.attach': 'Attach:',
+    'az.sys': 'Full system prompt',
+    'az.toolDesc': 'Tool descriptions',
+    'az.detach': 'Click to remove',
+    'az.cost': '≈{k} input this time',
+    'az.clear': 'Clear',
+    'az.off': 'Turn off',
+    'az.hint': 'The report already has composition, tools, steps and the biggest messages. For the raw text, attach it above or use ✦ on an item in Prompt.',
+    'az.q1': 'Why is this context so large? What should I trim first?',
+    'az.q2': 'Find the agent\'s defects and propose concrete fixes',
+    'az.q3': 'Which tools, skills or memory can be trimmed or deferred?',
+    'az.q4': 'Any repeated reads, repeated calls or useless output? How to avoid them?',
+    'az.thinking': 'Reasoning',
+    'az.working': 'Analyzing…',
+    'az.refs': 'Messages mentioned',
+    'az.usage': 'in {i} · out {o}',
+    'az.placeholder': 'Ask anything, e.g. “Why did step 4 add 3k?” (Enter to send, Shift+Enter for a new line)',
+    'az.stop': 'Stop',
+    'az.send': 'Send',
+    'az.askThis': 'Ask AI about this item',
+    'nav.prompt': 'Prompt',
+    'sd.storyNone': 'No model output or tool calls in this step',
+    'sd.said': 'said',
+    'sd.thought': 'thought',
+    'sd.called': 'called',
+    'sd.story': 'What happened in this step',
+    'sd.fresh': 'new',
+    'sd.toolDefs': '{n} tool definitions',
+    'sd.request': 'request sent here',
+    'sd.promptTitle': 'What the model read',
+    'sd.itemsN': '{n} items',
+    'sd.promptAt': 'Everything the model read for the request at turn {t}, step {s}, top to bottom in reading order',
+    'sd.promptNow': 'Everything the model read for the latest request, top to bottom in reading order; click a divider to see an earlier request',
+    'sd.later': '{n} more after this step ({k}); the model had not seen them yet',
+    'dg.title': 'Diagnosis',
+    'dg.count': '{n} findings',
+    'dg.view': 'View',
+    'dg.ok': 'Nothing stands out: fixed overhead, tool results and single messages are all within normal range',
+    'dg.runway': 'Growing {g} per step lately; automatic compaction in about {n} steps ({r} below the trigger)',
+    'dg.over': 'Already past the compaction trigger; the next step will compact',
+    'dg.fixed': '{k} ({p}) is there before any work starts: tool definitions {tk}, skills and memory {sk}. Every step carries it again',
+    'dg.results': 'Tool results are {p}, mostly from {name} ({k}). Big files and long output are the usual cause',
+    'dg.big': 'Message #{seq} alone is {p} ({k}): {what}',
+    'dg.repeat': 'The same call was made {n} times: {what}',
+    'dg.idle': '{n} tool definitions were never called and cost {k}',
+    'dg.errors': '{n} tool calls failed ({names}); retries add more context',
+    'dg.cache': 'The last request hit the cache for only {p}; most input was not cached',
+    'sd.compacted': 'compacted',
+    'sd.now': 'current (latest)',
+    'sd.backNow': 'Back to current',
+    'sd.added': 'Added',
+    'sd.items': '{n} items · {k}',
+    'sd.none': 'nothing new',
+    'sd.onlyNew': 'Show only what this step added in Messages',
+    'sd.showAll': 'Show all messages',
+    'lay.title': 'Where the agent reads',
+    'lay.sub': 'by dsh\'s actual loading rules',
+    'lay.none': 'Load locations unavailable',
+    'lay.notLoaded': 'exists, not loaded',
+    'lay.memSum': '{n} loaded',
+    'lay.memRule': 'Globally only AGENTS.md is read (not CLAUDE.md). In the project, every level from the root down to the working directory reads both AGENTS.md and CLAUDE.md (both, not either), then the .local versions; identical content in one level counts once. ~/.claude/CLAUDE.md is never read.',
+    'lay.global': 'Global',
+    'lay.globalNote': 'applies to every project; identical content counts once',
+    'lay.project': 'Project',
+    'lay.rootBy': 'root found by {m}',
+    'lay.noRoot': 'no .git: only the working directory level',
+    'lay.root': 'project root',
+    'lay.cwd': 'working dir',
+    'lay.canPlace': 'not present:',
+    'lay.deeper': 'Deeper directories',
+    'lay.deeperNote': 'added once files under them are read or written',
+    'lay.skillRoots': 'Skill roots',
+    'lay.skillRule': 'highest priority first; a name resolves to the first root that has it',
+    'lay.sk.projectDsh': 'Project .dsh',
+    'lay.sk.projectAgents': 'Project .agents',
+    'lay.sk.custom': 'Custom dir',
+    'lay.sk.userDsh': 'User ~/.dsh',
+    'lay.sk.userAgents': 'User ~/.agents',
+    'lay.sk.bundled': 'Bundled',
+    'lay.skillsN': '{n} skills',
+    'lay.onDisk': '{n} on disk',
+    'lay.empty': 'empty',
+    'lay.otherSources': 'Other sources:',
+    'ov.composition': 'Token composition',
+    'ov.usedShort': 'used',
+    'ov.openCat': 'click to see these messages',
+    'ov.more': 'All',
+    'ov.peek.tools': '{n} tools · {c} calls',
+    'ov.peek.cmds': '{n} runs · {d} total · {f} failed',
+    'ov.peek.bigMsgs': 'Largest messages',
+    'ov.peek.skills': '{l} loaded · {c} in catalog · {n} total',
+    'ov.statsTitle': 'Context stats',
+    'msg.sum.nodes': 'Messages',
+    'msg.sum.tok': 'Message tokens',
+    'msg.sum.turns': 'Turns',
+    'msg.sum.steps': 'Steps',
+    'msg.sum.calls': 'Tool calls',
+    'msg.sum.max': 'Largest',
 };
 
 // ===== src/styles/00-text.scss
 /* compiled from src/styles/00-text.scss by build.mjs — edit the .scss, not this file */
-const CSS_TEXT = ".clx-btn {\n  display: inline-flex;\n  align-items: center;\n  gap: 5px;\n  height: 28px;\n  padding: 0 8px;\n  border-radius: 14px;\n  border: none;\n  background: transparent;\n  color: var(--dsw-alias-label-secondary);\n  font-size: 12px;\n  line-height: 1;\n  cursor: pointer;\n  font-variant-numeric: tabular-nums;\n  white-space: nowrap;\n}\n\n.clx-btn:hover, .clx-btn[aria-expanded=true] {\n  background: var(--dsw-alias-interactive-bg-hover);\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-btn.dock {\n  height: 22px;\n  padding: 1px 8px;\n  gap: 6px;\n  border-radius: var(--dsw-radius-sm, 6px);\n  color: var(--dsw-alias-label-tertiary);\n  font-size: var(--dsh-content-font-size-secondary, 13px);\n}\n\n.clx-btn.dock:hover, .clx-btn.dock[aria-expanded=true] {\n  color: var(--dsw-alias-label-secondary);\n}\n\n[data-composer-dock]:has(.clx-dock-ring) > :not([data-slot]) {\n  display: none;\n}\n\n.clx-pop {\n  position: fixed;\n  z-index: 1000;\n  box-sizing: border-box;\n  width: 340px;\n  max-width: calc(100vw - 24px);\n  max-height: min(600px, 100vh - 96px);\n  overflow: auto;\n  border: 0;\n  border-radius: var(--dsw-radius-lg, 16px);\n  background: var(--dsw-specific-menu, var(--dsw-alias-bg-layer-2));\n  backdrop-filter: var(--dsw-menu-backdrop-filter);\n  -webkit-backdrop-filter: var(--dsw-menu-backdrop-filter);\n  --dsw-elevation-stroke-color:var(--dsw-alias-border-l1);\n  box-shadow: var(--dsw-elevation-prominent, 0 8px 28px rgba(0, 0, 0, 0.18));\n  font-size: 12px;\n  line-height: 18px;\n  color: var(--dsw-alias-label-secondary);\n  padding: 16px;\n  text-align: left;\n}\n\n.clx-pop-head {\n  display: flex;\n  align-items: baseline;\n  justify-content: space-between;\n  gap: 16px;\n  padding-bottom: 8px;\n  margin-bottom: 10px;\n  border-bottom: 0.5px solid var(--dsw-alias-border-l2);\n}\n\n.clx-pop-title {\n  font-weight: 500;\n  font-size: 12px;\n  color: var(--dsw-alias-label-primary);\n  display: inline-flex;\n  align-items: baseline;\n  gap: 6px;\n}\n\n.clx-pop-title-en {\n  font-weight: 400;\n  font-size: 12px;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-pop-open {\n  font-size: 12px;\n  white-space: nowrap;\n  padding: 2px 6px;\n  margin: -2px -6px -2px 0;\n  border-radius: 6px;\n  transition: background-color 0.15s ease;\n}\n\n.clx-pop-open:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-pop {\n  animation: clx-pop-in 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) both;\n  transform-origin: bottom right;\n}\n\n@keyframes clx-pop-in {\n  from {\n    opacity: 0;\n    transform: translateY(6px) scale(0.98);\n  }\n  to {\n    opacity: 1;\n    transform: none;\n  }\n}\n.clx-pop-usage {\n  display: flex;\n  align-items: baseline;\n  flex-wrap: wrap;\n  gap: 0 4px;\n}\n\n.clx-pop-usage .clx-sub {\n  white-space: pre;\n}\n\n.clx-pop-chip {\n  margin-left: auto;\n  align-self: center;\n  font-size: 11.5px;\n  padding: 2px 8px;\n  border-radius: 999px;\n  corner-shape: round;\n  color: var(--dsw-alias-label-secondary);\n  background: var(--dsw-alias-bg-layer-2);\n  border: 1px solid var(--dsw-alias-border-l1);\n  font-variant-numeric: tabular-nums;\n  white-space: nowrap;\n}\n\n.clx-pop-chip.warn {\n  color: var(--dsw-alias-state-warn-primary);\n  border-color: color-mix(in srgb, var(--dsw-alias-state-warn-primary) 40%, transparent);\n}\n\n.clx-pop-caption {\n  font-size: 12px;\n  color: var(--dsw-alias-label-tertiary);\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  cursor: default;\n}\n\n.clx-prows {\n  margin-top: 10px;\n  display: flex;\n  flex-direction: column;\n  gap: 1px;\n}\n\n.clx-prows > * {\n  animation: clx-fade 0.3s ease both;\n  animation-delay: calc(0.12s + var(--i, 0) * 35ms);\n}\n\n.clx-prows > .clx-sep {\n  margin: 4px 0;\n}\n\n.clx-prow {\n  display: grid;\n  grid-template-columns: 10px minmax(0, 1fr) 58px 46px;\n  column-gap: 10px;\n  align-items: center;\n  padding: 3px 6px;\n  margin: 0 -6px;\n  border-radius: 6px;\n  font-variant-numeric: tabular-nums;\n  cursor: default;\n  transition: background-color 0.15s ease, opacity 0.2s ease;\n}\n\n.clx-prow.on {\n  background: color-mix(in srgb, var(--cat) 14%, transparent);\n}\n\n.clx-prows[data-active] .clx-prow:not(.on) {\n  opacity: 0.45;\n}\n\n.clx-pbar {\n  height: 10px;\n}\n\n.clx-pbar > span {\n  cursor: default;\n}\n\n.clx-pop-name {\n  min-width: 0;\n  overflow: hidden;\n}\n\n.clx-dot.hollow {\n  background: transparent;\n  border: 1.5px solid;\n  box-sizing: border-box;\n}\n\n.clx-prow .clx-pop-name {\n  display: flex;\n  align-items: center;\n  gap: 4px;\n}\n\n.clx-prow .lead {\n  display: inline-flex;\n  align-items: center;\n  margin-left: 2px;\n  color: var(--dsw-alias-label-tertiary);\n  transition: color 0.15s ease;\n}\n\n.clx-prow.tog {\n  cursor: pointer;\n}\n\n.clx-prow.tog:hover .lead {\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-prow.sub {\n  font-size: 12px;\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-prow.sub .clx-pop-name {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  padding-left: 2px;\n}\n\n.clx-prow.sub .clx-dot {\n  width: 7px;\n  height: 7px;\n  flex: none;\n}\n\n.clx-pkids {\n  display: flex;\n  flex-direction: column;\n  gap: 1px;\n  margin-left: 4px;\n  padding-left: 16px !important;\n  padding-left: 0;\n  border-left: 1px solid var(--dsw-alias-border-l1);\n  animation: clx-drop 0.2s ease both !important;\n}\n\n.clx-pkids > .clx-prow {\n  margin-left: -6px;\n  grid-template-columns: minmax(0, 1fr) 58px 46px;\n  column-gap: 10px;\n}\n\n.clx-pfile {\n  font-family: var(--dsw-font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);\n  font-size: 11.5px;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  min-width: 0;\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .clx-pop, .clx-pop * {\n    animation: none !important;\n    transition: none !important;\n  }\n}\n.clx-muted {\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-sub {\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-big {\n  font-size: 16px;\n  font-weight: 600;\n  color: var(--dsw-alias-label-primary);\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-bar {\n  display: flex;\n  height: 10px;\n  border-radius: 5px;\n  overflow: hidden;\n  background: var(--dsw-alias-border-l1);\n  margin: 8px 0 6px;\n}\n\n.clx-bar > span {\n  height: 100%;\n  min-width: 0;\n}\n\n.clx-bar > span + span {\n  box-shadow: inset 1px 0 0 var(--dsw-alias-bg-layer-1);\n}\n\n.clx-hatch {\n  background: repeating-linear-gradient(135deg, var(--dsw-alias-border-l3) 0 3px, transparent 3px 6px);\n}\n\n.clx-rows {\n  display: grid;\n  grid-template-columns: auto 1fr auto auto;\n  column-gap: 10px;\n  row-gap: 5px;\n  align-items: center;\n  margin-top: 10px;\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-dot {\n  width: 9px;\n  height: 9px;\n  border-radius: 3px;\n  display: inline-block;\n}\n\n.clx-dot.free {\n  border: 1px solid var(--dsw-alias-border-l3);\n}\n\n.clx-num {\n  text-align: right;\n}\n\n.clx-sep {\n  grid-column: 1/-1;\n  height: 1px;\n  background: var(--dsw-alias-border-l1);\n  margin: 3px 0;\n}\n\n.clx-foot {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 8px;\n  margin-top: 12px;\n  padding-top: 10px;\n  border-top: 1px solid var(--dsw-alias-border-l1);\n}\n\n.clx-link {\n  border: none;\n  background: transparent;\n  color: var(--dsw-alias-state-business-primary);\n  cursor: pointer;\n  font-size: 12.5px;\n  padding: 4px 6px;\n  border-radius: 6px;\n}\n\n.clx-link:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-chipbtn {\n  border: 1px solid var(--dsw-alias-border-l2);\n  background: transparent;\n  color: var(--dsw-alias-label-secondary);\n  border-radius: 7px;\n  padding: 3px 9px;\n  font-size: 12px;\n  cursor: pointer;\n}\n\n.clx-chipbtn:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-chipbtn[aria-pressed=true] {\n  background: var(--dsw-alias-interactive-bg-active);\n  color: var(--dsw-alias-label-primary);\n  border-color: var(--dsw-alias-border-l3);\n}\n\n.clx-pane {\n  color: var(--dsw-alias-label-primary);\n  font-size: 13px;\n  line-height: 1.5;\n  padding: 0 0 48px;\n  box-sizing: border-box;\n  min-height: 100%;\n}\n\n/* this view only reads the context and spans the full width, so the conversation it sits in drops\n   its composer and its chat-width drag handles while it is open */\n[data-conversation-content]:has(.clx-pane) [data-composer-seat],\n[data-conversation-content]:has(.clx-pane) > [data-width-handle] {\n  display: none;\n}\n\n.clx-toolbar {\n  position: sticky;\n  top: 0;\n  z-index: 4;\n  padding: 10px var(--dsh-composer-side-clearance, 16px);\n  background: var(--dsw-alias-bg-base);\n}\n\n.clx-col {\n  box-sizing: border-box;\n  width: 100%;\n  margin: 0 auto;\n}\n\n.clx-toolbar-in {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n}\n\n.clx-segnav {\n  display: inline-flex;\n  gap: 2px;\n  padding: 3px;\n  border-radius: 10px;\n  background: var(--dsw-alias-bg-layer-2);\n  border: 1px solid var(--dsw-alias-border-l1);\n  overflow-x: auto;\n  scrollbar-width: none;\n  min-width: 0;\n  max-width: 100%;\n}\n\n.clx-segnav button {\n  display: inline-flex;\n  align-items: center;\n  gap: 6px;\n  border: 0;\n  background: transparent;\n  color: var(--dsw-alias-label-secondary);\n  padding: 5px 11px;\n  border-radius: 7px;\n  font-size: 12.5px;\n  cursor: pointer;\n  white-space: nowrap;\n}\n\n.clx-segnav button:hover {\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-segnav {\n  position: relative;\n}\n\n.clx-segnav::before {\n  content: \"\";\n  position: absolute;\n  left: 0;\n  top: 3px;\n  bottom: 3px;\n  width: var(--ind-w, 0);\n  transform: translateX(var(--ind-x, 0));\n  border-radius: 7px;\n  background: var(--dsw-alias-bg-layer-1);\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 0 0 1px var(--dsw-alias-border-l1);\n  opacity: 0;\n  transition: transform 0.32s cubic-bezier(0.2, 0.8, 0.2, 1), width 0.32s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.2s;\n}\n\n.clx-segnav[data-ind]::before {\n  opacity: 1;\n}\n\n.clx-segnav button {\n  position: relative;\n  z-index: 1;\n  transition: color 0.2s ease;\n}\n\n.clx-segnav[data-ind] button[aria-selected=true] {\n  background: transparent !important;\n  box-shadow: none !important;\n}\n\n.clx-segnav button[aria-selected=true] {\n  background: var(--dsw-alias-bg-layer-1);\n  color: var(--dsw-alias-label-primary);\n  font-weight: 600;\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 0 0 1px var(--dsw-alias-border-l1);\n}\n\n.clx-segnav button svg {\n  display: none;\n}\n\n.clx-toolbar-meta {\n  margin-left: auto;\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  font-size: 12px;\n  font-variant-numeric: tabular-nums;\n  white-space: nowrap;\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-toolbar-live {\n  display: inline-flex;\n  align-items: center;\n  gap: 5px;\n  margin-left: 6px;\n  padding-left: 10px;\n  border-left: 1px solid var(--dsw-alias-border-l1);\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-main {\n  min-width: 0;\n  padding: 4px var(--dsh-composer-side-clearance, 16px) 0;\n}\n\n.clx-main > .clx-col {\n  container-type: inline-size;\n}\n\n@container (max-width: 760px) {\n  .clx-segnav button {\n    padding: 5px 9px;\n  }\n  .clx-toolbar-meta > :not(.clx-toolbar-live) {\n    display: none;\n  }\n  .clx-toolbar-live {\n    border-left: 0;\n    padding-left: 0;\n    margin-left: 0;\n  }\n}\n.clx-card {\n  background: var(--dsw-alias-settings-card-fill);\n  border: 1px solid var(--dsw-alias-settings-card-stroke);\n  border-radius: 10px;\n  padding: 12px;\n  margin-bottom: 12px;\n}\n\n.clx-subh {\n  margin: 4px 0 8px;\n  font-size: 12px;\n  font-weight: 600;\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-subh.sep {\n  margin-top: 14px;\n  padding-top: 12px;\n  border-top: 1px solid var(--dsw-alias-border-l1);\n}\n\n.clx-card h4 {\n  margin: 0 0 8px;\n  font-size: 12.5px;\n  font-weight: 600;\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-kv {\n  display: grid;\n  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));\n  gap: 8px 14px;\n}\n\n.clx-kv > div {\n  min-width: 0;\n}\n\n.clx-kv .k {\n  font-size: 11.5px;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-kv .v {\n  font-variant-numeric: tabular-nums;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.clx-table {\n  width: 100%;\n  border-collapse: collapse;\n  font-variant-numeric: tabular-nums;\n  font-size: 12.5px;\n}\n\n.clx-table th {\n  font-weight: 500;\n  color: var(--dsw-alias-label-tertiary);\n  text-align: right;\n  padding: 4px 6px;\n  border-bottom: 1px solid var(--dsw-alias-border-l1);\n  white-space: nowrap;\n}\n\n.clx-table th:first-child, .clx-table td:first-child {\n  text-align: left;\n}\n\n.clx-table td {\n  padding: 4px 6px;\n  text-align: right;\n  border-bottom: 1px solid var(--dsw-alias-border-l1);\n  white-space: nowrap;\n}\n\n.clx-table td.wrap {\n  white-space: normal;\n  word-break: break-word;\n}\n\n.clx-table tr:last-child td {\n  border-bottom: none;\n}\n\n.clx-scroll {\n  overflow-x: auto;\n}\n\n.clx-gauge {\n  display: flex;\n  align-items: center;\n  gap: 14px;\n  flex-wrap: wrap;\n}\n\n.clx-card-head {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  flex-wrap: wrap;\n  margin-bottom: 8px;\n}\n\n.clx-card-head h4 {\n  margin: 0;\n  flex: 1;\n  min-width: 0;\n}\n\n.clx-card-head > .clx-muted {\n  font-size: 11.5px;\n}\n\n.clx-segmini {\n  display: inline-flex;\n  gap: 4px;\n}\n\n.clx-hero {\n  display: flex;\n  align-items: center;\n  gap: 16px;\n  margin-bottom: 12px;\n}\n\n.clx-hero-main {\n  flex: 1;\n  min-width: 0;\n  display: flex;\n  flex-direction: column;\n  gap: 2px;\n}\n\n.clx-hero-pct {\n  font-size: 26px;\n  font-weight: 650;\n  letter-spacing: -0.01em;\n  font-variant-numeric: tabular-nums;\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-hero-side {\n  display: grid;\n  grid-template-columns: auto auto;\n  gap: 3px 14px;\n  font-size: 12px;\n  align-self: center;\n  padding-left: 16px;\n  border-left: 1px solid var(--dsw-alias-border-l1);\n}\n\n.clx-hero-kv {\n  display: contents;\n}\n\n.clx-hero-kv .k {\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-hero-kv .v {\n  color: var(--dsw-alias-label-primary);\n  font-variant-numeric: tabular-nums;\n  text-align: right;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: 220px;\n}\n\n.clx-hero-card .clx-legend {\n  margin-top: 8px;\n}\n\n.clx-catrow {\n  display: grid;\n  grid-template-columns: minmax(0, 1.5fr) minmax(40px, 1fr) 58px 52px 34px;\n  align-items: center;\n  gap: 10px;\n  padding: 8px 10px;\n  border-radius: 10px;\n  font-size: 12.5px;\n}\n\n.clx-catrow.head {\n  font-size: 11px;\n  color: var(--dsw-alias-label-tertiary);\n  padding: 0 10px 4px;\n}\n\n.clx-catrow.head > span:nth-child(n+3) {\n  text-align: right;\n}\n\n.clx-catrow[role=button] {\n  cursor: pointer;\n}\n\n.clx-catrow[role=button]:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-catrow[role=button]:focus-visible {\n  outline: 2px solid var(--dsw-alias-state-business-primary);\n  outline-offset: -2px;\n}\n\n.clx-catrow .num {\n  text-align: right;\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-catrow.static {\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-catcell {\n  display: flex;\n  align-items: center;\n  gap: 6px;\n  min-width: 0;\n}\n\n.clx-caret {\n  width: 12px;\n  height: 12px;\n  flex: none;\n  display: inline-flex;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-caret svg {\n  transition: transform 0.15s;\n}\n\n.clx-catblock.open .clx-caret svg {\n  transform: rotate(90deg);\n}\n\n.clx-catname {\n  display: flex;\n  align-items: baseline;\n  gap: 6px;\n  min-width: 0;\n  overflow: hidden;\n}\n\n.clx-catname .zh {\n  white-space: nowrap;\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-catname .en {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  font-size: 11px;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-catbar {\n  height: 6px;\n  border-radius: 3px;\n  background: var(--dsw-alias-border-l1);\n  overflow: hidden;\n}\n\n.clx-catbar > span {\n  display: block;\n  height: 100%;\n  border-radius: 3px;\n}\n\n.clx-catitem {\n  display: flex;\n  align-items: flex-start;\n  gap: 10px;\n  padding: 6px 10px 6px 24px;\n  border-radius: 8px;\n}\n\n/* ---- list items: one look everywhere (概览 分类明细, 消息, 工具, 技能, 记忆文件, 轨迹) ----\n   rows are rounded, no hairlines; an open item is the same row grown into a block tinted\n   in its colour, its content aligned with the row's text column; nested lists put their\n   arrows under the parent's dot; a nested open item is a lighter block inside the tint */\n.clx-catblock, .clx-node, .clx-tblock, .clx-disc, .clx-flow-tgroup {\n  border: 0;\n  border-radius: 10px;\n  margin: 0;\n  transition: background-color 0.2s ease;\n}\n\n:is(.clx-catblock, .clx-node, .clx-tblock, .clx-disc, .clx-flow-tgroup) + :is(.clx-catblock, .clx-node, .clx-tblock, .clx-disc, .clx-flow-tgroup) {\n  margin-top: 2px;\n}\n\n:is(.clx-catblock, .clx-node, .clx-tblock, .clx-disc, .clx-flow-tgroup).open {\n  background: color-mix(in srgb, var(--cat, var(--dsw-alias-label-tertiary)) 8%, transparent);\n}\n\n:is(.clx-catblock, .clx-node, .clx-tblock, .clx-disc).open :is(.clx-node, .clx-tblock, .clx-disc).open {\n  background: color-mix(in srgb, var(--cat, var(--dsw-alias-label-tertiary)) 7%, var(--dsw-alias-bg-layer-1));\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);\n}\n\n:is(.clx-catblock, .clx-node, .clx-tblock, .clx-disc).open > :is(.clx-catrow, .clx-node-row, .clx-trow, .clx-urow, .clx-disc-head) {\n  background: transparent;\n}\n\n:is(.clx-catblock, .clx-node, .clx-tblock, .clx-disc).open > :is(.clx-catrow, .clx-node-row, .clx-trow, .clx-urow, .clx-disc-head):hover {\n  background: color-mix(in srgb, var(--cat, var(--dsw-alias-label-tertiary)) 8%, transparent);\n}\n\n:is(.clx-catblock, .clx-node, .clx-tblock, .clx-disc).open :is(.clx-node-row, .clx-trow, .clx-urow, .clx-disc-head, .clx-catitem):hover {\n  background: color-mix(in srgb, var(--cat, var(--dsw-alias-label-tertiary)) 9%, transparent);\n}\n\n.clx-catdetail {\n  margin: 0;\n  padding: 0 8px 8px 18px;\n}\n\n.clx-detail {\n  margin: 0;\n  padding: 0 12px 12px 74px;\n  cursor: auto;\n  animation: clx-drop 0.26s cubic-bezier(0.2, 0.8, 0.2, 1) both;\n}\n\n.clx-expand {\n  margin: 0;\n  padding: 2px 12px 12px 32px;\n  animation: clx-drop 0.26s cubic-bezier(0.2, 0.8, 0.2, 1) both;\n}\n\n.clx-expand > .clx-node:first-of-type, .clx-catdetail > .clx-node:first-of-type {\n  margin-top: 0;\n}\n\n.clx-disc-body {\n  margin: 0;\n  padding: 0 12px 12px 30px;\n  animation: clx-drop 0.26s cubic-bezier(0.2, 0.8, 0.2, 1) both;\n}\n\n@container (max-width: 560px) {\n  .clx-detail {\n    padding-left: 12px;\n  }\n  .clx-expand {\n    padding-left: 12px;\n  }\n  .clx-disc-body {\n    padding-left: 12px;\n  }\n}\n.clx-flow-tgroup {\n  --cat:var(--dsw-alias-state-business-primary);\n}\n\n.clx-flow-turn {\n  padding: 8px 10px;\n  border-radius: 10px;\n  cursor: pointer;\n  transition: background-color 0.15s ease;\n}\n\n.clx-flow-steps .clx-flow-tgroup > .clx-flow-turn {\n  position: sticky;\n  top: 0;\n  z-index: 1;\n  background: var(--dsw-alias-settings-card-fill, var(--dsw-alias-bg-layer-1));\n}\n\n.clx-flow-steps .clx-flow-tgroup.open > .clx-flow-turn {\n  background: linear-gradient(color-mix(in srgb, var(--cat) 8%, transparent), color-mix(in srgb, var(--cat) 8%, transparent)), var(--dsw-alias-settings-card-fill, var(--dsw-alias-bg-layer-1));\n}\n\n.clx-flow-steps .clx-flow-tgroup > .clx-flow-turn:hover {\n  background: linear-gradient(color-mix(in srgb, var(--cat) 14%, transparent), color-mix(in srgb, var(--cat) 14%, transparent)), var(--dsw-alias-settings-card-fill, var(--dsw-alias-bg-layer-1));\n}\n\n.clx-flow-tgroup.open {\n  padding-bottom: 6px;\n}\n\n.clx-flow-tgroup.open .clx-flow-step:hover {\n  background: color-mix(in srgb, var(--cat) 9%, transparent);\n}\n\n.clx-flow-step.sel {\n  background: color-mix(in srgb, var(--cat, var(--dsw-alias-state-business-primary)) 18%, transparent);\n}\n\n.clx-catitem .main {\n  flex: 1;\n  min-width: 0;\n}\n\n/* a call and its result read as one unit */\n.clx-pair {\n  border-radius: 9px;\n  background: color-mix(in srgb, var(--cat, var(--dsw-alias-label-tertiary)) 4%, var(--dsw-alias-bg-layer-1));\n  padding: 6px 10px 8px;\n  margin-top: 6px;\n}\n\n.clx-pair:first-child {\n  margin-top: 0;\n}\n\n.clx-pair > .clx-rich.bare + .clx-rich.bare {\n  border-top: 1px dashed var(--dsw-alias-border-l2);\n}\n\n.clx-pair .clx-rich.bare > .clx-rich-body.flush, .clx-pair .clx-rich.bare .clx-code pre, .clx-pair .clx-rich.bare .clx-code [data-code-block-content] {\n  background: var(--dsw-alias-bg-layer-2) !important;\n}\n\n.clx-pair-note {\n  font-size: 12px;\n  color: var(--dsw-alias-label-tertiary);\n  padding: 6px 0 2px;\n  border-top: 1px dashed var(--dsw-alias-border-l2);\n  margin-top: 6px;\n}\n\n.clx-pair-note:first-child {\n  border-top: 0;\n  margin-top: 0;\n}\n\n.clx-node.paired {\n  margin-left: 30px;\n}\n\n.clx-node.paired > .clx-node-row .seq::before {\n  content: \"↳ \";\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-inv-row .prev.res {\n  display: flex;\n  align-items: center;\n  gap: 6px;\n  color: var(--dsw-alias-label-secondary);\n  font-size: 12px;\n  overflow: hidden;\n  white-space: nowrap;\n}\n\n.clx-inv-row .prev.res .clx-dot {\n  flex: none;\n  width: 6px;\n  height: 6px;\n}\n\n.clx-inv-row .prev.err {\n  color: var(--dsw-alias-state-error-primary);\n}\n\n.clx-cmdcard {\n  container-type: inline-size;\n}\n\n.clx-cmdcard > .clx-card-head h4 {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n}\n\n.clx-cmd-icon {\n  font: 600 11px/1 ui-monospace, SFMono-Regular, Menlo, monospace;\n  color: var(--dsw-alias-label-tertiary);\n  letter-spacing: -0.5px;\n}\n\n.clx-cmd-status {\n  display: inline-flex;\n  gap: 2px;\n  padding: 2px;\n  border-radius: 9px;\n  background: var(--dsw-alias-bg-layer-1);\n  border: 1px solid var(--dsw-alias-border-l1);\n}\n\n.clx-cmd-sbtn {\n  display: inline-flex;\n  align-items: center;\n  gap: 6px;\n  border: 0;\n  background: transparent;\n  border-radius: 7px;\n  padding: 3px 10px;\n  font-size: 12px;\n  cursor: pointer;\n  color: var(--dsw-alias-label-secondary);\n  transition: background-color 0.15s ease, color 0.15s ease;\n}\n\n.clx-cmd-sbtn b {\n  font-weight: 600;\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-cmd-sbtn.bad {\n  color: var(--dsw-alias-state-error-primary);\n}\n\n.clx-cmd-sbtn.slow {\n  color: #C98A1E;\n}\n\n.clx-cmd-sbtn.bg {\n  color: #2B93C4;\n}\n\n.clx-cmd-sbtn:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-cmd-sbtn[aria-pressed=true] {\n  background: var(--dsw-alias-state-business-primary);\n  color: #fff;\n}\n\n.clx-cmd-sbtn.bad[aria-pressed=true] {\n  background: var(--dsw-alias-state-error-primary);\n}\n\n.clx-cmd-sbtn.slow[aria-pressed=true] {\n  background: #D6951F;\n}\n\n.clx-cmd-sbtn.bg[aria-pressed=true] {\n  background: #2B93C4;\n}\n\n.clx-cmd {\n  display: grid;\n  grid-template-columns: minmax(210px, 270px) minmax(0, 1fr);\n  gap: 18px;\n  align-items: start;\n}\n\n.clx-cmd-side {\n  display: flex;\n  flex-direction: column;\n  gap: 6px;\n  min-width: 0;\n}\n\n.clx-cmd-h {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  font-size: 12px;\n  font-weight: 600;\n  color: var(--dsw-alias-label-secondary);\n  margin: 6px 2px 0;\n}\n\n.clx-cmd-h:first-child {\n  margin-top: 0;\n}\n\n.clx-cmd-h > span {\n  flex: 1;\n}\n\n.clx-cmd-tiles {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 6px;\n}\n\n.clx-cmd-tile {\n  display: flex;\n  flex-direction: column;\n  gap: 2px;\n  padding: 8px 10px;\n  border-radius: 10px;\n  background: var(--dsw-alias-bg-layer-1);\n}\n\n.clx-cmd-tile[role=button] {\n  cursor: pointer;\n}\n\n.clx-cmd-tile[role=button]:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-cmd-tile b {\n  font-size: 18px;\n  font-weight: 650;\n  font-variant-numeric: tabular-nums;\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-cmd-tile b.accent {\n  color: var(--dsw-alias-state-business-primary);\n}\n\n.clx-cmd-tile b.bad {\n  color: var(--dsw-alias-state-error-primary);\n}\n\n.clx-cmd-tile b.bgc {\n  color: #2B93C4;\n}\n\n.clx-cmd-tile span {\n  font-size: 11.5px;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-cmd-notes {\n  display: flex;\n  flex-direction: column;\n  gap: 2px;\n}\n\n.clx-cmd-note {\n  display: grid;\n  grid-template-columns: 8px auto minmax(0, 1fr) auto;\n  align-items: center;\n  gap: 8px;\n  padding: 6px 10px;\n  border-radius: 10px;\n  font-size: 12px;\n  cursor: pointer;\n  background: var(--dsw-alias-bg-layer-1);\n}\n\n.clx-cmd-note:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-cmd-note .clx-dot {\n  width: 7px;\n  height: 7px;\n}\n\n.clx-cmd-note .k {\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-cmd-note code {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  font-size: 11.5px;\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-cmd-note b {\n  font-weight: 600;\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-cmd-note b.slow, .clx-cmd-row .dur.slow, .clx-cmd-meta b.slow {\n  color: #C98A1E;\n}\n\n.clx-cmd-note b.bad, .clx-cmd-meta b.bad {\n  color: var(--dsw-alias-state-error-primary);\n}\n\n.clx-cmd-pq {\n  width: 120px;\n  min-width: 0;\n  font-size: 11.5px;\n  padding: 2px 8px;\n  border-radius: 6px;\n  border: 1px solid var(--dsw-alias-border-l2);\n  background: var(--dsw-alias-bg-layer-1);\n  color: var(--dsw-alias-label-primary);\n  font-weight: 400;\n}\n\n.clx-cmd-progs {\n  display: flex;\n  flex-direction: column;\n  gap: 2px;\n  max-height: 360px;\n  overflow: auto;\n  margin: 0 -2px;\n  padding: 0 2px;\n}\n\n.clx-cmd-prog {\n  display: grid;\n  grid-template-columns: 8px minmax(0, 1fr) auto auto;\n  grid-template-rows: auto 3px;\n  align-items: center;\n  column-gap: 8px;\n  row-gap: 4px;\n  padding: 6px 10px;\n  border-radius: 10px;\n  cursor: pointer;\n  font-size: 12.5px;\n}\n\n.clx-cmd-prog:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-cmd-prog.on {\n  background: color-mix(in srgb, var(--pc) 14%, transparent);\n}\n\n.clx-cmd-prog .clx-dot {\n  background: var(--pc);\n  width: 7px;\n  height: 7px;\n}\n\n.clx-cmd-prog code {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.clx-cmd-prog .n {\n  grid-column: 4;\n  font-variant-numeric: tabular-nums;\n  color: var(--dsw-alias-label-secondary);\n  font-size: 12px;\n  white-space: nowrap;\n}\n\n.clx-cmd-prog .n em {\n  font-style: normal;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-cmd-prog .clx-cmd-badge {\n  grid-column: 3;\n}\n\n.clx-cmd-prog .bar {\n  grid-column: 2/5;\n  grid-row: 2;\n  height: 3px;\n  border-radius: 2px;\n  background: color-mix(in srgb, var(--pc) 12%, transparent);\n  overflow: hidden;\n}\n\n.clx-cmd-prog .bar > span {\n  display: block;\n  height: 100%;\n  border-radius: 2px;\n  background: var(--pc);\n  opacity: 0.75;\n}\n\n.clx-cmd-main {\n  min-width: 0;\n}\n\n.clx-cmd-main > .clx-msgtools {\n  margin-bottom: 6px;\n}\n\n.clx-cmd-filt {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  font-size: 12px;\n  margin: 0 2px 6px;\n}\n\n.clx-linkbtn {\n  border: 0;\n  background: transparent;\n  padding: 0;\n  font-size: 12px;\n  color: var(--dsw-alias-state-business-primary);\n  cursor: pointer;\n}\n\n.clx-linkbtn:hover {\n  text-decoration: underline;\n}\n\n.clx-cmd-row {\n  display: grid;\n  grid-template-columns: 12px 14px minmax(0, 1fr) auto 56px auto;\n  align-items: center;\n  gap: 8px;\n  padding: 8px 10px;\n  border-radius: 10px;\n  font-size: 12.5px;\n  cursor: pointer;\n  transition: background-color 0.15s ease;\n}\n\n.clx-cmd-row:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-cmd-row:focus-visible {\n  outline: 2px solid var(--dsw-alias-state-business-primary);\n  outline-offset: -2px;\n}\n\n.clx-cmd-row .cmd {\n  min-width: 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-cmd-row .tags {\n  display: inline-flex;\n  gap: 4px;\n}\n\n.clx-cmd-row .dur {\n  text-align: right;\n  font-variant-numeric: tabular-nums;\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-cmd-row .when {\n  text-align: right;\n  font-variant-numeric: tabular-nums;\n  color: var(--dsw-alias-label-tertiary);\n  font-size: 11.5px;\n  white-space: nowrap;\n}\n\n.clx-cmd-st {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  width: 14px;\n  font-size: 12px;\n  font-weight: 700;\n}\n\n.clx-cmd-st.ok {\n  color: #3FB37F;\n}\n\n.clx-cmd-st.bad {\n  color: var(--dsw-alias-state-error-primary);\n}\n\n.clx-cmd-st.run::before {\n  content: \"\";\n  width: 9px;\n  height: 9px;\n  border-radius: 50%;\n  corner-shape: round;\n  border: 2px solid #3BA7D9;\n  border-right-color: transparent;\n  animation: clx-spin 0.8s linear infinite;\n}\n\n@keyframes clx-spin {\n  to {\n    transform: rotate(360deg);\n  }\n}\n.clx-cmd-badge {\n  display: inline-flex;\n  align-items: center;\n  padding: 0 6px;\n  border-radius: 999px;\n  corner-shape: round;\n  font-size: 10.5px;\n  line-height: 17px;\n  white-space: nowrap;\n  border: 1px solid var(--dsw-alias-border-l2);\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-cmd-badge.bad {\n  border-color: color-mix(in srgb, var(--dsw-alias-state-error-primary) 40%, transparent);\n  color: var(--dsw-alias-state-error-primary);\n}\n\n.clx-cmd-badge.bg {\n  border-color: color-mix(in srgb, #2B93C4 40%, transparent);\n  color: #2B93C4;\n}\n\n.clx-cmd-dir {\n  display: inline-flex;\n  align-items: center;\n  gap: 4px;\n  vertical-align: 1px;\n  max-width: min(40%, 180px);\n  margin-right: 6px;\n  padding: 0 6px;\n  border-radius: 5px;\n  font: 500 11px/18px var(--dsw-font-family, inherit);\n  color: var(--dsw-alias-label-secondary);\n  background: var(--dsw-alias-bg-layer-1);\n  border: 1px solid var(--dsw-alias-border-l1);\n  white-space: nowrap;\n}\n\n.clx-cmd-dir svg {\n  flex: none;\n  opacity: 0.7;\n}\n\n.clx-cmd-dir > span {\n  min-width: 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n\n.clx-cmdtext .prog {\n  color: var(--dsw-alias-state-business-primary);\n  font-weight: 600;\n}\n\n.clx-cmdtext .op {\n  color: var(--dsw-alias-label-tertiary);\n  font-weight: 600;\n}\n\n.clx-cmdtext .redir {\n  color: #D2555A;\n}\n\n.clx-cmdtext .str {\n  color: #2F8F5B;\n}\n\n.clx-cmdtext .flag {\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-cmd-item.failed > .clx-cmd-row .cmd {\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-node.open > .clx-cmd-row {\n  background: transparent;\n}\n\n.clx-node.open > .clx-cmd-row:hover {\n  background: color-mix(in srgb, var(--cat) 9%, transparent);\n}\n\n.clx-cmd-detail {\n  padding: 0 12px 12px 54px;\n}\n\n.clx-cmd-desc {\n  font-size: 12.5px;\n  color: var(--dsw-alias-label-secondary);\n  margin-bottom: 6px;\n}\n\n.clx-cmd-meta {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 4px 16px;\n  font-size: 12px;\n  margin-bottom: 8px;\n}\n\n.clx-cmd-meta span {\n  display: inline-flex;\n  gap: 6px;\n  min-width: 0;\n}\n\n.clx-cmd-meta i {\n  font-style: normal;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-cmd-meta b {\n  font-weight: 500;\n  color: var(--dsw-alias-label-primary);\n  overflow-wrap: anywhere;\n}\n\n@container (max-width: 880px) {\n  .clx-cmd {\n    grid-template-columns: minmax(0, 1fr);\n  }\n  .clx-cmd-tiles {\n    grid-template-columns: repeat(4, minmax(0, 1fr));\n  }\n  .clx-cmd-progs {\n    display: grid;\n    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));\n    column-gap: 8px;\n  }\n  .clx-cmd-progs {\n    max-height: 220px;\n  }\n}\n@container (max-width: 560px) {\n  .clx-cmd-tiles {\n    grid-template-columns: 1fr 1fr;\n  }\n  .clx-cmd-row {\n    grid-template-columns: 12px 14px minmax(0, 1fr) 52px;\n  }\n  .clx-cmd-row .tags, .clx-cmd-row .when {\n    display: none;\n  }\n  .clx-cmd-detail {\n    padding: 0 10px 10px 12px;\n  }\n}\n.clx-minibar.two {\n  display: flex;\n  gap: 2px;\n  background: none;\n}\n\n.clx-minibar.two > span {\n  border-radius: 2px;\n}\n\n.clx-catitem .name {\n  font-weight: 550;\n  font-size: 12.5px;\n  word-break: break-all;\n}\n\n.clx-catitem .desc {\n  font-size: 11.5px;\n  color: var(--dsw-alias-label-tertiary);\n  display: -webkit-box;\n  -webkit-line-clamp: 2;\n  -webkit-box-orient: vertical;\n  overflow: hidden;\n}\n\n.clx-catitem .tok {\n  font-size: 12px;\n  font-variant-numeric: tabular-nums;\n  color: var(--dsw-alias-label-secondary);\n  white-space: nowrap;\n}\n\n.clx-catfoot {\n  display: flex;\n  gap: 6px;\n  flex-wrap: wrap;\n  margin-top: 8px;\n}\n\n@container (max-width: 560px) {\n  .clx-catrow {\n    grid-template-columns: minmax(0, 1fr) 58px 52px;\n  }\n  .clx-catrow > :nth-child(2), .clx-catrow > :nth-child(5) {\n    display: none;\n  }\n  .clx-hero {\n    flex-wrap: wrap;\n  }\n  .clx-hero-side {\n    border-left: 0;\n    padding-left: 0;\n    width: 100%;\n  }\n}\n.clx-legend {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 4px 12px;\n  font-size: 12px;\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-legend span {\n  display: inline-flex;\n  align-items: center;\n  gap: 5px;\n}\n\n.clx-msgtools {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 6px;\n  align-items: center;\n  margin-bottom: 8px;\n}\n\n.clx-msgtools input {\n  flex: 1 1 160px;\n  min-width: 0;\n  background: var(--dsw-alias-bg-layer-1);\n  color: var(--dsw-alias-label-primary);\n  border: 1px solid var(--dsw-alias-border-l2);\n  border-radius: 7px;\n  padding: 5px 8px;\n  font-size: 12.5px;\n}\n\n.clx-chips {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 4px;\n  margin-bottom: 8px;\n}\n\n.clx-chip {\n  display: inline-flex;\n  align-items: center;\n  gap: 5px;\n  border: 1px solid var(--dsw-alias-border-l2);\n  border-radius: 999px;\n  corner-shape: round;\n  padding: 2px 8px;\n  font-size: 11.5px;\n  cursor: pointer;\n  background: transparent;\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-chip[aria-pressed=true] {\n  background: var(--dsw-alias-interactive-bg-active);\n  color: var(--dsw-alias-label-primary);\n  border-color: var(--dsw-alias-border-l3);\n}\n\n.clx-node-row {\n  display: grid;\n  grid-template-columns: 12px 36px minmax(0, 1fr) 64px;\n  gap: 8px;\n  align-items: center;\n  padding: 8px 10px;\n  cursor: pointer;\n  border-radius: 10px;\n  transition: background-color 0.15s ease, box-shadow 0.15s ease;\n}\n\n.clx-node-row:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-node-row .seq {\n  font-size: 11px;\n  color: var(--dsw-alias-label-tertiary);\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-node-row .main {\n  min-width: 0;\n}\n\n.clx-node-row .line1 {\n  display: flex;\n  align-items: center;\n  gap: 6px;\n  font-size: 11.5px;\n  color: var(--dsw-alias-label-tertiary);\n  min-width: 0;\n}\n\n.clx-node-row .prev {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  font-size: 12.5px;\n}\n\n.clx-node-row .tok {\n  text-align: right;\n  font-variant-numeric: tabular-nums;\n  font-size: 12.5px;\n}\n\n.clx-minibar {\n  height: 3px;\n  border-radius: 2px;\n  margin-top: 3px;\n  background: var(--dsw-alias-border-l1);\n  overflow: hidden;\n}\n\n.clx-minibar > span {\n  display: block;\n  height: 100%;\n}\n\n.clx-tag {\n  display: inline-flex;\n  align-items: center;\n  gap: 4px;\n  white-space: nowrap;\n}\n\n.clx-callid {\n  font-family: var(--dsw-font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);\n  font-size: 11px;\n  max-width: 24ch;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.clx-detail-meta {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 4px 10px;\n  font-size: 11.5px;\n  color: var(--dsw-alias-label-tertiary);\n  margin-bottom: 6px;\n}\n\n.clx-part {\n  margin-top: 8px;\n}\n\n.clx-part-head {\n  display: flex;\n  gap: 8px;\n  font-size: 11.5px;\n  color: var(--dsw-alias-label-tertiary);\n  margin-bottom: 3px;\n}\n\n.clx-pre {\n  margin: 0;\n  max-height: 360px;\n  overflow: auto;\n  white-space: pre-wrap;\n  word-break: break-word;\n  background: var(--dsw-alias-bg-layer-2);\n  border: 1px solid var(--dsw-alias-border-l1);\n  border-radius: 7px;\n  padding: 8px;\n  font-size: 12px;\n  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;\n}\n\n.clx-rich.bare {\n  margin-top: 0;\n  border: 0;\n  border-radius: 0;\n  background: none;\n  overflow: visible;\n}\n\n.clx-rich.bare + .clx-rich.bare {\n  margin-top: 10px;\n  padding-top: 8px;\n  border-top: 1px solid var(--dsw-alias-border-l1);\n}\n\n.clx-rich.bare > .clx-rich-head {\n  padding: 4px 0 6px;\n  background: none;\n  border-bottom: 0;\n  font-size: 11.5px;\n}\n\n.clx-rich.bare > .clx-rich-note {\n  margin: 0 0 8px;\n  border-radius: 7px;\n  border-bottom: 0;\n}\n\n.clx-rich.bare > .clx-rich-body {\n  padding: 2px 2px 4px;\n  font-size: 13px;\n}\n\n.clx-rich.bare > .clx-rich-body:has(> [class*=json], > .clx-plain.mono) {\n  padding: 8px 10px;\n  border-radius: 8px;\n  background: var(--dsw-alias-bg-layer-1);\n}\n\n.clx-rich.bare > .clx-rich-body.flush {\n  padding: 0;\n  border-radius: 8px;\n  overflow: hidden;\n  background: var(--dsw-alias-bg-layer-1);\n}\n\n.clx-rich.bare .clx-code [data-code-block-content], .clx-rich.bare .clx-code pre {\n  background: var(--dsw-alias-bg-layer-1) !important;\n}\n\n.clx-rich.bare > .clx-rich-more {\n  border-top: 0;\n  border-radius: 6px;\n  margin-top: 4px;\n}\n\n.clx-rich {\n  margin-top: 8px;\n  border: 1px solid var(--dsw-alias-border-l1);\n  border-radius: 10px;\n  background: var(--dsw-alias-bg-layer-1);\n  overflow: hidden;\n}\n\n.clx-rich-head {\n  display: flex;\n  align-items: center;\n  flex-wrap: wrap;\n  gap: 8px;\n  row-gap: 4px;\n  padding: 6px 10px;\n  font-size: 12px;\n  border-bottom: 1px solid var(--dsw-alias-border-l1);\n  background: var(--dsw-alias-bg-layer-2);\n}\n\n.clx-rich-head b {\n  font-weight: 600;\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-rich-modes {\n  margin-left: auto;\n  display: inline-flex;\n  border: 1px solid var(--dsw-alias-border-l2);\n  border-radius: 6px;\n  overflow: hidden;\n}\n\n.clx-seg {\n  border: 0;\n  background: transparent;\n  color: var(--dsw-alias-label-tertiary);\n  font-size: 11.5px;\n  padding: 2px 8px;\n  cursor: pointer;\n}\n\n.clx-seg + .clx-seg {\n  border-left: 1px solid var(--dsw-alias-border-l2);\n}\n\n.clx-seg[aria-pressed=true] {\n  background: var(--dsw-alias-interactive-bg-active);\n  color: var(--dsw-alias-label-primary);\n}\n\n/* 「↗ 预览」: opens the file a tool touched in dsh's right Sidebar (the snapshot stays inline) */\n.clx-filepreview {\n  display: inline-flex;\n  align-items: center;\n  gap: 6px;\n  min-width: 0;\n}\n\n.clx-filebtn {\n  display: inline-flex;\n  align-items: center;\n  gap: 5px;\n  border: 1px solid var(--dsw-alias-border-l2);\n  background: var(--dsw-alias-bg-layer-1);\n  color: var(--dsw-alias-state-business-primary);\n  font-size: 11.5px;\n  line-height: 1.4;\n  padding: 2px 8px;\n  border-radius: 6px;\n  cursor: pointer;\n  white-space: nowrap;\n  transition: background-color 0.15s ease, border-color 0.15s ease;\n}\n\n.clx-filebtn:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n  border-color: var(--dsw-alias-state-business-primary);\n}\n\n.clx-filebtn:focus-visible {\n  outline: 2px solid var(--dsw-alias-border-focus, #4d8cff);\n  outline-offset: 1px;\n}\n\n.clx-filebtn svg {\n  flex: none;\n}\n\n.clx-filepreview-note {\n  font-size: 11px;\n  color: var(--dsw-alias-state-warn-label, var(--dsw-alias-state-warn-primary));\n  overflow-wrap: anywhere;\n}\n\n.clx-rich-body {\n  padding: 10px 14px;\n  font-size: 13.5px;\n  line-height: 1.6;\n  color: var(--dsw-alias-label-primary);\n  overflow-wrap: anywhere;\n}\n\n.clx-rich-body.folded {\n  max-height: 420px;\n  overflow: hidden;\n  -webkit-mask-image: linear-gradient(#000 78%, transparent);\n  mask-image: linear-gradient(#000 78%, transparent);\n}\n\n.clx-rich-more {\n  display: block;\n  width: 100%;\n  border: 0;\n  border-top: 1px solid var(--dsw-alias-border-l1);\n  background: transparent;\n  color: var(--dsw-alias-label-secondary);\n  font-size: 12px;\n  padding: 6px;\n  cursor: pointer;\n}\n\n.clx-rich-more:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-md {\n  min-width: 0;\n}\n\n.clx-rich-body.flush {\n  padding: 0;\n}\n\n.clx-code {\n  position: relative;\n}\n\n.clx-code :has(> [data-code-block-banner]) {\n  position: absolute;\n  top: 6px;\n  right: 8px;\n  z-index: 1;\n  height: auto;\n  min-height: 0;\n  padding: 0;\n  margin: 0;\n  background: none;\n  border: 0;\n}\n\n.clx-code [data-code-block-banner] {\n  padding: 0;\n  background: none;\n  border: 0;\n  min-height: 0;\n}\n\n.clx-code [data-code-block-banner] > :first-child {\n  display: none;\n}\n\n.clx-code > * {\n  margin: 0 !important;\n  border: 0 !important;\n  border-radius: 0 !important;\n}\n\n.clx-rich-note {\n  font-size: 11.5px;\n  padding: 6px 10px;\n  color: var(--dsw-alias-state-warn-label, var(--dsw-alias-state-warn-primary));\n  background: color-mix(in srgb, var(--dsw-alias-state-warn-primary) 8%, transparent);\n  border-bottom: 1px solid var(--dsw-alias-border-l1);\n  overflow-wrap: anywhere;\n}\n\n.clx-md > :first-child {\n  margin-top: 0;\n}\n\n.clx-md > :last-child {\n  margin-bottom: 0;\n}\n\n.clx-plain {\n  margin: 0;\n  white-space: pre-wrap;\n  word-break: break-word;\n  font-size: 12.5px;\n  line-height: 1.55;\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-plain.mono {\n  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;\n  font-size: 12px;\n}\n\n.clx-disc-head {\n  display: flex;\n  gap: 8px;\n  align-items: flex-start;\n  padding: 8px 10px;\n  cursor: pointer;\n  border-radius: 10px;\n  transition: background-color 0.15s ease, box-shadow 0.15s ease;\n}\n\n.clx-disc-head:focus-visible {\n  outline: 2px solid var(--dsw-alias-state-business-primary);\n  outline-offset: -2px;\n}\n\n.clx-disc-head:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-disc-caret {\n  display: inline-flex;\n  width: 12px;\n  flex: none;\n  padding-top: 3px;\n}\n\n.clx-disc-head > :last-child {\n  flex: 1;\n  min-width: 0;\n}\n\n.clx-src-row {\n  display: flex;\n  flex-wrap: wrap;\n  align-items: center;\n  gap: 4px 10px;\n  font-size: 12.5px;\n}\n\n.clx-src-name {\n  font-weight: 600;\n  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;\n  font-size: 12.5px;\n  overflow-wrap: anywhere;\n}\n\n.clx-src-tok {\n  margin-left: auto;\n  font-variant-numeric: tabular-nums;\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-src-meta {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 4px 12px;\n  font-size: 11.5px;\n  color: var(--dsw-alias-label-tertiary);\n  margin-bottom: 2px;\n  overflow-wrap: anywhere;\n}\n\n.clx-src-meta a, .clx-link {\n  color: var(--dsw-alias-state-business-primary);\n  cursor: pointer;\n  font-size: 11.5px;\n}\n\n.clx-src-path {\n  font-size: 12px;\n  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;\n  overflow-wrap: anywhere;\n  margin-bottom: 8px;\n}\n\n.clx-skill-desc {\n  font-size: 12.5px;\n  color: var(--dsw-alias-label-secondary);\n  margin-top: 3px;\n  line-height: 1.5;\n  overflow-wrap: anywhere;\n}\n\n.clx-badge {\n  font-size: 11px;\n  padding: 0 7px;\n  border-radius: 9px;\n  border: 1px solid var(--dsw-alias-border-l2);\n  color: var(--dsw-alias-label-secondary);\n  white-space: nowrap;\n}\n\n.clx-badge.ok {\n  border-color: transparent;\n  background: color-mix(in srgb, var(--dsw-alias-state-success-primary) 16%, transparent);\n  color: var(--dsw-alias-state-success-primary);\n}\n\n.clx-badge.dim {\n  color: var(--dsw-alias-label-tertiary);\n  border-style: dashed;\n}\n\n.clx-empty {\n  font-size: 12.5px;\n  color: var(--dsw-alias-label-tertiary);\n  padding: 10px;\n  border: 1px dashed var(--dsw-alias-border-l2);\n  border-radius: 8px;\n}\n\n.clx-memtab {\n  display: grid;\n  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);\n  gap: 12px;\n  align-items: start;\n}\n\n.clx-memtab-l, .clx-memtab-r {\n  min-width: 0;\n  container-type: inline-size;\n}\n\n.clx-ft {\n  grid-template-columns: max-content 32px minmax(0, 1fr) !important;\n}\n\n@container (max-width: 1020px) {\n  .clx-memtab {\n    grid-template-columns: minmax(0, 1fr);\n  }\n}\n.clx-ftcard > .clx-card-head {\n  margin-bottom: 2px;\n}\n\n.clx-ft-legend {\n  display: inline-flex;\n  align-items: center;\n  gap: 6px;\n  font-size: 11.5px;\n}\n\n.clx-ft-legend {\n  flex-wrap: wrap;\n}\n\n.clx-ft-legend .clx-chip {\n  margin-left: 6px;\n  white-space: nowrap;\n}\n\n.clx-ft {\n  display: grid;\n  grid-template-columns: max-content minmax(28px, 110px) minmax(0, 1fr);\n  row-gap: 1px;\n  padding: 4px 0 2px;\n}\n\n.clx-ft-row {\n  display: grid;\n  grid-column: 1/-1;\n  grid-template-columns: subgrid;\n  align-items: center;\n  min-height: 32px;\n  padding: 0 10px;\n  border-radius: 9px;\n  transition: background-color 0.15s ease;\n  animation: clx-fade 0.35s ease both;\n  animation-delay: calc(var(--i, 0) * 12ms);\n}\n\n.clx-ft-row:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-ft-row.open {\n  cursor: pointer;\n}\n\n.clx-ft-row.open:hover .clx-ft-name {\n  text-decoration: underline;\n  text-underline-offset: 2px;\n  text-decoration-color: color-mix(in srgb, var(--ft) 60%, transparent);\n}\n\n.clx-ft-st.link {\n  cursor: pointer;\n}\n\n.clx-ft-st.link:hover {\n  box-shadow: 0 0 0 1px color-mix(in srgb, #C9772F 55%, transparent);\n}\n\n.clx-ft-st.link:focus-visible {\n  outline: 2px solid color-mix(in srgb, #C9772F 55%, transparent);\n  outline-offset: 1px;\n}\n\n.clx-ft-note {\n  margin: 2px 2px 6px;\n  font-size: 12px;\n  color: var(--dsw-alias-state-error-primary);\n}\n\n.clx-ft-row.top {\n  min-height: 40px;\n  margin-top: 10px;\n  background: color-mix(in srgb, var(--ft) 8%, transparent);\n}\n\n.clx-ft-row.top:first-child {\n  margin-top: 0;\n}\n\n.clx-ft-row.top:hover {\n  background: color-mix(in srgb, var(--ft) 12%, transparent);\n}\n\n.clx-ft-tree {\n  display: flex;\n  align-items: center;\n  gap: 7px;\n  min-width: 0;\n  align-self: stretch;\n}\n\n.clx-ft-g {\n  position: relative;\n  align-self: stretch;\n  flex: none;\n  width: 20px;\n  margin-right: -7px;\n}\n\n.clx-ft-g.pipe::before, .clx-ft-g.tee::before, .clx-ft-g.elbow::before {\n  content: \"\";\n  position: absolute;\n  left: 8px;\n  top: 0;\n  bottom: 0;\n  border-left: 1.5px solid color-mix(in srgb, var(--dsw-alias-label-tertiary) 35%, transparent);\n}\n\n.clx-ft-g.elbow::before {\n  bottom: 50%;\n  border-bottom-left-radius: 5px;\n}\n\n.clx-ft-g.tee::after, .clx-ft-g.elbow::after {\n  content: \"\";\n  position: absolute;\n  left: 8px;\n  right: 3px;\n  top: 50%;\n  border-top: 1.5px solid color-mix(in srgb, var(--dsw-alias-label-tertiary) 35%, transparent);\n}\n\n.clx-ft-g + .clx-ft-icon, .clx-ft-g + .clx-linkbtn {\n  margin-left: 7px;\n}\n\n.clx-ft-icon {\n  flex: none;\n}\n\n.clx-ft-row.top .clx-ft-icon {\n  width: 17px;\n  height: 17px;\n}\n\n.clx-ft-name {\n  font: 13px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;\n  color: var(--dsw-alias-label-primary);\n  white-space: nowrap;\n}\n\n.clx-ft-name.dir {\n  font-weight: 600;\n}\n\n.clx-ft-row.top .clx-ft-name {\n  font-size: 13.5px;\n  font-weight: 650;\n}\n\n.clx-ft-st {\n  flex: none;\n  display: inline-flex;\n  align-items: center;\n  padding: 0 7px;\n  border-radius: 999px;\n  corner-shape: round;\n  font-size: 11px;\n  line-height: 18px;\n  color: var(--dsw-alias-label-secondary);\n  background: var(--dsw-alias-bg-layer-1);\n  white-space: nowrap;\n}\n\n.clx-ft-st.loaded {\n  color: #fff;\n  background: #C9772F;\n  font-weight: 600;\n}\n\n.clx-ft-st.missing {\n  background: transparent;\n  border: 1px dashed var(--dsw-alias-border-l3, var(--dsw-alias-border-l2));\n  line-height: 16px;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-ft-row.missing .clx-ft-name {\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-ft-row.missing .clx-ft-icon {\n  opacity: 0.5;\n}\n\n.clx-ft-lead {\n  align-self: center;\n  margin: 0 10px;\n  border-top: 1.5px dotted color-mix(in srgb, var(--dsw-alias-label-tertiary) 40%, transparent);\n}\n\n.clx-ft-pill {\n  justify-self: start;\n  max-width: 100%;\n  padding: 3px 12px;\n  border-radius: 999px;\n  corner-shape: round;\n  font-size: 12.5px;\n  line-height: 1.45;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  background: color-mix(in srgb, var(--ft) 14%, transparent);\n  color: color-mix(in srgb, var(--ft) 70%, var(--dsw-alias-label-primary));\n}\n\n.clx-ft-row.top .clx-ft-pill {\n  font-weight: 600;\n  background: color-mix(in srgb, var(--ft) 20%, transparent);\n}\n\n.clx-ft-row.missing .clx-ft-pill {\n  background: transparent;\n  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ft) 28%, transparent);\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-ft-row.more {\n  min-height: 26px;\n}\n\n.clx-ft-row.more:hover {\n  background: transparent;\n}\n\n.clx-ft-row.more > .clx-ft-tree {\n  grid-column: 1/-1;\n}\n\n@container (max-width: 620px) {\n  .clx-ft {\n    display: flex;\n    flex-direction: column;\n  }\n  .clx-ft-row {\n    display: flex;\n    flex-wrap: wrap;\n    padding: 4px 8px;\n  }\n  .clx-ft-lead {\n    display: none;\n  }\n  .clx-ft-tree {\n    flex: 1 1 100%;\n  }\n  .clx-ft-pill {\n    margin: 2px 0 2px 26px;\n    font-size: 11.5px;\n    white-space: normal;\n  }\n  .clx-ft-tree {\n    min-width: 0;\n  }\n  .clx-ft-name {\n    min-width: 0;\n    overflow: hidden;\n    text-overflow: ellipsis;\n  }\n}\n.clx-mem-hint {\n  font-size: 12px;\n  color: var(--dsw-alias-label-tertiary);\n  margin: -2px 2px 10px;\n}\n\n.clx-mem-files {\n  display: flex;\n  flex-direction: column;\n  gap: 2px;\n  margin-bottom: 10px;\n}\n\n.clx-mem-loc-head {\n  display: flex;\n  align-items: center;\n  flex-wrap: wrap;\n  gap: 4px 10px;\n  font-size: 12px;\n  font-weight: 600;\n  color: var(--dsw-alias-label-secondary);\n  margin: 4px 2px 6px;\n}\n\n.clx-mem-loc-head > .clx-muted {\n  font-weight: 400;\n  font-size: 11.5px;\n}\n\n.clx-mem-legend {\n  margin-left: auto;\n  display: inline-flex;\n  gap: 4px;\n  font-weight: 400;\n}\n\n.clx-mem-legend .clx-mem-pill {\n  font-size: 10.5px;\n  line-height: 16px;\n  padding: 0 6px;\n}\n\n.clx-mem-empty {\n  font-size: 12.5px;\n  color: var(--dsw-alias-label-secondary);\n  padding: 8px 10px;\n  margin-bottom: 6px;\n  border-radius: 10px;\n  background: color-mix(in srgb, var(--cat-memory, #B6992D) 8%, transparent);\n}\n\n.clx-mem-locs {\n  display: flex;\n  flex-direction: column;\n  gap: 2px;\n}\n\n.clx-mem-loc {\n  display: grid;\n  grid-template-columns: 112px minmax(0, 1fr) auto;\n  align-items: center;\n  gap: 10px;\n  padding: 7px 10px;\n  border-radius: 10px;\n  font-size: 12.5px;\n}\n\n.clx-mem-loc:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-mem-loc .scope {\n  font-size: 11.5px;\n  color: var(--dsw-alias-label-tertiary);\n  white-space: nowrap;\n}\n\n.clx-mem-loc .dir {\n  display: inline-flex;\n  align-items: center;\n  gap: 6px;\n  min-width: 0;\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-mem-loc .dir svg {\n  flex: none;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-mem-loc .dir > span {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.clx-mem-loc .files {\n  display: inline-flex;\n  flex-wrap: wrap;\n  justify-content: flex-end;\n  gap: 4px;\n}\n\n.clx-mem-pill {\n  display: inline-flex;\n  align-items: center;\n  padding: 0 7px;\n  border-radius: 999px;\n  corner-shape: round;\n  font: 11px/18px ui-monospace, SFMono-Regular, Menlo, monospace;\n  white-space: nowrap;\n  border: 1px solid transparent;\n}\n\n.clx-mem-pill.loaded {\n  background: color-mix(in srgb, #B6992D 18%, transparent);\n  color: color-mix(in srgb, #B6992D 70%, var(--dsw-alias-label-primary));\n  border-color: color-mix(in srgb, #B6992D 35%, transparent);\n}\n\n.clx-mem-pill.exists {\n  border-color: color-mix(in srgb, #B6992D 55%, transparent);\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-mem-pill.missing {\n  color: var(--dsw-alias-label-tertiary);\n  border-color: var(--dsw-alias-border-l1);\n  opacity: 0.75;\n}\n\n.clx-rt-list {\n  display: flex;\n  flex-direction: column;\n  gap: 2px;\n}\n\n.clx-rt {\n  display: grid;\n  grid-template-columns: 112px minmax(0, 1fr);\n  gap: 10px;\n  padding: 7px 10px;\n  border-radius: 10px;\n  font-size: 12.5px;\n  line-height: 1.55;\n}\n\n.clx-rt:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-rt .k {\n  font-size: 11.5px;\n  color: var(--dsw-alias-label-tertiary);\n  padding-top: 1px;\n}\n\n.clx-rt .v {\n  min-width: 0;\n  color: var(--dsw-alias-label-primary);\n  overflow-wrap: anywhere;\n}\n\n.clx-card-head > .clx-link {\n  font-size: 11.5px;\n}\n\n@container (max-width: 560px) {\n  .clx-mem-loc {\n    grid-template-columns: minmax(0, 1fr) auto;\n  }\n  .clx-mem-loc .scope {\n    grid-column: 1/-1;\n  }\n  .clx-rt {\n    grid-template-columns: minmax(0, 1fr);\n    gap: 2px;\n  }\n  .clx-mem-legend {\n    margin-left: 0;\n  }\n}\n.clx-err {\n  color: var(--dsw-alias-state-error-primary);\n}\n\n.clx-warn {\n  color: var(--dsw-alias-state-warn-label, var(--dsw-alias-state-warn-primary));\n}\n\n.clx-ok {\n  color: var(--dsw-alias-state-success-primary);\n}\n\n.clx-svg text {\n  fill: var(--dsw-alias-label-tertiary);\n  font-size: 10px;\n}\n\n.clx-tip {\n  font-size: 12px;\n  min-height: 36px;\n  color: var(--dsw-alias-label-secondary);\n  margin-top: 6px;\n  word-break: break-word;\n}\n\n.clx-spin {\n  opacity: 0.6;\n}\n\n.clx-pane {\n  container-type: inline-size;\n}\n\n.clx-flow-wrap {\n  display: grid;\n  grid-template-columns: minmax(0, 600px) minmax(260px, 1fr);\n  gap: 12px;\n  align-items: start;\n}\n\n@container (max-width: 860px) {\n  .clx-flow-wrap {\n    grid-template-columns: minmax(0, 1fr);\n  }\n}\n.clx-flow-diagram {\n  padding: 8px;\n}\n\n.clx-flow-node text {\n  pointer-events: none;\n}\n\n.clx-flow-label {\n  font-size: 12.5px;\n  font-weight: 600;\n  fill: var(--dsw-alias-label-primary);\n}\n\n.clx-flow-label.side {\n  font-size: 11.5px;\n  font-weight: 500;\n  fill: var(--dsw-alias-label-secondary);\n}\n\n.clx-flow-label.inv, .clx-flow-count.inv {\n  fill: #fff;\n}\n\n.clx-flow-count {\n  font-size: 10.5px;\n  fill: var(--dsw-alias-label-tertiary);\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-flow-boxlabel {\n  font-size: 11px;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n}\n\n.clx-flow-side {\n  font-size: 10px;\n  fill: var(--dsw-alias-label-tertiary);\n}\n\n.clx-flow-glow {\n  animation: clx-pulse 1.1s ease-in-out infinite;\n}\n\n.clx-flow-tok {\n  font-size: 11px;\n  font-weight: 600;\n  fill: var(--dsw-alias-label-secondary);\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-flow-tok.inv {\n  fill: #fff;\n}\n\n.clx-flow-num {\n  font-size: 10px;\n  font-weight: 700;\n  fill: #fff;\n}\n\n.clx-flow-trace {\n  fill: none;\n  stroke-width: 2.4;\n  stroke-dasharray: 7 5;\n  animation: clx-dash 0.9s linear infinite;\n}\n\n@keyframes clx-dash {\n  to {\n    stroke-dashoffset: -12;\n  }\n}\n.clx-flow-status {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 8px;\n  align-items: center;\n  font-size: 13px;\n}\n\n.clx-live-dot {\n  display: inline-block;\n  width: 8px;\n  height: 8px;\n  border-radius: 50%;\n  corner-shape: round;\n  flex: none;\n}\n\n.clx-live-dot.on {\n  animation: clx-pulse 1.1s ease-in-out infinite;\n}\n\n.clx-flow-big {\n  font-size: 13px;\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-flow-big b {\n  font-size: 18px;\n}\n\n.clx-flow-comp {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 4px 12px;\n  font-size: 11.5px;\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-flow-path {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 4px;\n}\n\n.clx-flow-chip {\n  font-size: 11.5px;\n  padding: 1px 7px;\n  border-radius: 10px;\n  border: 1px solid var(--dsw-alias-border-l2);\n  white-space: nowrap;\n}\n\n.clx-flow-chip b {\n  color: var(--dsw-alias-state-business-primary);\n}\n\n.clx-flow-steps {\n  max-height: 460px;\n  overflow: auto;\n  margin: 0 -6px;\n  padding: 0 6px;\n}\n\n.clx-flow-step {\n  display: grid;\n  grid-template-columns: 34px minmax(0, 1fr) auto;\n  gap: 8px;\n  align-items: center;\n  padding: 4px 10px 4px 30px;\n  border-radius: 8px;\n  cursor: pointer;\n  font-size: 12px;\n}\n\n.clx-flow-step:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-flow-step-tools {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.clx-flow-step-ctx {\n  display: flex;\n  align-items: center;\n  gap: 6px;\n  font-variant-numeric: tabular-nums;\n  font-size: 11.5px;\n}\n\n.clx-flow-mini {\n  display: inline-block;\n  width: 46px;\n  height: 4px;\n  border-radius: 2px;\n  background: var(--dsw-alias-border-l1);\n  overflow: hidden;\n}\n\n.clx-flow-mini > span {\n  display: block;\n  height: 100%;\n  background: var(--dsw-alias-state-business-primary);\n  opacity: 0.75;\n}\n\n.clx-flow-job {\n  display: flex;\n  align-items: center;\n  gap: 4px;\n}\n\n.clx-flow-job .clx-live-dot {\n  margin-right: 2px;\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .clx-flow-trace, .clx-flow-glow, .clx-live-dot.on {\n    animation: none;\n  }\n}\n/* 概览 motion: cards rise in, the usage bar sweeps open, category rows and bars stagger in, the growth line draws itself */\n.clx-ov > .clx-card {\n  animation: clx-rise 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both;\n}\n\n.clx-ov > .clx-card:nth-child(2) {\n  animation-delay: 0.07s;\n}\n\n.clx-ov > .clx-card:nth-child(3) {\n  animation-delay: 0.14s;\n}\n\n.clx-ov > .clx-card:nth-child(4) {\n  animation-delay: 0.21s;\n}\n\n.clx-ov > .clx-card:nth-child(n+5) {\n  animation-delay: 0.28s;\n}\n\n@keyframes clx-rise {\n  from {\n    opacity: 0;\n    transform: translateY(10px);\n  }\n  to {\n    opacity: 1;\n    transform: none;\n  }\n}\n.clx-bar.anim {\n  animation: clx-reveal 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.12s both;\n}\n\n@keyframes clx-reveal {\n  from {\n    clip-path: inset(0 100% 0 0);\n  }\n  to {\n    clip-path: inset(0 0 0 0);\n  }\n}\n.clx-bar > span {\n  transition: width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);\n}\n\n.clx-ov .clx-catblock, .clx-ov .clx-catrow.static {\n  animation: clx-slide 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;\n  animation-delay: calc(0.18s + var(--i, 0) * 40ms);\n}\n\n@keyframes clx-slide {\n  from {\n    opacity: 0;\n    transform: translateX(-6px);\n  }\n  to {\n    opacity: 1;\n    transform: none;\n  }\n}\n.clx-catbar > span {\n  transform-origin: left center;\n  animation: clx-grow 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;\n  animation-delay: calc(0.28s + var(--i, 0) * 50ms);\n  transition: width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);\n}\n\n@keyframes clx-grow {\n  from {\n    transform: scaleX(0);\n  }\n  to {\n    transform: scaleX(1);\n  }\n}\n.clx-catrow {\n  transition: background-color 0.15s ease;\n}\n\n.clx-catrow[role=button]:active {\n  background: var(--dsw-alias-interactive-bg-active);\n}\n\n.clx-catdetail {\n  animation: clx-drop 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) both;\n}\n\n@keyframes clx-drop {\n  from {\n    opacity: 0;\n    transform: translateY(-6px);\n  }\n  to {\n    opacity: 1;\n    transform: none;\n  }\n}\n.clx-trend-line {\n  stroke-dasharray: 1;\n  stroke-dashoffset: 1;\n  animation: clx-draw 1.4s cubic-bezier(0.45, 0, 0.2, 1) 0.3s forwards;\n}\n\n@keyframes clx-draw {\n  to {\n    stroke-dashoffset: 0;\n  }\n}\n.clx-trend-area {\n  animation: clx-fadein 0.9s ease 0.8s both;\n}\n\n@keyframes clx-fadein {\n  from {\n    opacity: 0;\n  }\n}\n.clx-ibar {\n  height: 14px;\n}\n\n.clx-ibar > span {\n  cursor: pointer;\n  transition: width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.2s ease, filter 0.2s ease;\n}\n\n.clx-ibar > span[data-k]:not(.free) {\n  min-width: 3px;\n}\n\n.clx-ibar > span:hover {\n  filter: brightness(1.08) saturate(1.1);\n}\n\n.clx-ibar[data-active] > span:not(.on) {\n  opacity: 0.22;\n}\n\n.clx-ibar > span.free.on {\n  background: var(--dsw-alias-border-l2);\n}\n\n.clx-ilegend {\n  gap: 2px 2px;\n  margin-left: -6px;\n}\n\n.clx-ilegend button {\n  all: unset;\n  display: inline-flex;\n  align-items: center;\n  gap: 5px;\n  padding: 2px 6px;\n  border-radius: 6px;\n  cursor: pointer;\n  transition: opacity 0.2s ease, background-color 0.15s ease, color 0.15s ease;\n}\n\n.clx-ilegend button:hover, .clx-ilegend button.on {\n  background: var(--dsw-alias-interactive-bg-hover);\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-ilegend button[aria-pressed=true] {\n  background: var(--dsw-alias-interactive-bg-active);\n}\n\n.clx-ilegend button:focus-visible {\n  outline: 2px solid var(--dsw-alias-state-business-primary);\n  outline-offset: -2px;\n}\n\n.clx-ilegend[data-active] button:not(.on) {\n  opacity: 0.45;\n}\n\n.clx-catblock.hl > .clx-catrow {\n  background: color-mix(in srgb, var(--cat) 12%, transparent);\n}\n\n.clx-catblock > .clx-catrow {\n  transition: background-color 0.2s ease;\n}\n\n.clx-chev {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  width: 12px;\n  height: 12px;\n  flex: none;\n  color: var(--dsw-alias-label-tertiary);\n  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.15s;\n}\n\n.clx-chev svg {\n  display: block;\n}\n\n.clx-chev.open {\n  transform: rotate(90deg);\n  color: var(--dsw-alias-label-primary);\n}\n\n:is(.clx-node-row, .clx-catrow, .clx-trow, .clx-urow, .clx-disc-head, .clx-flow-turn):hover .clx-chev {\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-node-row:focus-visible, .clx-trow:focus-visible, .clx-urow:focus-visible, .clx-flow-turn:focus-visible {\n  outline: 2px solid var(--dsw-alias-state-business-primary);\n  outline-offset: -2px;\n}\n\n.clx-trow, .clx-urow {\n  display: grid;\n  align-items: center;\n  gap: 10px;\n  padding: 8px 10px;\n  border-radius: 10px;\n  font-size: 12.5px;\n  cursor: pointer;\n  transition: background-color 0.15s ease, box-shadow 0.15s ease;\n}\n\n.clx-trow {\n  grid-template-columns: 12px minmax(0, 1.4fr) minmax(70px, 0.6fr) 44px minmax(50px, 1fr) 56px;\n}\n\n.clx-urow {\n  grid-template-columns: 12px minmax(0, 1.6fr) 44px 64px 44px 64px 64px;\n}\n\n.clx-trow.head, .clx-urow.head {\n  cursor: default;\n  font-size: 11px;\n  color: var(--dsw-alias-label-tertiary);\n  padding: 0 10px 4px;\n}\n\n.clx-trow.head > span:nth-child(n+4), .clx-urow.head > span:nth-child(n+3) {\n  text-align: right;\n}\n\n.clx-trow[role=button]:hover, .clx-urow[role=button]:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-trow .num, .clx-urow .num {\n  text-align: right;\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-tblock {\n  animation: clx-fade 0.35s ease both;\n  animation-delay: calc(var(--i, 0) * 18ms);\n}\n\n.clx-tname {\n  display: flex;\n  align-items: center;\n  gap: 6px;\n  min-width: 0;\n}\n\n.clx-tname code, .clx-tcode {\n  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;\n  font-size: 12px;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.clx-ubar {\n  display: flex;\n  gap: 1px;\n  flex: 1;\n  min-width: 30px;\n  max-width: 160px;\n  height: 5px;\n  margin-left: auto;\n  border-radius: 3px;\n  overflow: hidden;\n  background: var(--dsw-alias-border-l1);\n}\n\n.clx-ubar > span {\n  transform-origin: left;\n  animation: clx-grow 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.15s both;\n}\n\n.clx-params {\n  margin-top: 10px;\n}\n\n.clx-params-head {\n  font-size: 12px;\n  font-weight: 600;\n  color: var(--dsw-alias-label-secondary);\n  margin-bottom: 4px;\n}\n\n.clx-param {\n  padding: 6px 0;\n  border-top: 1px dashed var(--dsw-alias-border-l1);\n}\n\n.clx-param-head {\n  display: flex;\n  align-items: center;\n  gap: 6px;\n  flex-wrap: wrap;\n}\n\n.clx-param-head code {\n  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;\n  font-size: 12px;\n  font-weight: 600;\n}\n\n.clx-param-desc {\n  font-size: 12px;\n  color: var(--dsw-alias-label-secondary);\n  margin-top: 2px;\n  white-space: pre-wrap;\n  overflow-wrap: anywhere;\n}\n\n.clx-param-enum {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 4px;\n  margin-top: 4px;\n}\n\n.clx-param-enum code {\n  font-size: 11px;\n  padding: 1px 5px;\n  border-radius: 4px;\n  background: var(--dsw-alias-bg-layer-2);\n}\n\n.clx-badge.warn {\n  color: var(--dsw-alias-state-warn-primary);\n  border-color: color-mix(in srgb, var(--dsw-alias-state-warn-primary) 40%, transparent);\n}\n\n@container (max-width: 620px) {\n  .clx-trow {\n    grid-template-columns: 12px minmax(0, 1fr) 44px 56px;\n  }\n  .clx-trow > :nth-child(3), .clx-trow > :nth-child(5) {\n    display: none;\n  }\n  .clx-urow {\n    grid-template-columns: 12px minmax(0, 1fr) 44px 44px 64px;\n  }\n  .clx-urow > :nth-child(4), .clx-urow > :nth-child(7) {\n    display: none;\n  }\n}\n/* every section: cards rise in, list rows fade in, bars grow; state changes ease */\n.clx-main .clx-col > .clx-card, .clx-flow-side-panel > .clx-card, .clx-flow-wrap > .clx-card {\n  animation: clx-rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;\n}\n\n.clx-main .clx-col > .clx-card:nth-child(2), .clx-flow-side-panel > .clx-card:nth-child(2) {\n  animation-delay: 0.07s;\n}\n\n.clx-main .clx-col > .clx-card:nth-child(3), .clx-flow-side-panel > .clx-card:nth-child(3) {\n  animation-delay: 0.14s;\n}\n\n.clx-main .clx-col > .clx-card:nth-child(n+4) {\n  animation-delay: 0.2s;\n}\n\n.clx-flow-side-panel > .clx-card:first-child {\n  animation-delay: 0.05s;\n}\n\n.clx-node {\n  animation: clx-fade 0.3s ease both;\n  animation-delay: calc(var(--i, 0) * 16ms);\n}\n\n@keyframes clx-fade {\n  from {\n    opacity: 0;\n  }\n  to {\n    opacity: 1;\n  }\n}\n.clx-minibar > span {\n  transform-origin: left center;\n  animation: clx-grow 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s both;\n  transition: width 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);\n}\n\n.clx-flow-mini > span {\n  transition: width 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);\n}\n\n.clx-chipbtn, .clx-chip, .clx-seg {\n  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;\n}\n\n.clx-flow-step {\n  transition: background-color 0.15s ease, box-shadow 0.15s ease;\n}\n\n.clx-flow-log {\n  transition: background-color 0.15s ease;\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .clx-pane *, .clx-pane *::before {\n    animation: none !important;\n    transition: none !important;\n  }\n  .clx-trend-line {\n    stroke-dasharray: none !important;\n    stroke-dashoffset: 0 !important;\n  }\n}\n@media (prefers-reduced-motion: reduce) {\n  .clx-ov, .clx-ov * {\n    animation: none !important;\n    transition: none !important;\n  }\n  .clx-trend-line {\n    stroke-dasharray: none;\n    stroke-dashoffset: 0;\n  }\n}\n@keyframes clx-pulse {\n  0%, 100% {\n    opacity: 0.95;\n  }\n  50% {\n    opacity: 0.2;\n  }\n}\n.clx-flow-now {\n  margin-top: 8px;\n  padding: 8px 10px;\n  border-radius: 8px;\n  background: var(--dsw-alias-bg-layer-2);\n  border: 1px solid var(--dsw-alias-border-l1);\n}\n\n.clx-flow-now-head {\n  display: flex;\n  gap: 8px;\n  align-items: baseline;\n  flex-wrap: wrap;\n  margin-bottom: 2px;\n}\n\n.clx-flow-now-text {\n  word-break: break-word;\n  font-size: 12.5px;\n}\n\n.clx-flow-turn-head .clx-chev {\n  align-self: center;\n}\n\n.clx-flow-tgroup.open > .clx-flow-step, .clx-flow-tgroup > .clx-flow-step {\n  animation: clx-fade 0.25s ease both;\n}\n\n.clx-flow-turn:hover, .clx-flow-log:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-flow-turn.cur, .clx-flow-log.cur {\n  background: var(--dsw-alias-interactive-bg-active);\n}\n\n.clx-flow-turn-head {\n  display: flex;\n  gap: 8px;\n  align-items: baseline;\n  flex-wrap: wrap;\n  font-size: 12.5px;\n}\n\n.clx-flow-turn-prompt {\n  font-size: 12px;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.clx-flow-log {\n  font-size: 12px;\n  padding: 2px 4px;\n  border-radius: 5px;\n  cursor: pointer;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}"
+const CSS_TEXT = ".clx-btn {\n  display: inline-flex;\n  align-items: center;\n  gap: 5px;\n  height: 28px;\n  padding: 0 8px;\n  border-radius: 14px;\n  border: none;\n  background: transparent;\n  color: var(--dsw-alias-label-secondary);\n  font-size: 12px;\n  line-height: 1;\n  cursor: pointer;\n  font-variant-numeric: tabular-nums;\n  white-space: nowrap;\n}\n\n.clx-btn:hover, .clx-btn[aria-expanded=true] {\n  background: var(--dsw-alias-interactive-bg-hover);\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-btn.dock {\n  height: 22px;\n  padding: 1px 8px;\n  gap: 6px;\n  border-radius: var(--dsw-radius-sm, 6px);\n  color: var(--dsw-alias-label-tertiary);\n  font-size: var(--dsh-content-font-size-secondary, 13px);\n}\n\n.clx-btn.dock:hover, .clx-btn.dock[aria-expanded=true] {\n  color: var(--dsw-alias-label-secondary);\n}\n\n[data-composer-dock]:has(.clx-dock-ring) > :not([data-slot]) {\n  display: none;\n}\n\n.clx-pop {\n  position: fixed;\n  z-index: 1000;\n  box-sizing: border-box;\n  width: 340px;\n  max-width: calc(100vw - 24px);\n  max-height: min(600px, 100vh - 96px);\n  overflow: auto;\n  border: 0;\n  border-radius: var(--dsw-radius-lg, 16px);\n  background: var(--dsw-specific-menu, var(--dsw-alias-bg-layer-2));\n  backdrop-filter: var(--dsw-menu-backdrop-filter);\n  -webkit-backdrop-filter: var(--dsw-menu-backdrop-filter);\n  --dsw-elevation-stroke-color:var(--dsw-alias-border-l1);\n  box-shadow: var(--dsw-elevation-prominent, 0 8px 28px rgba(0, 0, 0, 0.18));\n  font-size: 12px;\n  line-height: 18px;\n  color: var(--dsw-alias-label-secondary);\n  padding: 16px;\n  text-align: left;\n}\n\n.clx-pop-head {\n  display: flex;\n  align-items: baseline;\n  justify-content: space-between;\n  gap: 16px;\n  padding-bottom: 8px;\n  margin-bottom: 10px;\n  border-bottom: 0.5px solid var(--dsw-alias-border-l2);\n}\n\n.clx-pop-title {\n  font-weight: 500;\n  font-size: 12px;\n  color: var(--dsw-alias-label-primary);\n  display: inline-flex;\n  align-items: baseline;\n  gap: 6px;\n}\n\n.clx-pop-title-en {\n  font-weight: 400;\n  font-size: 12px;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-pop-open {\n  font-size: 12px;\n  white-space: nowrap;\n  padding: 2px 6px;\n  margin: -2px -6px -2px 0;\n  border-radius: 6px;\n  transition: background-color 0.15s ease;\n}\n\n.clx-pop-open:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-pop {\n  animation: clx-pop-in 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) both;\n  transform-origin: bottom right;\n}\n\n@keyframes clx-pop-in {\n  from {\n    opacity: 0;\n    transform: translateY(6px) scale(0.98);\n  }\n  to {\n    opacity: 1;\n    transform: none;\n  }\n}\n.clx-pop-usage {\n  display: flex;\n  align-items: baseline;\n  flex-wrap: wrap;\n  gap: 0 4px;\n}\n\n.clx-pop-usage .clx-sub {\n  white-space: pre;\n}\n\n.clx-pop-chip {\n  margin-left: auto;\n  align-self: center;\n  font-size: 11.5px;\n  padding: 2px 8px;\n  border-radius: 999px;\n  corner-shape: round;\n  color: var(--dsw-alias-label-secondary);\n  background: var(--dsw-alias-bg-layer-2);\n  border: 1px solid var(--dsw-alias-border-l1);\n  font-variant-numeric: tabular-nums;\n  white-space: nowrap;\n}\n\n.clx-pop-chip.warn {\n  color: var(--dsw-alias-state-warn-primary);\n  border-color: color-mix(in srgb, var(--dsw-alias-state-warn-primary) 40%, transparent);\n}\n\n.clx-pop-caption {\n  font-size: 12px;\n  color: var(--dsw-alias-label-tertiary);\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  cursor: default;\n}\n\n.clx-prows {\n  margin-top: 10px;\n  display: flex;\n  flex-direction: column;\n  gap: 1px;\n}\n\n.clx-prows > * {\n  animation: clx-fade 0.3s ease both;\n  animation-delay: calc(0.12s + var(--i, 0) * 35ms);\n}\n\n.clx-prows > .clx-sep {\n  margin: 4px 0;\n}\n\n.clx-prow {\n  display: grid;\n  grid-template-columns: 10px minmax(0, 1fr) 58px 46px;\n  column-gap: 10px;\n  align-items: center;\n  padding: 3px 6px;\n  margin: 0 -6px;\n  border-radius: 6px;\n  font-variant-numeric: tabular-nums;\n  cursor: default;\n  transition: background-color 0.15s ease, opacity 0.2s ease;\n}\n\n.clx-prow.on {\n  background: color-mix(in srgb, var(--cat) 14%, transparent);\n}\n\n.clx-prows[data-active] .clx-prow:not(.on) {\n  opacity: 0.45;\n}\n\n.clx-pbar {\n  height: 10px;\n}\n\n.clx-pbar > span {\n  cursor: default;\n}\n\n.clx-pop-name {\n  min-width: 0;\n  overflow: hidden;\n}\n\n.clx-dot.hollow {\n  background: transparent;\n  border: 1.5px solid;\n  box-sizing: border-box;\n}\n\n.clx-prow .clx-pop-name {\n  display: flex;\n  align-items: center;\n  gap: 4px;\n}\n\n.clx-prow .lead {\n  display: inline-flex;\n  align-items: center;\n  margin-left: 2px;\n  color: var(--dsw-alias-label-tertiary);\n  transition: color 0.15s ease;\n}\n\n.clx-prow.tog {\n  cursor: pointer;\n}\n\n.clx-prow.tog:hover .lead {\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-prow.sub {\n  font-size: 12px;\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-prow.sub .clx-pop-name {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  padding-left: 2px;\n}\n\n.clx-prow.sub .clx-dot {\n  width: 7px;\n  height: 7px;\n  flex: none;\n}\n\n.clx-pkids {\n  display: flex;\n  flex-direction: column;\n  gap: 1px;\n  margin-left: 4px;\n  padding-left: 16px !important;\n  padding-left: 0;\n  border-left: 1px solid var(--dsw-alias-border-l1);\n  animation: clx-drop 0.2s ease both !important;\n}\n\n.clx-pkids > .clx-prow {\n  margin-left: -6px;\n  grid-template-columns: minmax(0, 1fr) 58px 46px;\n  column-gap: 10px;\n}\n\n.clx-pfile {\n  font-family: var(--dsw-font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);\n  font-size: 11.5px;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  min-width: 0;\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .clx-pop, .clx-pop * {\n    animation: none !important;\n    transition: none !important;\n  }\n}\n.clx-muted {\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-sub {\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-big {\n  font-size: 16px;\n  font-weight: 600;\n  color: var(--dsw-alias-label-primary);\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-bar {\n  display: flex;\n  height: 10px;\n  border-radius: 5px;\n  overflow: hidden;\n  background: var(--dsw-alias-border-l1);\n  margin: 8px 0 6px;\n}\n\n.clx-bar > span {\n  height: 100%;\n  min-width: 0;\n}\n\n.clx-bar > span + span {\n  box-shadow: inset 1px 0 0 var(--dsw-alias-bg-layer-1);\n}\n\n.clx-hatch {\n  background: repeating-linear-gradient(135deg, var(--dsw-alias-border-l3) 0 3px, transparent 3px 6px);\n}\n\n.clx-rows {\n  display: grid;\n  grid-template-columns: auto 1fr auto auto;\n  column-gap: 10px;\n  row-gap: 5px;\n  align-items: center;\n  margin-top: 10px;\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-dot {\n  width: 9px;\n  height: 9px;\n  border-radius: 3px;\n  display: inline-block;\n}\n\n.clx-dot.free {\n  border: 1px solid var(--dsw-alias-border-l3);\n}\n\n.clx-num {\n  text-align: right;\n}\n\n.clx-sep {\n  grid-column: 1/-1;\n  height: 1px;\n  background: var(--dsw-alias-border-l1);\n  margin: 3px 0;\n}\n\n.clx-foot {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 8px;\n  margin-top: 12px;\n  padding-top: 10px;\n  border-top: 1px solid var(--dsw-alias-border-l1);\n}\n\n.clx-link {\n  border: none;\n  background: transparent;\n  color: var(--dsw-alias-state-business-primary);\n  cursor: pointer;\n  font-size: 12.5px;\n  padding: 4px 6px;\n  border-radius: 6px;\n}\n\n.clx-link:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-chipbtn {\n  border: 1px solid var(--dsw-alias-border-l2);\n  background: transparent;\n  color: var(--dsw-alias-label-secondary);\n  border-radius: 7px;\n  padding: 3px 9px;\n  font-size: 12px;\n  cursor: pointer;\n}\n\n.clx-chipbtn:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-chipbtn[aria-pressed=true] {\n  background: var(--dsw-alias-interactive-bg-active);\n  color: var(--dsw-alias-label-primary);\n  border-color: var(--dsw-alias-border-l3);\n}\n\n.clx-pane {\n  color: var(--dsw-alias-label-primary);\n  font-size: 13px;\n  line-height: 1.5;\n  padding: 0 0 48px;\n  box-sizing: border-box;\n  min-height: 100%;\n}\n\n/* this view only reads the context and spans the full width, so the conversation it sits in drops\n   its composer and its chat-width drag handles while it is open */\n[data-conversation-content]:has(.clx-pane) [data-composer-seat],\n[data-conversation-content]:has(.clx-pane) > [data-width-handle] {\n  display: none;\n}\n\n.clx-toolbar {\n  position: sticky;\n  top: 0;\n  z-index: 4;\n  padding: 10px var(--dsh-composer-side-clearance, 16px);\n  background: var(--dsw-alias-bg-base);\n}\n\n.clx-col {\n  box-sizing: border-box;\n  width: 100%;\n  margin: 0 auto;\n}\n\n.clx-toolbar-in {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n}\n\n.clx-segnav {\n  display: inline-flex;\n  gap: 2px;\n  padding: 3px;\n  border-radius: 10px;\n  background: var(--dsw-alias-bg-layer-2);\n  border: 1px solid var(--dsw-alias-border-l1);\n  overflow-x: auto;\n  scrollbar-width: none;\n  min-width: 0;\n  max-width: 100%;\n}\n\n.clx-segnav button {\n  display: inline-flex;\n  align-items: center;\n  gap: 6px;\n  border: 0;\n  background: transparent;\n  color: var(--dsw-alias-label-secondary);\n  padding: 5px 11px;\n  border-radius: 7px;\n  font-size: 12.5px;\n  cursor: pointer;\n  white-space: nowrap;\n}\n\n.clx-segnav button:hover {\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-segnav {\n  position: relative;\n}\n\n.clx-segnav::before {\n  content: \"\";\n  position: absolute;\n  left: 0;\n  top: 3px;\n  bottom: 3px;\n  width: var(--ind-w, 0);\n  transform: translateX(var(--ind-x, 0));\n  border-radius: 7px;\n  background: var(--dsw-alias-bg-layer-1);\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 0 0 1px var(--dsw-alias-border-l1);\n  opacity: 0;\n  transition: transform 0.32s cubic-bezier(0.2, 0.8, 0.2, 1), width 0.32s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.2s;\n}\n\n.clx-segnav[data-ind]::before {\n  opacity: 1;\n}\n\n.clx-segnav button {\n  position: relative;\n  z-index: 1;\n  transition: color 0.2s ease;\n}\n\n.clx-segnav[data-ind] button[aria-selected=true] {\n  background: transparent !important;\n  box-shadow: none !important;\n}\n\n.clx-segnav button[aria-selected=true] {\n  background: var(--dsw-alias-bg-layer-1);\n  color: var(--dsw-alias-label-primary);\n  font-weight: 600;\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 0 0 1px var(--dsw-alias-border-l1);\n}\n\n.clx-segnav button svg {\n  display: none;\n}\n\n.clx-toolbar-meta {\n  margin-left: auto;\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  font-size: 12px;\n  font-variant-numeric: tabular-nums;\n  white-space: nowrap;\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-toolbar-live {\n  display: inline-flex;\n  align-items: center;\n  gap: 5px;\n  margin-left: 6px;\n  padding-left: 10px;\n  border-left: 1px solid var(--dsw-alias-border-l1);\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-main {\n  min-width: 0;\n  padding: 4px var(--dsh-composer-side-clearance, 16px) 0;\n}\n\n.clx-main > .clx-col {\n  container-type: inline-size;\n}\n\n@container (max-width: 760px) {\n  .clx-segnav button {\n    padding: 5px 9px;\n  }\n  .clx-toolbar-meta > :not(.clx-toolbar-live) {\n    display: none;\n  }\n  .clx-toolbar-live {\n    border-left: 0;\n    padding-left: 0;\n    margin-left: 0;\n  }\n}\n.clx-card {\n  background: var(--dsw-alias-settings-card-fill);\n  border: 1px solid var(--dsw-alias-settings-card-stroke);\n  border-radius: 10px;\n  padding: 12px;\n  margin-bottom: 12px;\n}\n\n.clx-subh {\n  margin: 4px 0 8px;\n  font-size: 12px;\n  font-weight: 600;\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-subh.sep {\n  margin-top: 14px;\n  padding-top: 12px;\n  border-top: 1px solid var(--dsw-alias-border-l1);\n}\n\n.clx-card h4 {\n  margin: 0 0 8px;\n  font-size: 12.5px;\n  font-weight: 600;\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-kv {\n  display: grid;\n  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));\n  gap: 8px 14px;\n}\n\n.clx-kv > div {\n  min-width: 0;\n}\n\n.clx-kv .k {\n  font-size: 11.5px;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-kv .v {\n  font-variant-numeric: tabular-nums;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.clx-table {\n  width: 100%;\n  border-collapse: collapse;\n  font-variant-numeric: tabular-nums;\n  font-size: 12.5px;\n}\n\n.clx-table th {\n  font-weight: 500;\n  color: var(--dsw-alias-label-tertiary);\n  text-align: right;\n  padding: 4px 6px;\n  border-bottom: 1px solid var(--dsw-alias-border-l1);\n  white-space: nowrap;\n}\n\n.clx-table th:first-child, .clx-table td:first-child {\n  text-align: left;\n}\n\n.clx-table td {\n  padding: 4px 6px;\n  text-align: right;\n  border-bottom: 1px solid var(--dsw-alias-border-l1);\n  white-space: nowrap;\n}\n\n.clx-table td.wrap {\n  white-space: normal;\n  word-break: break-word;\n}\n\n.clx-table tr:last-child td {\n  border-bottom: none;\n}\n\n.clx-scroll {\n  overflow-x: auto;\n}\n\n.clx-gauge {\n  display: flex;\n  align-items: center;\n  gap: 14px;\n  flex-wrap: wrap;\n}\n\n.clx-card-head {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  flex-wrap: wrap;\n  margin-bottom: 8px;\n}\n\n.clx-card-head h4 {\n  margin: 0;\n  flex: 1;\n  min-width: 0;\n}\n\n.clx-card-head > .clx-muted {\n  font-size: 11.5px;\n}\n\n.clx-segmini {\n  display: inline-flex;\n  gap: 4px;\n}\n\n.clx-hero {\n  display: flex;\n  align-items: center;\n  gap: 16px;\n  margin-bottom: 12px;\n}\n\n.clx-hero-main {\n  flex: 1;\n  min-width: 0;\n  display: flex;\n  flex-direction: column;\n  gap: 2px;\n}\n\n.clx-hero-pct {\n  font-size: 26px;\n  font-weight: 650;\n  letter-spacing: -0.01em;\n  font-variant-numeric: tabular-nums;\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-hero-side {\n  display: grid;\n  grid-template-columns: auto auto;\n  gap: 3px 14px;\n  font-size: 12px;\n  align-self: center;\n  padding-left: 16px;\n  border-left: 1px solid var(--dsw-alias-border-l1);\n}\n\n.clx-hero-kv {\n  display: contents;\n}\n\n.clx-hero-kv .k {\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-hero-kv .v {\n  color: var(--dsw-alias-label-primary);\n  font-variant-numeric: tabular-nums;\n  text-align: right;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: 220px;\n}\n\n.clx-hero-card .clx-legend {\n  margin-top: 8px;\n}\n\n.clx-catrow {\n  display: grid;\n  grid-template-columns: minmax(0, 1.5fr) minmax(40px, 1fr) 58px 52px 34px;\n  align-items: center;\n  gap: 10px;\n  padding: 8px 10px;\n  border-radius: 10px;\n  font-size: 12.5px;\n}\n\n.clx-catrow.head {\n  font-size: 11px;\n  color: var(--dsw-alias-label-tertiary);\n  padding: 0 10px 4px;\n}\n\n.clx-catrow.head > span:nth-child(n+3) {\n  text-align: right;\n}\n\n.clx-catrow[role=button] {\n  cursor: pointer;\n}\n\n.clx-catrow[role=button]:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-catrow[role=button]:focus-visible {\n  outline: 2px solid var(--dsw-alias-state-business-primary);\n  outline-offset: -2px;\n}\n\n.clx-catrow .num {\n  text-align: right;\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-catrow.static {\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-catcell {\n  display: flex;\n  align-items: center;\n  gap: 6px;\n  min-width: 0;\n}\n\n.clx-caret {\n  width: 12px;\n  height: 12px;\n  flex: none;\n  display: inline-flex;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-caret svg {\n  transition: transform 0.15s;\n}\n\n.clx-catblock.open .clx-caret svg {\n  transform: rotate(90deg);\n}\n\n.clx-catname {\n  display: flex;\n  align-items: baseline;\n  gap: 6px;\n  min-width: 0;\n  overflow: hidden;\n}\n\n.clx-catname .zh {\n  white-space: nowrap;\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-catname .en {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  font-size: 11px;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-catbar {\n  height: 6px;\n  border-radius: 3px;\n  background: var(--dsw-alias-border-l1);\n  overflow: hidden;\n}\n\n.clx-catbar > span {\n  display: block;\n  height: 100%;\n  border-radius: 3px;\n}\n\n.clx-catitem {\n  display: flex;\n  align-items: flex-start;\n  gap: 10px;\n  padding: 6px 10px 6px 24px;\n  border-radius: 8px;\n}\n\n/* ---- list items: one look everywhere (概览 分类明细, 消息, 工具, 技能, 记忆文件, 轨迹) ----\n   rows are rounded, no hairlines; an open item is the same row grown into a block tinted\n   in its colour, its content aligned with the row's text column; nested lists put their\n   arrows under the parent's dot; a nested open item is a lighter block inside the tint */\n.clx-catblock, .clx-node, .clx-tblock, .clx-disc, .clx-flow-tgroup {\n  border: 0;\n  border-radius: 10px;\n  margin: 0;\n  transition: background-color 0.2s ease;\n}\n\n:is(.clx-catblock, .clx-node, .clx-tblock, .clx-disc, .clx-flow-tgroup) + :is(.clx-catblock, .clx-node, .clx-tblock, .clx-disc, .clx-flow-tgroup) {\n  margin-top: 2px;\n}\n\n:is(.clx-catblock, .clx-node, .clx-tblock, .clx-disc, .clx-flow-tgroup).open {\n  background: color-mix(in srgb, var(--cat, var(--dsw-alias-label-tertiary)) 8%, transparent);\n}\n\n:is(.clx-catblock, .clx-node, .clx-tblock, .clx-disc).open :is(.clx-node, .clx-tblock, .clx-disc).open {\n  background: color-mix(in srgb, var(--cat, var(--dsw-alias-label-tertiary)) 7%, var(--dsw-alias-bg-layer-1));\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);\n}\n\n:is(.clx-catblock, .clx-node, .clx-tblock, .clx-disc).open > :is(.clx-catrow, .clx-node-row, .clx-trow, .clx-urow, .clx-disc-head) {\n  background: transparent;\n}\n\n:is(.clx-catblock, .clx-node, .clx-tblock, .clx-disc).open > :is(.clx-catrow, .clx-node-row, .clx-trow, .clx-urow, .clx-disc-head):hover {\n  background: color-mix(in srgb, var(--cat, var(--dsw-alias-label-tertiary)) 8%, transparent);\n}\n\n:is(.clx-catblock, .clx-node, .clx-tblock, .clx-disc).open :is(.clx-node-row, .clx-trow, .clx-urow, .clx-disc-head, .clx-catitem):hover {\n  background: color-mix(in srgb, var(--cat, var(--dsw-alias-label-tertiary)) 9%, transparent);\n}\n\n.clx-catdetail {\n  margin: 0;\n  padding: 0 8px 8px 18px;\n}\n\n.clx-detail {\n  margin: 0;\n  padding: 0 12px 12px 74px;\n  cursor: auto;\n  animation: clx-drop 0.26s cubic-bezier(0.2, 0.8, 0.2, 1) both;\n}\n\n.clx-expand {\n  margin: 0;\n  padding: 2px 12px 12px 32px;\n  animation: clx-drop 0.26s cubic-bezier(0.2, 0.8, 0.2, 1) both;\n}\n\n.clx-expand > .clx-node:first-of-type, .clx-catdetail > .clx-node:first-of-type {\n  margin-top: 0;\n}\n\n.clx-disc-body {\n  margin: 0;\n  padding: 0 12px 12px 30px;\n  animation: clx-drop 0.26s cubic-bezier(0.2, 0.8, 0.2, 1) both;\n}\n\n@container (max-width: 560px) {\n  .clx-detail {\n    padding-left: 12px;\n  }\n  .clx-expand {\n    padding-left: 12px;\n  }\n  .clx-disc-body {\n    padding-left: 12px;\n  }\n}\n.clx-flow-tgroup {\n  --cat:var(--dsw-alias-state-business-primary);\n}\n\n.clx-flow-turn {\n  padding: 8px 10px;\n  border-radius: 10px;\n  cursor: pointer;\n  transition: background-color 0.15s ease;\n}\n\n.clx-flow-steps .clx-flow-tgroup > .clx-flow-turn {\n  position: sticky;\n  top: 0;\n  z-index: 1;\n  background: var(--dsw-alias-settings-card-fill, var(--dsw-alias-bg-layer-1));\n}\n\n.clx-flow-steps .clx-flow-tgroup.open > .clx-flow-turn {\n  background: linear-gradient(color-mix(in srgb, var(--cat) 8%, transparent), color-mix(in srgb, var(--cat) 8%, transparent)), var(--dsw-alias-settings-card-fill, var(--dsw-alias-bg-layer-1));\n}\n\n.clx-flow-steps .clx-flow-tgroup > .clx-flow-turn:hover {\n  background: linear-gradient(color-mix(in srgb, var(--cat) 14%, transparent), color-mix(in srgb, var(--cat) 14%, transparent)), var(--dsw-alias-settings-card-fill, var(--dsw-alias-bg-layer-1));\n}\n\n.clx-flow-tgroup.open {\n  padding-bottom: 6px;\n}\n\n.clx-flow-tgroup.open .clx-flow-step:hover {\n  background: color-mix(in srgb, var(--cat) 9%, transparent);\n}\n\n.clx-flow-step.sel {\n  background: color-mix(in srgb, var(--cat, var(--dsw-alias-state-business-primary)) 18%, transparent);\n}\n\n.clx-catitem .main {\n  flex: 1;\n  min-width: 0;\n}\n\n/* a call and its result read as one unit */\n.clx-pair {\n  border-radius: 9px;\n  background: color-mix(in srgb, var(--cat, var(--dsw-alias-label-tertiary)) 4%, var(--dsw-alias-bg-layer-1));\n  padding: 6px 10px 8px;\n  margin-top: 6px;\n}\n\n.clx-pair:first-child {\n  margin-top: 0;\n}\n\n.clx-pair > .clx-rich.bare + .clx-rich.bare {\n  border-top: 1px dashed var(--dsw-alias-border-l2);\n}\n\n.clx-pair .clx-rich.bare > .clx-rich-body.flush, .clx-pair .clx-rich.bare .clx-code pre, .clx-pair .clx-rich.bare .clx-code [data-code-block-content] {\n  background: var(--dsw-alias-bg-layer-2) !important;\n}\n\n.clx-pair-note {\n  font-size: 12px;\n  color: var(--dsw-alias-label-tertiary);\n  padding: 6px 0 2px;\n  border-top: 1px dashed var(--dsw-alias-border-l2);\n  margin-top: 6px;\n}\n\n.clx-pair-note:first-child {\n  border-top: 0;\n  margin-top: 0;\n}\n\n.clx-node.paired {\n  margin-left: 30px;\n}\n\n.clx-node.paired > .clx-node-row .seq::before {\n  content: \"↳ \";\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-inv-row .prev.res {\n  display: flex;\n  align-items: center;\n  gap: 6px;\n  color: var(--dsw-alias-label-secondary);\n  font-size: 12px;\n  overflow: hidden;\n  white-space: nowrap;\n}\n\n.clx-inv-row .prev.res .clx-dot {\n  flex: none;\n  width: 6px;\n  height: 6px;\n}\n\n.clx-inv-row .prev.err {\n  color: var(--dsw-alias-state-error-primary);\n}\n\n.clx-cmdcard {\n  container-type: inline-size;\n}\n\n.clx-cmdcard > .clx-card-head h4 {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n}\n\n.clx-cmd-icon {\n  font: 600 11px/1 ui-monospace, SFMono-Regular, Menlo, monospace;\n  color: var(--dsw-alias-label-tertiary);\n  letter-spacing: -0.5px;\n}\n\n.clx-cmd-status {\n  display: inline-flex;\n  gap: 2px;\n  padding: 2px;\n  border-radius: 9px;\n  background: var(--dsw-alias-bg-layer-1);\n  border: 1px solid var(--dsw-alias-border-l1);\n}\n\n.clx-cmd-sbtn {\n  display: inline-flex;\n  align-items: center;\n  gap: 6px;\n  border: 0;\n  background: transparent;\n  border-radius: 7px;\n  padding: 3px 10px;\n  font-size: 12px;\n  cursor: pointer;\n  color: var(--dsw-alias-label-secondary);\n  transition: background-color 0.15s ease, color 0.15s ease;\n}\n\n.clx-cmd-sbtn b {\n  font-weight: 600;\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-cmd-sbtn.bad {\n  color: var(--dsw-alias-state-error-primary);\n}\n\n.clx-cmd-sbtn.slow {\n  color: #C98A1E;\n}\n\n.clx-cmd-sbtn.bg {\n  color: #2B93C4;\n}\n\n.clx-cmd-sbtn:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-cmd-sbtn[aria-pressed=true] {\n  background: var(--dsw-alias-state-business-primary);\n  color: #fff;\n}\n\n.clx-cmd-sbtn.bad[aria-pressed=true] {\n  background: var(--dsw-alias-state-error-primary);\n}\n\n.clx-cmd-sbtn.slow[aria-pressed=true] {\n  background: #D6951F;\n}\n\n.clx-cmd-sbtn.bg[aria-pressed=true] {\n  background: #2B93C4;\n}\n\n.clx-cmd {\n  display: grid;\n  grid-template-columns: minmax(210px, 270px) minmax(0, 1fr);\n  gap: 18px;\n  align-items: start;\n}\n\n.clx-cmd-side {\n  display: flex;\n  flex-direction: column;\n  gap: 6px;\n  min-width: 0;\n}\n\n.clx-cmd-h {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  font-size: 12px;\n  font-weight: 600;\n  color: var(--dsw-alias-label-secondary);\n  margin: 6px 2px 0;\n}\n\n.clx-cmd-h:first-child {\n  margin-top: 0;\n}\n\n.clx-cmd-h > span {\n  flex: 1;\n}\n\n.clx-cmd-tiles {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 6px;\n}\n\n.clx-cmd-tile {\n  display: flex;\n  flex-direction: column;\n  gap: 2px;\n  padding: 8px 10px;\n  border-radius: 10px;\n  background: var(--dsw-alias-bg-layer-1);\n}\n\n.clx-cmd-tile[role=button] {\n  cursor: pointer;\n}\n\n.clx-cmd-tile[role=button]:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-cmd-tile b {\n  font-size: 18px;\n  font-weight: 650;\n  font-variant-numeric: tabular-nums;\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-cmd-tile b.accent {\n  color: var(--dsw-alias-state-business-primary);\n}\n\n.clx-cmd-tile b.bad {\n  color: var(--dsw-alias-state-error-primary);\n}\n\n.clx-cmd-tile b.bgc {\n  color: #2B93C4;\n}\n\n.clx-cmd-tile span {\n  font-size: 11.5px;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-cmd-notes {\n  display: flex;\n  flex-direction: column;\n  gap: 2px;\n}\n\n.clx-cmd-note {\n  display: grid;\n  grid-template-columns: 8px auto minmax(0, 1fr) auto;\n  align-items: center;\n  gap: 8px;\n  padding: 6px 10px;\n  border-radius: 10px;\n  font-size: 12px;\n  cursor: pointer;\n  background: var(--dsw-alias-bg-layer-1);\n}\n\n.clx-cmd-note:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-cmd-note .clx-dot {\n  width: 7px;\n  height: 7px;\n}\n\n.clx-cmd-note .k {\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-cmd-note code {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  font-size: 11.5px;\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-cmd-note b {\n  font-weight: 600;\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-cmd-note b.slow, .clx-cmd-row .dur.slow, .clx-cmd-meta b.slow {\n  color: #C98A1E;\n}\n\n.clx-cmd-note b.bad, .clx-cmd-meta b.bad {\n  color: var(--dsw-alias-state-error-primary);\n}\n\n.clx-cmd-pq {\n  width: 120px;\n  min-width: 0;\n  font-size: 11.5px;\n  padding: 2px 8px;\n  border-radius: 6px;\n  border: 1px solid var(--dsw-alias-border-l2);\n  background: var(--dsw-alias-bg-layer-1);\n  color: var(--dsw-alias-label-primary);\n  font-weight: 400;\n}\n\n.clx-cmd-progs {\n  display: flex;\n  flex-direction: column;\n  gap: 2px;\n  max-height: 360px;\n  overflow: auto;\n  margin: 0 -2px;\n  padding: 0 2px;\n}\n\n.clx-cmd-prog {\n  display: grid;\n  grid-template-columns: 8px minmax(0, 1fr) auto auto;\n  grid-template-rows: auto 3px;\n  align-items: center;\n  column-gap: 8px;\n  row-gap: 4px;\n  padding: 6px 10px;\n  border-radius: 10px;\n  cursor: pointer;\n  font-size: 12.5px;\n}\n\n.clx-cmd-prog:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-cmd-prog.on {\n  background: color-mix(in srgb, var(--pc) 14%, transparent);\n}\n\n.clx-cmd-prog .clx-dot {\n  background: var(--pc);\n  width: 7px;\n  height: 7px;\n}\n\n.clx-cmd-prog code {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.clx-cmd-prog .n {\n  grid-column: 4;\n  font-variant-numeric: tabular-nums;\n  color: var(--dsw-alias-label-secondary);\n  font-size: 12px;\n  white-space: nowrap;\n}\n\n.clx-cmd-prog .n em {\n  font-style: normal;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-cmd-prog .clx-cmd-badge {\n  grid-column: 3;\n}\n\n.clx-cmd-prog .bar {\n  grid-column: 2/5;\n  grid-row: 2;\n  height: 3px;\n  border-radius: 2px;\n  background: color-mix(in srgb, var(--pc) 12%, transparent);\n  overflow: hidden;\n}\n\n.clx-cmd-prog .bar > span {\n  display: block;\n  height: 100%;\n  border-radius: 2px;\n  background: var(--pc);\n  opacity: 0.75;\n}\n\n.clx-cmd-main {\n  min-width: 0;\n}\n\n.clx-cmd-main > .clx-msgtools {\n  margin-bottom: 6px;\n}\n\n.clx-cmd-filt {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  font-size: 12px;\n  margin: 0 2px 6px;\n}\n\n.clx-linkbtn {\n  border: 0;\n  background: transparent;\n  padding: 0;\n  font-size: 12px;\n  color: var(--dsw-alias-state-business-primary);\n  cursor: pointer;\n}\n\n.clx-linkbtn:hover {\n  text-decoration: underline;\n}\n\n.clx-cmd-row {\n  display: grid;\n  grid-template-columns: 12px 14px minmax(0, 1fr) auto 56px auto;\n  align-items: center;\n  gap: 8px;\n  padding: 8px 10px;\n  border-radius: 10px;\n  font-size: 12.5px;\n  cursor: pointer;\n  transition: background-color 0.15s ease;\n}\n\n.clx-cmd-row:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-cmd-row:focus-visible {\n  outline: 2px solid var(--dsw-alias-state-business-primary);\n  outline-offset: -2px;\n}\n\n.clx-cmd-row .cmd {\n  min-width: 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-cmd-row .tags {\n  display: inline-flex;\n  gap: 4px;\n}\n\n.clx-cmd-row .dur {\n  text-align: right;\n  font-variant-numeric: tabular-nums;\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-cmd-row .when {\n  text-align: right;\n  font-variant-numeric: tabular-nums;\n  color: var(--dsw-alias-label-tertiary);\n  font-size: 11.5px;\n  white-space: nowrap;\n}\n\n.clx-cmd-st {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  width: 14px;\n  font-size: 12px;\n  font-weight: 700;\n}\n\n.clx-cmd-st.ok {\n  color: #3FB37F;\n}\n\n.clx-cmd-st.bad {\n  color: var(--dsw-alias-state-error-primary);\n}\n\n.clx-cmd-st.run::before {\n  content: \"\";\n  width: 9px;\n  height: 9px;\n  border-radius: 50%;\n  corner-shape: round;\n  border: 2px solid #3BA7D9;\n  border-right-color: transparent;\n  animation: clx-spin 0.8s linear infinite;\n}\n\n@keyframes clx-spin {\n  to {\n    transform: rotate(360deg);\n  }\n}\n.clx-cmd-badge {\n  display: inline-flex;\n  align-items: center;\n  padding: 0 6px;\n  border-radius: 999px;\n  corner-shape: round;\n  font-size: 10.5px;\n  line-height: 17px;\n  white-space: nowrap;\n  border: 1px solid var(--dsw-alias-border-l2);\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-cmd-badge.bad {\n  border-color: color-mix(in srgb, var(--dsw-alias-state-error-primary) 40%, transparent);\n  color: var(--dsw-alias-state-error-primary);\n}\n\n.clx-cmd-badge.bg {\n  border-color: color-mix(in srgb, #2B93C4 40%, transparent);\n  color: #2B93C4;\n}\n\n.clx-cmd-dir {\n  display: inline-flex;\n  align-items: center;\n  gap: 4px;\n  vertical-align: 1px;\n  max-width: min(40%, 180px);\n  margin-right: 6px;\n  padding: 0 6px;\n  border-radius: 5px;\n  font: 500 11px/18px var(--dsw-font-family, inherit);\n  color: var(--dsw-alias-label-secondary);\n  background: var(--dsw-alias-bg-layer-1);\n  border: 1px solid var(--dsw-alias-border-l1);\n  white-space: nowrap;\n}\n\n.clx-cmd-dir svg {\n  flex: none;\n  opacity: 0.7;\n}\n\n.clx-cmd-dir > span {\n  min-width: 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n\n.clx-cmdtext .prog {\n  color: var(--dsw-alias-state-business-primary);\n  font-weight: 600;\n}\n\n.clx-cmdtext .op {\n  color: var(--dsw-alias-label-tertiary);\n  font-weight: 600;\n}\n\n.clx-cmdtext .redir {\n  color: #D2555A;\n}\n\n.clx-cmdtext .str {\n  color: #2F8F5B;\n}\n\n.clx-cmdtext .flag {\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-cmd-item.failed > .clx-cmd-row .cmd {\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-node.open > .clx-cmd-row {\n  background: transparent;\n}\n\n.clx-node.open > .clx-cmd-row:hover {\n  background: color-mix(in srgb, var(--cat) 9%, transparent);\n}\n\n.clx-cmd-detail {\n  padding: 0 12px 12px 54px;\n}\n\n.clx-cmd-desc {\n  font-size: 12.5px;\n  color: var(--dsw-alias-label-secondary);\n  margin-bottom: 6px;\n}\n\n.clx-cmd-meta {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 4px 16px;\n  font-size: 12px;\n  margin-bottom: 8px;\n}\n\n.clx-cmd-meta span {\n  display: inline-flex;\n  gap: 6px;\n  min-width: 0;\n}\n\n.clx-cmd-meta i {\n  font-style: normal;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-cmd-meta b {\n  font-weight: 500;\n  color: var(--dsw-alias-label-primary);\n  overflow-wrap: anywhere;\n}\n\n@container (max-width: 880px) {\n  .clx-cmd {\n    grid-template-columns: minmax(0, 1fr);\n  }\n  .clx-cmd-tiles {\n    grid-template-columns: repeat(4, minmax(0, 1fr));\n  }\n  .clx-cmd-progs {\n    display: grid;\n    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));\n    column-gap: 8px;\n  }\n  .clx-cmd-progs {\n    max-height: 220px;\n  }\n}\n@container (max-width: 560px) {\n  .clx-cmd-tiles {\n    grid-template-columns: 1fr 1fr;\n  }\n  .clx-cmd-row {\n    grid-template-columns: 12px 14px minmax(0, 1fr) 52px;\n  }\n  .clx-cmd-row .tags, .clx-cmd-row .when {\n    display: none;\n  }\n  .clx-cmd-detail {\n    padding: 0 10px 10px 12px;\n  }\n}\n.clx-minibar.two {\n  display: flex;\n  gap: 2px;\n  background: none;\n}\n\n.clx-minibar.two > span {\n  border-radius: 2px;\n}\n\n.clx-catitem .name {\n  font-weight: 550;\n  font-size: 12.5px;\n  word-break: break-all;\n}\n\n.clx-catitem .desc {\n  font-size: 11.5px;\n  color: var(--dsw-alias-label-tertiary);\n  display: -webkit-box;\n  -webkit-line-clamp: 2;\n  -webkit-box-orient: vertical;\n  overflow: hidden;\n}\n\n.clx-catitem .tok {\n  font-size: 12px;\n  font-variant-numeric: tabular-nums;\n  color: var(--dsw-alias-label-secondary);\n  white-space: nowrap;\n}\n\n.clx-catfoot {\n  display: flex;\n  gap: 6px;\n  flex-wrap: wrap;\n  margin-top: 8px;\n}\n\n@container (max-width: 560px) {\n  .clx-catrow {\n    grid-template-columns: minmax(0, 1fr) 58px 52px;\n  }\n  .clx-catrow > :nth-child(2), .clx-catrow > :nth-child(5) {\n    display: none;\n  }\n  .clx-hero {\n    flex-wrap: wrap;\n  }\n  .clx-hero-side {\n    border-left: 0;\n    padding-left: 0;\n    width: 100%;\n  }\n}\n.clx-legend {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 4px 12px;\n  font-size: 12px;\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-legend span {\n  display: inline-flex;\n  align-items: center;\n  gap: 5px;\n}\n\n.clx-msgtools {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 6px;\n  align-items: center;\n  margin-bottom: 8px;\n}\n\n.clx-msgtools input {\n  flex: 1 1 160px;\n  min-width: 0;\n  background: var(--dsw-alias-bg-layer-1);\n  color: var(--dsw-alias-label-primary);\n  border: 1px solid var(--dsw-alias-border-l2);\n  border-radius: 7px;\n  padding: 5px 8px;\n  font-size: 12.5px;\n}\n\n.clx-chips {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 4px;\n  margin-bottom: 8px;\n}\n\n.clx-chip {\n  display: inline-flex;\n  align-items: center;\n  gap: 5px;\n  border: 1px solid var(--dsw-alias-border-l2);\n  border-radius: 999px;\n  corner-shape: round;\n  padding: 2px 8px;\n  font-size: 11.5px;\n  cursor: pointer;\n  background: transparent;\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-chip[aria-pressed=true] {\n  background: var(--dsw-alias-interactive-bg-active);\n  color: var(--dsw-alias-label-primary);\n  border-color: var(--dsw-alias-border-l3);\n}\n\n.clx-node-row {\n  display: grid;\n  grid-template-columns: 12px 36px minmax(0, 1fr) 64px;\n  gap: 8px;\n  align-items: center;\n  padding: 8px 10px;\n  cursor: pointer;\n  border-radius: 10px;\n  transition: background-color 0.15s ease, box-shadow 0.15s ease;\n}\n\n.clx-node-row:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-node-row .seq {\n  font-size: 11px;\n  color: var(--dsw-alias-label-tertiary);\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-node-row .main {\n  min-width: 0;\n}\n\n.clx-node-row .line1 {\n  display: flex;\n  align-items: center;\n  gap: 6px;\n  font-size: 11.5px;\n  color: var(--dsw-alias-label-tertiary);\n  min-width: 0;\n}\n\n.clx-node-row .prev {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  font-size: 12.5px;\n}\n\n.clx-node-row .tok {\n  text-align: right;\n  font-variant-numeric: tabular-nums;\n  font-size: 12.5px;\n}\n\n.clx-minibar {\n  height: 3px;\n  border-radius: 2px;\n  margin-top: 3px;\n  background: var(--dsw-alias-border-l1);\n  overflow: hidden;\n}\n\n.clx-minibar > span {\n  display: block;\n  height: 100%;\n}\n\n.clx-tag {\n  display: inline-flex;\n  align-items: center;\n  gap: 4px;\n  white-space: nowrap;\n}\n\n.clx-callid {\n  font-family: var(--dsw-font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);\n  font-size: 11px;\n  max-width: 24ch;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.clx-detail-meta {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 4px 10px;\n  font-size: 11.5px;\n  color: var(--dsw-alias-label-tertiary);\n  margin-bottom: 6px;\n}\n\n.clx-part {\n  margin-top: 8px;\n}\n\n.clx-part-head {\n  display: flex;\n  gap: 8px;\n  font-size: 11.5px;\n  color: var(--dsw-alias-label-tertiary);\n  margin-bottom: 3px;\n}\n\n.clx-pre {\n  margin: 0;\n  max-height: 360px;\n  overflow: auto;\n  white-space: pre-wrap;\n  word-break: break-word;\n  background: var(--dsw-alias-bg-layer-2);\n  border: 1px solid var(--dsw-alias-border-l1);\n  border-radius: 7px;\n  padding: 8px;\n  font-size: 12px;\n  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;\n}\n\n.clx-rich.bare {\n  margin-top: 0;\n  border: 0;\n  border-radius: 0;\n  background: none;\n  overflow: visible;\n}\n\n.clx-rich.bare + .clx-rich.bare {\n  margin-top: 10px;\n  padding-top: 8px;\n  border-top: 1px solid var(--dsw-alias-border-l1);\n}\n\n.clx-rich.bare > .clx-rich-head {\n  padding: 4px 0 6px;\n  background: none;\n  border-bottom: 0;\n  font-size: 11.5px;\n}\n\n.clx-rich.bare > .clx-rich-note {\n  margin: 0 0 8px;\n  border-radius: 7px;\n  border-bottom: 0;\n}\n\n.clx-rich.bare > .clx-rich-body {\n  padding: 2px 2px 4px;\n  font-size: 13px;\n}\n\n.clx-rich.bare > .clx-rich-body:has(> [class*=json], > .clx-plain.mono) {\n  padding: 8px 10px;\n  border-radius: 8px;\n  background: var(--dsw-alias-bg-layer-1);\n}\n\n.clx-rich.bare > .clx-rich-body.flush {\n  padding: 0;\n  border-radius: 8px;\n  overflow: hidden;\n  background: var(--dsw-alias-bg-layer-1);\n}\n\n.clx-rich.bare .clx-code [data-code-block-content], .clx-rich.bare .clx-code pre {\n  background: var(--dsw-alias-bg-layer-1) !important;\n}\n\n.clx-rich.bare > .clx-rich-more {\n  border-top: 0;\n  border-radius: 6px;\n  margin-top: 4px;\n}\n\n.clx-rich {\n  margin-top: 8px;\n  border: 1px solid var(--dsw-alias-border-l1);\n  border-radius: 10px;\n  background: var(--dsw-alias-bg-layer-1);\n  overflow: hidden;\n}\n\n.clx-rich-head {\n  display: flex;\n  align-items: center;\n  flex-wrap: wrap;\n  gap: 8px;\n  row-gap: 4px;\n  padding: 6px 10px;\n  font-size: 12px;\n  border-bottom: 1px solid var(--dsw-alias-border-l1);\n  background: var(--dsw-alias-bg-layer-2);\n}\n\n.clx-rich-head b {\n  font-weight: 600;\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-rich-modes {\n  margin-left: auto;\n  display: inline-flex;\n  border: 1px solid var(--dsw-alias-border-l2);\n  border-radius: 6px;\n  overflow: hidden;\n}\n\n.clx-seg {\n  border: 0;\n  background: transparent;\n  color: var(--dsw-alias-label-tertiary);\n  font-size: 11.5px;\n  padding: 2px 8px;\n  cursor: pointer;\n}\n\n.clx-seg + .clx-seg {\n  border-left: 1px solid var(--dsw-alias-border-l2);\n}\n\n.clx-seg[aria-pressed=true] {\n  background: var(--dsw-alias-interactive-bg-active);\n  color: var(--dsw-alias-label-primary);\n}\n\n/* 「↗ 预览」: opens the file a tool touched in dsh's right Sidebar (the snapshot stays inline) */\n.clx-filepreview {\n  display: inline-flex;\n  align-items: center;\n  gap: 6px;\n  min-width: 0;\n}\n\n.clx-filebtn {\n  display: inline-flex;\n  align-items: center;\n  gap: 5px;\n  border: 1px solid var(--dsw-alias-border-l2);\n  background: var(--dsw-alias-bg-layer-1);\n  color: var(--dsw-alias-state-business-primary);\n  font-size: 11.5px;\n  line-height: 1.4;\n  padding: 2px 8px;\n  border-radius: 6px;\n  cursor: pointer;\n  white-space: nowrap;\n  transition: background-color 0.15s ease, border-color 0.15s ease;\n}\n\n.clx-filebtn:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n  border-color: var(--dsw-alias-state-business-primary);\n}\n\n.clx-filebtn:focus-visible {\n  outline: 2px solid var(--dsw-alias-border-focus, #4d8cff);\n  outline-offset: 1px;\n}\n\n.clx-filebtn svg {\n  flex: none;\n}\n\n.clx-filepreview-note {\n  font-size: 11px;\n  color: var(--dsw-alias-state-warn-label, var(--dsw-alias-state-warn-primary));\n  overflow-wrap: anywhere;\n}\n\n.clx-rich-body {\n  padding: 10px 14px;\n  font-size: 13.5px;\n  line-height: 1.6;\n  color: var(--dsw-alias-label-primary);\n  overflow-wrap: anywhere;\n}\n\n.clx-rich-body.folded {\n  max-height: 420px;\n  overflow: hidden;\n  -webkit-mask-image: linear-gradient(#000 78%, transparent);\n  mask-image: linear-gradient(#000 78%, transparent);\n}\n\n.clx-rich-more {\n  display: block;\n  width: 100%;\n  border: 0;\n  border-top: 1px solid var(--dsw-alias-border-l1);\n  background: transparent;\n  color: var(--dsw-alias-label-secondary);\n  font-size: 12px;\n  padding: 6px;\n  cursor: pointer;\n}\n\n.clx-rich-more:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-md {\n  min-width: 0;\n}\n\n.clx-rich-body.flush {\n  padding: 0;\n}\n\n.clx-code {\n  position: relative;\n}\n\n.clx-code :has(> [data-code-block-banner]) {\n  position: absolute;\n  top: 6px;\n  right: 8px;\n  z-index: 1;\n  height: auto;\n  min-height: 0;\n  padding: 0;\n  margin: 0;\n  background: none;\n  border: 0;\n}\n\n.clx-code [data-code-block-banner] {\n  padding: 0;\n  background: none;\n  border: 0;\n  min-height: 0;\n}\n\n.clx-code [data-code-block-banner] > :first-child {\n  display: none;\n}\n\n.clx-code > * {\n  margin: 0 !important;\n  border: 0 !important;\n  border-radius: 0 !important;\n}\n\n.clx-rich-note {\n  font-size: 11.5px;\n  padding: 6px 10px;\n  color: var(--dsw-alias-state-warn-label, var(--dsw-alias-state-warn-primary));\n  background: color-mix(in srgb, var(--dsw-alias-state-warn-primary) 8%, transparent);\n  border-bottom: 1px solid var(--dsw-alias-border-l1);\n  overflow-wrap: anywhere;\n}\n\n.clx-md > :first-child {\n  margin-top: 0;\n}\n\n.clx-md > :last-child {\n  margin-bottom: 0;\n}\n\n.clx-plain {\n  margin: 0;\n  white-space: pre-wrap;\n  word-break: break-word;\n  font-size: 12.5px;\n  line-height: 1.55;\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-plain.mono {\n  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;\n  font-size: 12px;\n}\n\n.clx-disc-head {\n  display: flex;\n  gap: 8px;\n  align-items: flex-start;\n  padding: 8px 10px;\n  cursor: pointer;\n  border-radius: 10px;\n  transition: background-color 0.15s ease, box-shadow 0.15s ease;\n}\n\n.clx-disc-head:focus-visible {\n  outline: 2px solid var(--dsw-alias-state-business-primary);\n  outline-offset: -2px;\n}\n\n.clx-disc-head:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-disc-caret {\n  display: inline-flex;\n  width: 12px;\n  flex: none;\n  padding-top: 3px;\n}\n\n.clx-disc-head > :last-child {\n  flex: 1;\n  min-width: 0;\n}\n\n.clx-src-row {\n  display: flex;\n  flex-wrap: wrap;\n  align-items: center;\n  gap: 4px 10px;\n  font-size: 12.5px;\n}\n\n.clx-src-name {\n  font-weight: 600;\n  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;\n  font-size: 12.5px;\n  overflow-wrap: anywhere;\n}\n\n.clx-src-tok {\n  margin-left: auto;\n  font-variant-numeric: tabular-nums;\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-src-meta {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 4px 12px;\n  font-size: 11.5px;\n  color: var(--dsw-alias-label-tertiary);\n  margin-bottom: 2px;\n  overflow-wrap: anywhere;\n}\n\n.clx-src-meta a, .clx-link {\n  color: var(--dsw-alias-state-business-primary);\n  cursor: pointer;\n  font-size: 11.5px;\n}\n\n.clx-src-path {\n  font-size: 12px;\n  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;\n  overflow-wrap: anywhere;\n  margin-bottom: 8px;\n}\n\n.clx-skill-desc {\n  font-size: 12.5px;\n  color: var(--dsw-alias-label-secondary);\n  margin-top: 3px;\n  line-height: 1.5;\n  overflow-wrap: anywhere;\n}\n\n.clx-badge {\n  font-size: 11px;\n  padding: 0 7px;\n  border-radius: 9px;\n  border: 1px solid var(--dsw-alias-border-l2);\n  color: var(--dsw-alias-label-secondary);\n  white-space: nowrap;\n}\n\n.clx-badge.ok {\n  border-color: transparent;\n  background: color-mix(in srgb, var(--dsw-alias-state-success-primary) 16%, transparent);\n  color: var(--dsw-alias-state-success-primary);\n}\n\n.clx-badge.dim {\n  color: var(--dsw-alias-label-tertiary);\n  border-style: dashed;\n}\n\n.clx-empty {\n  font-size: 12.5px;\n  color: var(--dsw-alias-label-tertiary);\n  padding: 10px;\n  border: 1px dashed var(--dsw-alias-border-l2);\n  border-radius: 8px;\n}\n\n.clx-memtab {\n  display: grid;\n  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);\n  gap: 12px;\n  align-items: start;\n}\n\n.clx-memtab-l, .clx-memtab-r {\n  min-width: 0;\n  container-type: inline-size;\n}\n\n.clx-ft {\n  grid-template-columns: max-content 32px minmax(0, 1fr) !important;\n}\n\n@container (max-width: 1020px) {\n  .clx-memtab {\n    grid-template-columns: minmax(0, 1fr);\n  }\n}\n.clx-ftcard > .clx-card-head {\n  margin-bottom: 2px;\n}\n\n.clx-ft-legend {\n  display: inline-flex;\n  align-items: center;\n  gap: 6px;\n  font-size: 11.5px;\n}\n\n.clx-ft-legend {\n  flex-wrap: wrap;\n}\n\n.clx-ft-legend .clx-chip {\n  margin-left: 6px;\n  white-space: nowrap;\n}\n\n.clx-ft {\n  display: grid;\n  grid-template-columns: max-content minmax(28px, 110px) minmax(0, 1fr);\n  row-gap: 1px;\n  padding: 4px 0 2px;\n}\n\n.clx-ft-row {\n  display: grid;\n  grid-column: 1/-1;\n  grid-template-columns: subgrid;\n  align-items: center;\n  min-height: 32px;\n  padding: 0 10px;\n  border-radius: 9px;\n  transition: background-color 0.15s ease;\n  animation: clx-fade 0.35s ease both;\n  animation-delay: calc(var(--i, 0) * 12ms);\n}\n\n.clx-ft-row:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-ft-row.open {\n  cursor: pointer;\n}\n\n.clx-ft-row.open:hover .clx-ft-name {\n  text-decoration: underline;\n  text-underline-offset: 2px;\n  text-decoration-color: color-mix(in srgb, var(--ft) 60%, transparent);\n}\n\n.clx-ft-st.link {\n  cursor: pointer;\n}\n\n.clx-ft-st.link:hover {\n  box-shadow: 0 0 0 1px color-mix(in srgb, #C9772F 55%, transparent);\n}\n\n.clx-ft-st.link:focus-visible {\n  outline: 2px solid color-mix(in srgb, #C9772F 55%, transparent);\n  outline-offset: 1px;\n}\n\n.clx-ft-note {\n  margin: 2px 2px 6px;\n  font-size: 12px;\n  color: var(--dsw-alias-state-error-primary);\n}\n\n.clx-ft-row.top {\n  min-height: 40px;\n  margin-top: 10px;\n  background: color-mix(in srgb, var(--ft) 8%, transparent);\n}\n\n.clx-ft-row.top:first-child {\n  margin-top: 0;\n}\n\n.clx-ft-row.top:hover {\n  background: color-mix(in srgb, var(--ft) 12%, transparent);\n}\n\n.clx-ft-tree {\n  display: flex;\n  align-items: center;\n  gap: 7px;\n  min-width: 0;\n  align-self: stretch;\n}\n\n.clx-ft-g {\n  position: relative;\n  align-self: stretch;\n  flex: none;\n  width: 20px;\n  margin-right: -7px;\n}\n\n.clx-ft-g.pipe::before, .clx-ft-g.tee::before, .clx-ft-g.elbow::before {\n  content: \"\";\n  position: absolute;\n  left: 8px;\n  top: 0;\n  bottom: 0;\n  border-left: 1.5px solid color-mix(in srgb, var(--dsw-alias-label-tertiary) 35%, transparent);\n}\n\n.clx-ft-g.elbow::before {\n  bottom: 50%;\n  border-bottom-left-radius: 5px;\n}\n\n.clx-ft-g.tee::after, .clx-ft-g.elbow::after {\n  content: \"\";\n  position: absolute;\n  left: 8px;\n  right: 3px;\n  top: 50%;\n  border-top: 1.5px solid color-mix(in srgb, var(--dsw-alias-label-tertiary) 35%, transparent);\n}\n\n.clx-ft-g + .clx-ft-icon, .clx-ft-g + .clx-linkbtn {\n  margin-left: 7px;\n}\n\n.clx-ft-icon {\n  flex: none;\n}\n\n.clx-ft-row.top .clx-ft-icon {\n  width: 17px;\n  height: 17px;\n}\n\n.clx-ft-name {\n  font: 13px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;\n  color: var(--dsw-alias-label-primary);\n  white-space: nowrap;\n}\n\n.clx-ft-name.dir {\n  font-weight: 600;\n}\n\n.clx-ft-row.top .clx-ft-name {\n  font-size: 13.5px;\n  font-weight: 650;\n}\n\n.clx-ft-st {\n  flex: none;\n  display: inline-flex;\n  align-items: center;\n  padding: 0 7px;\n  border-radius: 999px;\n  corner-shape: round;\n  font-size: 11px;\n  line-height: 18px;\n  color: var(--dsw-alias-label-secondary);\n  background: var(--dsw-alias-bg-layer-1);\n  white-space: nowrap;\n}\n\n.clx-ft-st.loaded {\n  color: #fff;\n  background: #C9772F;\n  font-weight: 600;\n}\n\n.clx-ft-st.missing {\n  background: transparent;\n  border: 1px dashed var(--dsw-alias-border-l3, var(--dsw-alias-border-l2));\n  line-height: 16px;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-ft-row.missing .clx-ft-name {\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-ft-row.missing .clx-ft-icon {\n  opacity: 0.5;\n}\n\n.clx-ft-lead {\n  align-self: center;\n  margin: 0 10px;\n  border-top: 1.5px dotted color-mix(in srgb, var(--dsw-alias-label-tertiary) 40%, transparent);\n}\n\n.clx-ft-pill {\n  justify-self: start;\n  max-width: 100%;\n  padding: 3px 12px;\n  border-radius: 999px;\n  corner-shape: round;\n  font-size: 12.5px;\n  line-height: 1.45;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  background: color-mix(in srgb, var(--ft) 14%, transparent);\n  color: color-mix(in srgb, var(--ft) 70%, var(--dsw-alias-label-primary));\n}\n\n.clx-ft-row.top .clx-ft-pill {\n  font-weight: 600;\n  background: color-mix(in srgb, var(--ft) 20%, transparent);\n}\n\n.clx-ft-row.missing .clx-ft-pill {\n  background: transparent;\n  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ft) 28%, transparent);\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-ft-row.more {\n  min-height: 26px;\n}\n\n.clx-ft-row.more:hover {\n  background: transparent;\n}\n\n.clx-ft-row.more > .clx-ft-tree {\n  grid-column: 1/-1;\n}\n\n@container (max-width: 620px) {\n  .clx-ft {\n    display: flex;\n    flex-direction: column;\n  }\n  .clx-ft-row {\n    display: flex;\n    flex-wrap: wrap;\n    padding: 4px 8px;\n  }\n  .clx-ft-lead {\n    display: none;\n  }\n  .clx-ft-tree {\n    flex: 1 1 100%;\n  }\n  .clx-ft-pill {\n    margin: 2px 0 2px 26px;\n    font-size: 11.5px;\n    white-space: normal;\n  }\n  .clx-ft-tree {\n    min-width: 0;\n  }\n  .clx-ft-name {\n    min-width: 0;\n    overflow: hidden;\n    text-overflow: ellipsis;\n  }\n}\n.clx-mem-hint {\n  font-size: 12px;\n  color: var(--dsw-alias-label-tertiary);\n  margin: -2px 2px 10px;\n}\n\n.clx-mem-files {\n  display: flex;\n  flex-direction: column;\n  gap: 2px;\n  margin-bottom: 10px;\n}\n\n.clx-mem-loc-head {\n  display: flex;\n  align-items: center;\n  flex-wrap: wrap;\n  gap: 4px 10px;\n  font-size: 12px;\n  font-weight: 600;\n  color: var(--dsw-alias-label-secondary);\n  margin: 4px 2px 6px;\n}\n\n.clx-mem-loc-head > .clx-muted {\n  font-weight: 400;\n  font-size: 11.5px;\n}\n\n.clx-mem-legend {\n  margin-left: auto;\n  display: inline-flex;\n  gap: 4px;\n  font-weight: 400;\n}\n\n.clx-mem-legend .clx-mem-pill {\n  font-size: 10.5px;\n  line-height: 16px;\n  padding: 0 6px;\n}\n\n.clx-mem-empty {\n  font-size: 12.5px;\n  color: var(--dsw-alias-label-secondary);\n  padding: 8px 10px;\n  margin-bottom: 6px;\n  border-radius: 10px;\n  background: color-mix(in srgb, var(--cat-memory, #B6992D) 8%, transparent);\n}\n\n.clx-mem-locs {\n  display: flex;\n  flex-direction: column;\n  gap: 2px;\n}\n\n.clx-mem-loc {\n  display: grid;\n  grid-template-columns: 112px minmax(0, 1fr) auto;\n  align-items: center;\n  gap: 10px;\n  padding: 7px 10px;\n  border-radius: 10px;\n  font-size: 12.5px;\n}\n\n.clx-mem-loc:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-mem-loc .scope {\n  font-size: 11.5px;\n  color: var(--dsw-alias-label-tertiary);\n  white-space: nowrap;\n}\n\n.clx-mem-loc .dir {\n  display: inline-flex;\n  align-items: center;\n  gap: 6px;\n  min-width: 0;\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-mem-loc .dir svg {\n  flex: none;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-mem-loc .dir > span {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.clx-mem-loc .files {\n  display: inline-flex;\n  flex-wrap: wrap;\n  justify-content: flex-end;\n  gap: 4px;\n}\n\n.clx-mem-pill {\n  display: inline-flex;\n  align-items: center;\n  padding: 0 7px;\n  border-radius: 999px;\n  corner-shape: round;\n  font: 11px/18px ui-monospace, SFMono-Regular, Menlo, monospace;\n  white-space: nowrap;\n  border: 1px solid transparent;\n}\n\n.clx-mem-pill.loaded {\n  background: color-mix(in srgb, #B6992D 18%, transparent);\n  color: color-mix(in srgb, #B6992D 70%, var(--dsw-alias-label-primary));\n  border-color: color-mix(in srgb, #B6992D 35%, transparent);\n}\n\n.clx-mem-pill.exists {\n  border-color: color-mix(in srgb, #B6992D 55%, transparent);\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-mem-pill.missing {\n  color: var(--dsw-alias-label-tertiary);\n  border-color: var(--dsw-alias-border-l1);\n  opacity: 0.75;\n}\n\n.clx-rt-list {\n  display: flex;\n  flex-direction: column;\n  gap: 2px;\n}\n\n.clx-rt {\n  display: grid;\n  grid-template-columns: 112px minmax(0, 1fr);\n  gap: 10px;\n  padding: 7px 10px;\n  border-radius: 10px;\n  font-size: 12.5px;\n  line-height: 1.55;\n}\n\n.clx-rt:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-rt .k {\n  font-size: 11.5px;\n  color: var(--dsw-alias-label-tertiary);\n  padding-top: 1px;\n}\n\n.clx-rt .v {\n  min-width: 0;\n  color: var(--dsw-alias-label-primary);\n  overflow-wrap: anywhere;\n}\n\n.clx-card-head > .clx-link {\n  font-size: 11.5px;\n}\n\n@container (max-width: 560px) {\n  .clx-mem-loc {\n    grid-template-columns: minmax(0, 1fr) auto;\n  }\n  .clx-mem-loc .scope {\n    grid-column: 1/-1;\n  }\n  .clx-rt {\n    grid-template-columns: minmax(0, 1fr);\n    gap: 2px;\n  }\n  .clx-mem-legend {\n    margin-left: 0;\n  }\n}\n.clx-err {\n  color: var(--dsw-alias-state-error-primary);\n}\n\n.clx-warn {\n  color: var(--dsw-alias-state-warn-label, var(--dsw-alias-state-warn-primary));\n}\n\n.clx-ok {\n  color: var(--dsw-alias-state-success-primary);\n}\n\n.clx-svg text {\n  fill: var(--dsw-alias-label-tertiary);\n  font-size: 10px;\n}\n\n.clx-tip {\n  font-size: 12px;\n  min-height: 36px;\n  color: var(--dsw-alias-label-secondary);\n  margin-top: 6px;\n  word-break: break-word;\n}\n\n.clx-spin {\n  opacity: 0.6;\n}\n\n.clx-pane {\n  container-type: inline-size;\n}\n\n.clx-flow-wrap {\n  display: grid;\n  grid-template-columns: minmax(0, 600px) minmax(260px, 1fr);\n  gap: 12px;\n  align-items: start;\n}\n\n@container (max-width: 860px) {\n  .clx-flow-wrap {\n    grid-template-columns: minmax(0, 1fr);\n  }\n}\n.clx-flow-diagram {\n  padding: 8px;\n}\n\n.clx-flow-node text {\n  pointer-events: none;\n}\n\n.clx-flow-label {\n  font-size: 12.5px;\n  font-weight: 600;\n  fill: var(--dsw-alias-label-primary);\n}\n\n.clx-flow-label.side {\n  font-size: 11.5px;\n  font-weight: 500;\n  fill: var(--dsw-alias-label-secondary);\n}\n\n.clx-flow-label.inv, .clx-flow-count.inv {\n  fill: #fff;\n}\n\n.clx-flow-count {\n  font-size: 10.5px;\n  fill: var(--dsw-alias-label-tertiary);\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-flow-boxlabel {\n  font-size: 11px;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n}\n\n.clx-flow-side {\n  font-size: 10px;\n  fill: var(--dsw-alias-label-tertiary);\n}\n\n.clx-flow-glow {\n  animation: clx-pulse 1.1s ease-in-out infinite;\n}\n\n.clx-flow-tok {\n  font-size: 11px;\n  font-weight: 600;\n  fill: var(--dsw-alias-label-secondary);\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-flow-tok.inv {\n  fill: #fff;\n}\n\n.clx-flow-num {\n  font-size: 10px;\n  font-weight: 700;\n  fill: #fff;\n}\n\n.clx-flow-trace {\n  fill: none;\n  stroke-width: 2.4;\n  stroke-dasharray: 7 5;\n  animation: clx-dash 0.9s linear infinite;\n}\n\n@keyframes clx-dash {\n  to {\n    stroke-dashoffset: -12;\n  }\n}\n.clx-flow-status {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 8px;\n  align-items: center;\n  font-size: 13px;\n}\n\n.clx-live-dot {\n  display: inline-block;\n  width: 8px;\n  height: 8px;\n  border-radius: 50%;\n  corner-shape: round;\n  flex: none;\n}\n\n.clx-live-dot.on {\n  animation: clx-pulse 1.1s ease-in-out infinite;\n}\n\n.clx-flow-big {\n  font-size: 13px;\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-flow-big b {\n  font-size: 18px;\n}\n\n.clx-flow-comp {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 4px 12px;\n  font-size: 11.5px;\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-flow-path {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 4px;\n}\n\n.clx-flow-chip {\n  font-size: 11.5px;\n  padding: 1px 7px;\n  border-radius: 10px;\n  border: 1px solid var(--dsw-alias-border-l2);\n  white-space: nowrap;\n}\n\n.clx-flow-chip b {\n  color: var(--dsw-alias-state-business-primary);\n}\n\n.clx-flow-steps {\n  max-height: 460px;\n  overflow: auto;\n  margin: 0 -6px;\n  padding: 0 6px;\n}\n\n.clx-flow-step {\n  display: grid;\n  grid-template-columns: 34px minmax(0, 1fr) auto;\n  gap: 8px;\n  align-items: center;\n  padding: 4px 10px 4px 30px;\n  border-radius: 8px;\n  cursor: pointer;\n  font-size: 12px;\n}\n\n.clx-flow-step:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-flow-step-tools {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.clx-flow-step-ctx {\n  display: flex;\n  align-items: center;\n  gap: 6px;\n  font-variant-numeric: tabular-nums;\n  font-size: 11.5px;\n}\n\n.clx-flow-mini {\n  display: inline-block;\n  width: 46px;\n  height: 4px;\n  border-radius: 2px;\n  background: var(--dsw-alias-border-l1);\n  overflow: hidden;\n}\n\n.clx-flow-mini > span {\n  display: block;\n  height: 100%;\n  background: var(--dsw-alias-state-business-primary);\n  opacity: 0.75;\n}\n\n.clx-flow-job {\n  display: flex;\n  align-items: center;\n  gap: 4px;\n}\n\n.clx-flow-job .clx-live-dot {\n  margin-right: 2px;\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .clx-flow-trace, .clx-flow-glow, .clx-live-dot.on {\n    animation: none;\n  }\n}\n/* 概览 motion: cards rise in, the usage bar sweeps open, category rows and bars stagger in, the growth line draws itself */\n.clx-ov > .clx-card {\n  animation: clx-rise 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both;\n}\n\n.clx-ov > .clx-card:nth-child(2) {\n  animation-delay: 0.07s;\n}\n\n.clx-ov > .clx-card:nth-child(3) {\n  animation-delay: 0.14s;\n}\n\n.clx-ov > .clx-card:nth-child(4) {\n  animation-delay: 0.21s;\n}\n\n.clx-ov > .clx-card:nth-child(n+5) {\n  animation-delay: 0.28s;\n}\n\n@keyframes clx-rise {\n  from {\n    opacity: 0;\n    transform: translateY(10px);\n  }\n  to {\n    opacity: 1;\n    transform: none;\n  }\n}\n.clx-bar.anim {\n  animation: clx-reveal 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.12s both;\n}\n\n@keyframes clx-reveal {\n  from {\n    clip-path: inset(0 100% 0 0);\n  }\n  to {\n    clip-path: inset(0 0 0 0);\n  }\n}\n.clx-bar > span {\n  transition: width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);\n}\n\n.clx-ov .clx-catblock, .clx-ov .clx-catrow.static {\n  animation: clx-slide 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;\n  animation-delay: calc(0.18s + var(--i, 0) * 40ms);\n}\n\n@keyframes clx-slide {\n  from {\n    opacity: 0;\n    transform: translateX(-6px);\n  }\n  to {\n    opacity: 1;\n    transform: none;\n  }\n}\n.clx-catbar > span {\n  transform-origin: left center;\n  animation: clx-grow 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;\n  animation-delay: calc(0.28s + var(--i, 0) * 50ms);\n  transition: width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);\n}\n\n@keyframes clx-grow {\n  from {\n    transform: scaleX(0);\n  }\n  to {\n    transform: scaleX(1);\n  }\n}\n.clx-catrow {\n  transition: background-color 0.15s ease;\n}\n\n.clx-catrow[role=button]:active {\n  background: var(--dsw-alias-interactive-bg-active);\n}\n\n.clx-catdetail {\n  animation: clx-drop 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) both;\n}\n\n@keyframes clx-drop {\n  from {\n    opacity: 0;\n    transform: translateY(-6px);\n  }\n  to {\n    opacity: 1;\n    transform: none;\n  }\n}\n.clx-trend-line {\n  stroke-dasharray: 1;\n  stroke-dashoffset: 1;\n  animation: clx-draw 1.4s cubic-bezier(0.45, 0, 0.2, 1) 0.3s forwards;\n}\n\n@keyframes clx-draw {\n  to {\n    stroke-dashoffset: 0;\n  }\n}\n.clx-trend-area {\n  animation: clx-fadein 0.9s ease 0.8s both;\n}\n\n@keyframes clx-fadein {\n  from {\n    opacity: 0;\n  }\n}\n.clx-ibar {\n  height: 14px;\n}\n\n.clx-ibar > span {\n  cursor: pointer;\n  transition: width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.2s ease, filter 0.2s ease;\n}\n\n.clx-ibar > span[data-k]:not(.free) {\n  min-width: 3px;\n}\n\n.clx-ibar > span:hover {\n  filter: brightness(1.08) saturate(1.1);\n}\n\n.clx-ibar[data-active] > span:not(.on) {\n  opacity: 0.22;\n}\n\n.clx-ibar > span.free.on {\n  background: var(--dsw-alias-border-l2);\n}\n\n.clx-ilegend {\n  gap: 2px 2px;\n  margin-left: -6px;\n}\n\n.clx-ilegend button {\n  all: unset;\n  display: inline-flex;\n  align-items: center;\n  gap: 5px;\n  padding: 2px 6px;\n  border-radius: 6px;\n  cursor: pointer;\n  transition: opacity 0.2s ease, background-color 0.15s ease, color 0.15s ease;\n}\n\n.clx-ilegend button:hover, .clx-ilegend button.on {\n  background: var(--dsw-alias-interactive-bg-hover);\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-ilegend button[aria-pressed=true] {\n  background: var(--dsw-alias-interactive-bg-active);\n}\n\n.clx-ilegend button:focus-visible {\n  outline: 2px solid var(--dsw-alias-state-business-primary);\n  outline-offset: -2px;\n}\n\n.clx-ilegend[data-active] button:not(.on) {\n  opacity: 0.45;\n}\n\n.clx-catblock.hl > .clx-catrow {\n  background: color-mix(in srgb, var(--cat) 12%, transparent);\n}\n\n.clx-catblock > .clx-catrow {\n  transition: background-color 0.2s ease;\n}\n\n.clx-chev {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  width: 12px;\n  height: 12px;\n  flex: none;\n  color: var(--dsw-alias-label-tertiary);\n  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.15s;\n}\n\n.clx-chev svg {\n  display: block;\n}\n\n.clx-chev.open {\n  transform: rotate(90deg);\n  color: var(--dsw-alias-label-primary);\n}\n\n:is(.clx-node-row, .clx-catrow, .clx-trow, .clx-urow, .clx-disc-head, .clx-flow-turn):hover .clx-chev {\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-node-row:focus-visible, .clx-trow:focus-visible, .clx-urow:focus-visible, .clx-flow-turn:focus-visible {\n  outline: 2px solid var(--dsw-alias-state-business-primary);\n  outline-offset: -2px;\n}\n\n.clx-trow, .clx-urow {\n  display: grid;\n  align-items: center;\n  gap: 10px;\n  padding: 8px 10px;\n  border-radius: 10px;\n  font-size: 12.5px;\n  cursor: pointer;\n  transition: background-color 0.15s ease, box-shadow 0.15s ease;\n}\n\n.clx-trow {\n  grid-template-columns: 12px minmax(0, 1.4fr) minmax(70px, 0.6fr) 44px minmax(50px, 1fr) 56px;\n}\n\n.clx-urow {\n  grid-template-columns: 12px minmax(0, 1.6fr) 44px 64px 44px 64px 64px;\n}\n\n.clx-trow.head, .clx-urow.head {\n  cursor: default;\n  font-size: 11px;\n  color: var(--dsw-alias-label-tertiary);\n  padding: 0 10px 4px;\n}\n\n.clx-trow.head > span:nth-child(n+4), .clx-urow.head > span:nth-child(n+3) {\n  text-align: right;\n}\n\n.clx-trow[role=button]:hover, .clx-urow[role=button]:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-trow .num, .clx-urow .num {\n  text-align: right;\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-tblock {\n  animation: clx-fade 0.35s ease both;\n  animation-delay: calc(var(--i, 0) * 18ms);\n}\n\n.clx-tname {\n  display: flex;\n  align-items: center;\n  gap: 6px;\n  min-width: 0;\n}\n\n.clx-tname code, .clx-tcode {\n  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;\n  font-size: 12px;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.clx-ubar {\n  display: flex;\n  gap: 1px;\n  flex: 1;\n  min-width: 30px;\n  max-width: 160px;\n  height: 5px;\n  margin-left: auto;\n  border-radius: 3px;\n  overflow: hidden;\n  background: var(--dsw-alias-border-l1);\n}\n\n.clx-ubar > span {\n  transform-origin: left;\n  animation: clx-grow 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.15s both;\n}\n\n.clx-params {\n  margin-top: 10px;\n}\n\n.clx-params-head {\n  font-size: 12px;\n  font-weight: 600;\n  color: var(--dsw-alias-label-secondary);\n  margin-bottom: 4px;\n}\n\n.clx-param {\n  padding: 6px 0;\n  border-top: 1px dashed var(--dsw-alias-border-l1);\n}\n\n.clx-param-head {\n  display: flex;\n  align-items: center;\n  gap: 6px;\n  flex-wrap: wrap;\n}\n\n.clx-param-head code {\n  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;\n  font-size: 12px;\n  font-weight: 600;\n}\n\n.clx-param-desc {\n  font-size: 12px;\n  color: var(--dsw-alias-label-secondary);\n  margin-top: 2px;\n  white-space: pre-wrap;\n  overflow-wrap: anywhere;\n}\n\n.clx-param-enum {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 4px;\n  margin-top: 4px;\n}\n\n.clx-param-enum code {\n  font-size: 11px;\n  padding: 1px 5px;\n  border-radius: 4px;\n  background: var(--dsw-alias-bg-layer-2);\n}\n\n.clx-badge.warn {\n  color: var(--dsw-alias-state-warn-primary);\n  border-color: color-mix(in srgb, var(--dsw-alias-state-warn-primary) 40%, transparent);\n}\n\n@container (max-width: 620px) {\n  .clx-trow {\n    grid-template-columns: 12px minmax(0, 1fr) 44px 56px;\n  }\n  .clx-trow > :nth-child(3), .clx-trow > :nth-child(5) {\n    display: none;\n  }\n  .clx-urow {\n    grid-template-columns: 12px minmax(0, 1fr) 44px 44px 64px;\n  }\n  .clx-urow > :nth-child(4), .clx-urow > :nth-child(7) {\n    display: none;\n  }\n}\n/* every section: cards rise in, list rows fade in, bars grow; state changes ease */\n.clx-main .clx-col > .clx-card, .clx-flow-side-panel > .clx-card, .clx-flow-wrap > .clx-card {\n  animation: clx-rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;\n}\n\n.clx-main .clx-col > .clx-card:nth-child(2), .clx-flow-side-panel > .clx-card:nth-child(2) {\n  animation-delay: 0.07s;\n}\n\n.clx-main .clx-col > .clx-card:nth-child(3), .clx-flow-side-panel > .clx-card:nth-child(3) {\n  animation-delay: 0.14s;\n}\n\n.clx-main .clx-col > .clx-card:nth-child(n+4) {\n  animation-delay: 0.2s;\n}\n\n.clx-flow-side-panel > .clx-card:first-child {\n  animation-delay: 0.05s;\n}\n\n.clx-node {\n  animation: clx-fade 0.3s ease both;\n  animation-delay: calc(var(--i, 0) * 16ms);\n}\n\n@keyframes clx-fade {\n  from {\n    opacity: 0;\n  }\n  to {\n    opacity: 1;\n  }\n}\n.clx-minibar > span {\n  transform-origin: left center;\n  animation: clx-grow 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s both;\n  transition: width 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);\n}\n\n.clx-flow-mini > span {\n  transition: width 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);\n}\n\n.clx-chipbtn, .clx-chip, .clx-seg {\n  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;\n}\n\n.clx-flow-step {\n  transition: background-color 0.15s ease, box-shadow 0.15s ease;\n}\n\n.clx-flow-log {\n  transition: background-color 0.15s ease;\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .clx-pane *, .clx-pane *::before {\n    animation: none !important;\n    transition: none !important;\n  }\n  .clx-trend-line {\n    stroke-dasharray: none !important;\n    stroke-dashoffset: 0 !important;\n  }\n}\n@media (prefers-reduced-motion: reduce) {\n  .clx-ov, .clx-ov * {\n    animation: none !important;\n    transition: none !important;\n  }\n  .clx-trend-line {\n    stroke-dasharray: none;\n    stroke-dashoffset: 0;\n  }\n}\n@keyframes clx-pulse {\n  0%, 100% {\n    opacity: 0.95;\n  }\n  50% {\n    opacity: 0.2;\n  }\n}\n.clx-flow-now {\n  margin-top: 8px;\n  padding: 8px 10px;\n  border-radius: 8px;\n  background: var(--dsw-alias-bg-layer-2);\n  border: 1px solid var(--dsw-alias-border-l1);\n}\n\n.clx-flow-now-head {\n  display: flex;\n  gap: 8px;\n  align-items: baseline;\n  flex-wrap: wrap;\n  margin-bottom: 2px;\n}\n\n.clx-flow-now-text {\n  word-break: break-word;\n  font-size: 12.5px;\n}\n\n.clx-flow-turn-head .clx-chev {\n  align-self: center;\n}\n\n.clx-flow-tgroup.open > .clx-flow-step, .clx-flow-tgroup > .clx-flow-step {\n  animation: clx-fade 0.25s ease both;\n}\n\n.clx-flow-turn:hover, .clx-flow-log:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-flow-turn.cur, .clx-flow-log.cur {\n  background: var(--dsw-alias-interactive-bg-active);\n}\n\n.clx-flow-turn-head {\n  display: flex;\n  gap: 8px;\n  align-items: baseline;\n  flex-wrap: wrap;\n  font-size: 12.5px;\n}\n\n.clx-flow-turn-prompt {\n  font-size: 12px;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.clx-flow-log {\n  font-size: 12px;\n  padding: 2px 4px;\n  border-radius: 5px;\n  cursor: pointer;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.clx-card {\n  padding: 10px 12px;\n  margin-bottom: 10px;\n}\n\n.clx-navcount {\n  font-size: 10.5px;\n  font-variant-numeric: tabular-nums;\n  color: var(--dsw-alias-label-tertiary);\n  margin-left: 1px;\n}\n\n.clx-liveline {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  font-size: 12px;\n  min-width: 0;\n  padding-bottom: 8px;\n  margin-bottom: 10px;\n  border-bottom: 1px solid var(--dsw-alias-border-l1);\n}\n\n.clx-liveline > * {\n  flex: none;\n}\n\n.clx-liveline-last {\n  flex: 1 1 auto;\n  min-width: 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-hero {\n  gap: 12px;\n  margin-bottom: 10px;\n  flex-wrap: wrap;\n}\n\n.clx-hero-main {\n  flex: 1 1 160px;\n}\n\n.clx-hero-pct {\n  font-size: 22px;\n}\n\n.clx-stats {\n  display: flex;\n  gap: 6px;\n  flex-wrap: wrap;\n}\n\n.clx-stat {\n  min-width: 64px;\n  padding: 5px 9px;\n  border-radius: 8px;\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-stat .k {\n  font-size: 10.5px;\n  color: var(--dsw-alias-label-tertiary);\n  white-space: nowrap;\n}\n\n.clx-stat .v {\n  font-size: 15px;\n  font-weight: 600;\n  font-variant-numeric: tabular-nums;\n  white-space: nowrap;\n}\n\n.clx-stat .v small {\n  font-size: 11px;\n  font-weight: 500;\n}\n\n.clx-stat.warn .v {\n  color: var(--dsw-alias-state-warn-primary);\n}\n\n.clx-catfree {\n  display: flex;\n  gap: 14px;\n  flex-wrap: wrap;\n  font-size: 11.5px;\n  color: var(--dsw-alias-label-secondary);\n  padding: 6px 10px 0;\n  margin-top: 4px;\n  border-top: 1px dashed var(--dsw-alias-border-l1);\n}\n\n.clx-catfree .clx-dot {\n  margin-right: 5px;\n}\n\n.clx-catfree b {\n  font-weight: 600;\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-catrow {\n  padding: 6px 10px;\n}\n\n.clx-stbars-wrap {\n  position: relative;\n}\n\n.clx-stbars {\n  display: flex;\n  align-items: flex-end;\n  gap: 2px;\n  height: 116px;\n  padding: 0 0 16px;\n  overflow-x: auto;\n  overflow-y: hidden;\n  scrollbar-width: thin;\n}\n\n.clx-stbar {\n  position: relative;\n  flex: 1 0 6px;\n  max-width: 40px;\n  height: 100%;\n  display: flex;\n  align-items: flex-end;\n  padding: 0;\n  border: 0;\n  background: transparent;\n  cursor: pointer;\n}\n\n.clx-stbar.turn:not(:first-child) {\n  margin-left: 6px;\n}\n\n.clx-stbar .col {\n  width: 100%;\n  display: flex;\n  flex-direction: column-reverse;\n  border-radius: 3px 3px 1px 1px;\n  overflow: hidden;\n  opacity: 0.72;\n  transition: opacity 0.12s;\n}\n\n.clx-stbar .col > i {\n  display: block;\n  min-height: 1px;\n}\n\n.clx-stbar:hover .col {\n  opacity: 0.92;\n}\n\n.clx-stbar.on .col {\n  opacity: 1;\n  outline: 1.5px solid var(--dsw-alias-label-primary);\n  outline-offset: 1px;\n}\n\n.clx-stbar.err::after {\n  content: \"\";\n  position: absolute;\n  left: 50%;\n  bottom: -5px;\n  width: 4px;\n  height: 4px;\n  margin-left: -2px;\n  border-radius: 50%;\n  corner-shape: round;\n  background: var(--dsw-alias-state-error-primary);\n}\n\n.clx-stbar .lbl {\n  position: absolute;\n  left: 0;\n  bottom: -16px;\n  font-size: 10px;\n  color: var(--dsw-alias-label-tertiary);\n  white-space: nowrap;\n}\n\n.clx-stbars-th {\n  position: absolute;\n  left: 0;\n  right: 0;\n  margin-bottom: 16px;\n  border-top: 1px dashed var(--dsw-alias-state-warn-primary);\n  pointer-events: none;\n  z-index: 1;\n}\n\n.clx-stbars-th span {\n  position: absolute;\n  right: 0;\n  bottom: 1px;\n  font-size: 10px;\n  color: var(--dsw-alias-state-warn-primary);\n}\n\n.clx-stdetail {\n  margin-top: 8px;\n  padding-top: 8px;\n  border-top: 1px solid var(--dsw-alias-border-l1);\n  display: flex;\n  flex-direction: column;\n  gap: 6px;\n}\n\n.clx-stdetail-head {\n  display: flex;\n  align-items: center;\n  gap: 6px;\n  flex-wrap: wrap;\n  font-size: 12.5px;\n}\n\n.clx-stdetail-head > b {\n  margin-right: 2px;\n}\n\n.clx-stdetail-go {\n  margin-left: auto;\n  padding: 1px 8px;\n}\n\n.clx-stchip {\n  display: inline-flex;\n  gap: 4px;\n  align-items: baseline;\n  padding: 1px 7px;\n  border-radius: 6px;\n  background: var(--dsw-alias-interactive-bg-hover);\n  font-size: 11.5px;\n  font-weight: 600;\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-stchip .k {\n  font-weight: 400;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-stchip.up {\n  color: var(--dsw-alias-state-warn-primary);\n}\n\n.clx-stdetail-tools {\n  font-size: 12px;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n\n.clx-stlegend {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 4px 14px;\n  font-size: 11.5px;\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-stlegend > span {\n  display: inline-flex;\n  align-items: center;\n  gap: 5px;\n}\n\n.clx-stlegend b {\n  color: var(--dsw-alias-label-primary);\n  font-weight: 600;\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-stlegend em {\n  font-style: normal;\n  font-size: 10.5px;\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-stlegend em.up {\n  color: var(--dsw-alias-state-warn-primary);\n}\n\n.clx-stlegend em.down {\n  color: var(--dsw-alias-state-success-primary);\n}\n\n.clx-live {\n  color: var(--dsw-alias-state-business-primary);\n}\n\n.clx-morecard {\n  padding: 4px;\n}\n\n.clx-morecard > .clx-disc {\n  border: 0;\n}\n\n.clx-morehead {\n  display: flex;\n  align-items: baseline;\n  gap: 8px;\n  min-width: 0;\n  font-size: 12.5px;\n}\n\n.clx-morehead .clx-muted {\n  font-size: 11.5px;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.clx-flowcard-head {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  font-size: 11.5px;\n  margin-bottom: 4px;\n}\n\n.clx-flowcard-head > .clx-muted {\n  flex: 1;\n}\n\n.clx-flowcard .clx-flow {\n  margin: 0 auto;\n}\n\n.clx-msgbar {\n  position: sticky;\n  top: 44px;\n  z-index: 2;\n  display: flex;\n  align-items: center;\n  gap: 6px;\n  padding: 6px 0 8px;\n  background: var(--dsw-alias-bg-base);\n}\n\n.clx-msgsearch {\n  flex: 1 1 180px;\n  min-width: 120px;\n  display: flex;\n  align-items: center;\n  gap: 6px;\n  height: 28px;\n  padding: 0 8px;\n  border: 1px solid var(--dsw-alias-border-l2);\n  border-radius: 8px;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-msgsearch:focus-within {\n  border-color: var(--dsw-alias-state-business-primary);\n}\n\n.clx-msgsearch input {\n  flex: 1;\n  min-width: 0;\n  border: 0;\n  outline: 0;\n  background: transparent;\n  color: var(--dsw-alias-label-primary);\n  font: inherit;\n  font-size: 12.5px;\n}\n\n.clx-msgclear {\n  border: 0;\n  background: transparent;\n  color: var(--dsw-alias-label-tertiary);\n  cursor: pointer;\n  font-size: 14px;\n  padding: 0 2px;\n}\n\n.clx-msgcat {\n  position: relative;\n  display: inline-flex;\n  align-items: center;\n  gap: 5px;\n  height: 28px;\n  padding: 0 6px 0 8px;\n  border: 1px solid var(--dsw-alias-border-l2);\n  border-radius: 8px;\n  max-width: 170px;\n}\n\n.clx-msgcat .clx-dot {\n  background: var(--cat);\n  box-shadow: inset 0 0 0 1px var(--dsw-alias-border-l3);\n}\n\n.clx-msgcat select {\n  min-width: 0;\n  border: 0;\n  outline: 0;\n  background: transparent;\n  color: var(--dsw-alias-label-primary);\n  font: inherit;\n  font-size: 12px;\n  cursor: pointer;\n}\n\n.clx-msgcount {\n  font-size: 11.5px;\n  color: var(--dsw-alias-label-tertiary);\n  white-space: nowrap;\n  font-variant-numeric: tabular-nums;\n}\n\n@container (max-width: 560px) {\n  .clx-msgbar {\n    flex-wrap: wrap;\n  }\n  .clx-msgcount {\n    display: none;\n  }\n}\n.clx-mmore {\n  margin: 4px 0 8px;\n}\n\n.clx-mlist {\n  display: flex;\n  flex-direction: column;\n  gap: 6px;\n}\n\n.clx-mturn {\n  border: 1px solid var(--dsw-alias-settings-card-stroke);\n  border-radius: 10px;\n  background: var(--dsw-alias-settings-card-fill);\n  overflow: clip;\n}\n\n.clx-mturn-head {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  padding: 7px 10px;\n  font-size: 12.5px;\n  cursor: pointer;\n  min-width: 0;\n}\n\n.clx-mturn-head:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-mturn-head > b {\n  flex: none;\n}\n\n.clx-mturn-prompt {\n  flex: 1 1 auto;\n  min-width: 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-mturn-meta {\n  flex: none;\n  font-size: 11px;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-mturn-tok {\n  flex: none;\n  min-width: 44px;\n  text-align: right;\n  font-size: 12px;\n  font-weight: 600;\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-mturn-body {\n  border-top: 1px solid var(--dsw-alias-border-l1);\n  padding: 2px 0 4px;\n}\n\n.clx-mstep {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  padding: 6px 10px 2px 30px;\n  font-size: 11px;\n  color: var(--dsw-alias-label-tertiary);\n  min-width: 0;\n}\n\n.clx-mstep .n {\n  flex: none;\n  font-weight: 600;\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-mstep .tools {\n  flex: 1 1 auto;\n  min-width: 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.clx-mstep .ctx {\n  flex: none;\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-mstep .ctx::before {\n  content: \"⧉ \";\n  opacity: 0.6;\n}\n\n.clx-mnode.open {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-mlist > .clx-mnode {\n  border-radius: 8px;\n}\n\n.clx-mnode > .clx-detail {\n  margin: 0 8px 6px 30px;\n}\n\n.clx-mrow {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  height: 28px;\n  padding: 0 10px;\n  font-size: 12.5px;\n  cursor: pointer;\n  min-width: 0;\n}\n\n.clx-mrow:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-mrow:focus-visible {\n  outline: 2px solid var(--dsw-alias-state-business-primary);\n  outline-offset: -2px;\n}\n\n.clx-mrow > .clx-chev {\n  flex: none;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-mrow-kind {\n  flex: none;\n  width: 52px;\n  display: inline-flex;\n  align-items: center;\n  gap: 5px;\n  font-size: 11.5px;\n  color: var(--dsw-alias-label-secondary);\n  white-space: nowrap;\n  overflow: hidden;\n}\n\n.clx-mrow-kind::before {\n  content: \"\";\n  flex: none;\n  width: 3px;\n  height: 14px;\n  border-radius: 2px;\n  background: var(--cat);\n}\n\n.clx-mrow-text {\n  flex: 1 1 auto;\n  min-width: 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-mrow-tool {\n  font-weight: 600;\n  font-family: var(--dsw-font-mono, ui-monospace, monospace);\n  font-size: 11.5px;\n}\n\n.clx-mrow-res {\n  flex: none;\n  display: inline-flex;\n  align-items: center;\n  gap: 4px;\n  padding: 0 6px;\n  height: 18px;\n  border-radius: 5px;\n  background: var(--dsw-alias-interactive-bg-hover);\n  font-size: 11px;\n  color: var(--dsw-alias-label-secondary);\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-mrow-res.err {\n  color: var(--dsw-alias-state-error-primary);\n}\n\n.clx-mrow-res .clx-dot {\n  width: 6px;\n  height: 6px;\n}\n\n.clx-mrow-tok {\n  flex: none;\n  min-width: 40px;\n  text-align: right;\n  font-size: 11.5px;\n  color: var(--dsw-alias-label-secondary);\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-subnav {\n  display: flex;\n  margin: 2px 0 10px;\n}\n\n.clx-ov-top, .clx-ov-pair {\n  display: grid;\n  grid-template-columns: minmax(0, 1fr);\n  gap: 0 12px;\n  align-items: start;\n}\n\n.clx-ov-l, .clx-ov-r, .clx-ov-pair > * {\n  min-width: 0;\n}\n\n@container (min-width: 880px) {\n  .clx-ov-top {\n    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);\n  }\n  .clx-ov-pair {\n    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);\n  }\n}\n.clx-ov-pair {\n  align-items: stretch;\n}\n\n.clx-ov-flow {\n  margin-top: 6px;\n}\n\n.clx-ov-flow > .clx-colhead {\n  margin-bottom: 10px;\n}\n\n.clx-sources {\n  display: grid;\n  grid-template-columns: minmax(0, 1fr);\n  gap: 12px;\n  align-items: start;\n}\n\n.clx-sources-col {\n  min-width: 0;\n  container-type: inline-size;\n}\n\n@container (min-width: 880px) {\n  .clx-sources {\n    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);\n  }\n}\n.clx-colhead {\n  margin: 2px 2px 8px;\n  font-size: 13px;\n  font-weight: 600;\n}\n\n.clx-mmain {\n  min-width: 0;\n}\n\n.clx-mside {\n  position: sticky;\n  top: 58px;\n  min-width: 0;\n  max-height: calc(100vh - 140px);\n  display: flex;\n  flex-direction: column;\n  margin-top: 6px;\n  border: 1px solid var(--dsw-alias-settings-card-stroke);\n  border-radius: 10px;\n  background: var(--dsw-alias-settings-card-fill);\n  overflow: hidden;\n}\n\n.clx-mside-head {\n  flex: none;\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  padding: 8px 10px;\n  font-size: 12.5px;\n  border-bottom: 1px solid var(--dsw-alias-border-l1);\n}\n\n.clx-mside-head .clx-mrow-kind {\n  width: auto;\n}\n\n.clx-mside-tok {\n  margin-left: auto;\n  font-size: 11.5px;\n  color: var(--dsw-alias-label-secondary);\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-mside-body {\n  flex: 1 1 auto;\n  min-height: 0;\n  overflow: auto;\n  padding: 8px 10px 12px;\n}\n\n.clx-mside-body > .clx-detail {\n  margin: 0;\n}\n\n.clx-mside-empty {\n  padding: 40px 16px;\n  text-align: center;\n  font-size: 12px;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-msgbar .clx-chipbtn, .clx-msgbar .clx-segmini {\n  white-space: nowrap;\n  flex: none;\n}\n\n.clx-infocard {\n  display: flex;\n  flex-direction: column;\n  gap: 10px;\n}\n\n.clx-infocard > .clx-card-head {\n  margin-bottom: 0;\n}\n\n.clx-pill {\n  font-size: 11px;\n  padding: 1px 7px;\n  border-radius: 6px;\n  background: var(--dsw-alias-interactive-bg-hover);\n  color: var(--dsw-alias-label-secondary);\n  white-space: nowrap;\n}\n\n.clx-pill.on {\n  color: var(--dsw-alias-state-success-primary);\n}\n\n.clx-pill.off {\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-cgauge .track {\n  position: relative;\n  height: 10px;\n  border-radius: 5px;\n  background: var(--dsw-alias-border-l1);\n  box-shadow: inset 0 0 0 1px var(--dsw-alias-border-l2);\n}\n\n.clx-cgauge .fill {\n  position: absolute;\n  left: 0;\n  top: 0;\n  bottom: 0;\n  min-width: 3px;\n  border-radius: 5px;\n  background: var(--dsw-alias-state-business-primary);\n}\n\n.clx-cgauge .fill.over {\n  background: var(--dsw-alias-state-warn-primary);\n}\n\n.clx-cgauge .track > i {\n  position: absolute;\n  top: -3px;\n  bottom: -3px;\n  width: 2px;\n  margin-left: -1px;\n  border-radius: 1px;\n}\n\n.clx-cgauge i.warn, .clx-cgauge .scale .warn {\n  background: var(--dsw-alias-state-warn-primary);\n}\n\n.clx-cgauge i.err {\n  background: var(--dsw-alias-state-error-primary);\n}\n\n.clx-cgauge .scale {\n  position: relative;\n  height: 16px;\n  margin-top: 4px;\n  font-size: 10.5px;\n  color: var(--dsw-alias-label-tertiary);\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-cgauge .scale > span {\n  position: absolute;\n  top: 0;\n  white-space: nowrap;\n}\n\n.clx-cgauge .scale > span:first-child {\n  left: 0;\n}\n\n.clx-cgauge .scale > span.warn, .clx-cgauge .scale > span.err {\n  transform: translateX(-50%);\n  background: none;\n}\n\n.clx-cgauge .scale > span.warn {\n  color: var(--dsw-alias-state-warn-primary);\n}\n\n.clx-cgauge .scale > span.err {\n  color: var(--dsw-alias-state-error-primary);\n}\n\n.clx-cgauge .scale > span.end {\n  right: 0;\n}\n\n.clx-tiles {\n  display: grid;\n  grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));\n  gap: 6px;\n}\n\n.clx-tiles .clx-stat {\n  min-width: 0;\n}\n\n.clx-tiles .clx-stat .v {\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n\n.clx-note {\n  font-size: 11.5px;\n  line-height: 1.5;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-req {\n  display: flex;\n  flex-direction: column;\n  gap: 6px;\n  padding-top: 8px;\n  border-top: 1px solid var(--dsw-alias-border-l1);\n}\n\n.clx-req-head {\n  display: flex;\n  justify-content: space-between;\n  gap: 8px;\n  font-size: 12px;\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-req-head b {\n  color: var(--dsw-alias-state-success-primary);\n  font-weight: 600;\n  white-space: nowrap;\n}\n\n.clx-req-bar {\n  display: flex;\n  height: 8px;\n  gap: 2px;\n  border-radius: 4px;\n  overflow: hidden;\n}\n\n.clx-req-bar > span {\n  min-width: 2px;\n}\n\n.clx-req .cr {\n  background: var(--dsw-alias-state-success-primary);\n}\n\n.clx-req .cw {\n  background: var(--dsw-alias-state-warn-primary);\n}\n\n.clx-req .in {\n  background: var(--dsw-alias-state-business-primary);\n}\n\n.clx-req .out {\n  background: #B07AA1;\n}\n\n.clx-req-legend {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 4px 14px;\n  font-size: 11.5px;\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-req-legend > span {\n  display: inline-flex;\n  align-items: center;\n  gap: 5px;\n}\n\n.clx-req-legend i {\n  width: 8px;\n  height: 8px;\n  border-radius: 2px;\n}\n\n.clx-req-legend b {\n  color: var(--dsw-alias-label-primary);\n  font-weight: 600;\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-types {\n  display: flex;\n  flex-wrap: wrap;\n  align-items: center;\n  gap: 4px;\n  font-size: 11px;\n}\n\n.clx-types > .clx-muted {\n  margin-right: 4px;\n}\n\n.clx-type {\n  display: inline-flex;\n  gap: 4px;\n  padding: 1px 6px;\n  border-radius: 5px;\n  background: var(--dsw-alias-interactive-bg-hover);\n  color: var(--dsw-alias-label-secondary);\n  font-family: var(--dsw-font-mono, ui-monospace, monospace);\n}\n\n.clx-type b {\n  color: var(--dsw-alias-label-primary);\n  font-weight: 600;\n}\n\n.clx-tsum {\n  margin-bottom: 10px;\n  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));\n}\n\n.clx-tsplit {\n  display: grid;\n  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);\n  gap: 12px;\n  align-items: start;\n  margin-bottom: 10px;\n}\n\n.clx-tsplit > .clx-mside {\n  margin-top: 0;\n  top: 56px;\n  max-height: calc(100vh - 90px);\n}\n\n.clx-tlists {\n  min-width: 0;\n}\n\n.clx-tsearch {\n  height: 30px;\n  margin-bottom: 8px;\n}\n\n.clx-tcard {\n  padding: 8px 6px 6px;\n}\n\n.clx-tcard > .clx-card-head {\n  padding: 0 6px;\n  margin-bottom: 4px;\n}\n\n.clx-tcard > .clx-card-head > .clx-muted {\n  font-size: 11px;\n}\n\n.clx-tlegend {\n  display: inline-flex;\n  gap: 10px;\n  font-size: 11px;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-tlegend > span {\n  display: inline-flex;\n  align-items: center;\n  gap: 4px;\n}\n\n.clx-tlegend i {\n  width: 8px;\n  height: 8px;\n  border-radius: 2px;\n}\n\n.clx-tl {\n  display: grid;\n  grid-template-columns: 8px minmax(0, 132px) auto minmax(40px, 1fr) 42px 26px 44px;\n  align-items: center;\n  gap: 8px;\n  height: 28px;\n  padding: 0 8px;\n  border-radius: 7px;\n  font-size: 12px;\n  cursor: pointer;\n}\n\n.clx-tl:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-tl.sel {\n  background: color-mix(in srgb, var(--dsw-alias-state-business-primary) 12%, transparent);\n}\n\n.clx-tl:focus-visible {\n  outline: 2px solid var(--dsw-alias-state-business-primary);\n  outline-offset: -2px;\n}\n\n.clx-tl .nm {\n  font-family: var(--dsw-font-mono, ui-monospace, monospace);\n  font-size: 12px;\n  font-weight: 600;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.clx-tl .kd:empty {\n  display: none;\n}\n\n.clx-tl .kd {\n  font-size: 10.5px;\n  color: var(--dsw-alias-label-tertiary);\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: 120px;\n}\n\n.clx-tl .bar {\n  display: flex;\n  gap: 1px;\n  height: 6px;\n  border-radius: 3px;\n  overflow: hidden;\n  background: var(--dsw-alias-border-l1);\n}\n\n.clx-tl .bar > span {\n  min-width: 1px;\n}\n\n.clx-tl .ct, .clx-tl .tk, .clx-tl .er {\n  text-align: right;\n  font-variant-numeric: tabular-nums;\n  white-space: nowrap;\n}\n\n.clx-tl .ct {\n  font-size: 11px;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-tl .er {\n  font-size: 11px;\n  color: var(--dsw-alias-state-error-primary);\n}\n\n.clx-tl .tk {\n  font-weight: 600;\n}\n\n.clx-tl-inline {\n  margin: 2px 4px 8px 20px;\n  border: 1px solid var(--dsw-alias-border-l1);\n  border-radius: 8px;\n}\n\n.clx-tempty {\n  font-size: 12px;\n  padding: 8px;\n}\n\n.clx-tmore {\n  margin: 4px 8px;\n}\n\n.clx-tdeferred {\n  display: flex;\n  flex-wrap: wrap;\n  align-items: center;\n  gap: 4px;\n  margin: 6px 8px 2px;\n  padding-top: 8px;\n  border-top: 1px dashed var(--dsw-alias-border-l1);\n  font-size: 11px;\n}\n\n.clx-tdeferred code {\n  padding: 1px 6px;\n  border-radius: 5px;\n  background: var(--dsw-alias-interactive-bg-hover);\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-tp-def {\n  margin-top: 12px;\n  padding-top: 10px;\n  border-top: 1px solid var(--dsw-alias-border-l1);\n}\n\n.clx-tp-h {\n  font-size: 12px;\n  font-weight: 600;\n  margin-bottom: 6px;\n}\n\n.clx-mside-body > .clx-expand, .clx-tp-def > .clx-expand {\n  margin: 0;\n  padding: 0;\n  border: 0;\n}\n\n.clx-tl:has(.kd:empty) {\n  grid-template-columns: 8px minmax(0, 132px) minmax(40px, 1fr) 42px 26px 44px;\n}\n\n.clx-tl .bar {\n  max-width: 260px;\n}\n\n.clx-tsplit {\n  grid-template-columns: minmax(300px, 0.9fr) minmax(0, 1.1fr);\n}\n\n.clx-sl {\n  grid-template-columns: 8px minmax(0, 1fr) auto 44px !important;\n}\n\n.clx-sl .nm {\n  font-size: 12px;\n  font-weight: 600;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.clx-sl .bd {\n  font-size: 11px;\n  color: var(--dsw-alias-label-tertiary);\n  white-space: nowrap;\n}\n\n.clx-sl.dim .nm {\n  font-weight: 400;\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-sp-filters {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 4px;\n  padding: 0 6px 6px;\n}\n\n.clx-sp-filters .clx-chipbtn {\n  padding: 1px 8px;\n  font-size: 11.5px;\n}\n\n.clx-sp-filters small {\n  color: var(--dsw-alias-label-tertiary);\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-sp-title {\n  min-width: 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.clx-sp-meta {\n  display: flex;\n  flex-wrap: wrap;\n  align-items: center;\n  gap: 6px;\n  margin-bottom: 8px;\n  font-size: 11.5px;\n}\n\n.clx-sp-meta code {\n  flex: 1 1 200px;\n  min-width: 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-sp-meta .clx-chipbtn {\n  padding: 1px 8px;\n  font-size: 11.5px;\n}\n\n.clx-sp-desc {\n  font-size: 12.5px;\n  line-height: 1.55;\n  margin-bottom: 8px;\n}\n\n.clx-sp-kv {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 4px 16px;\n  font-size: 12px;\n  margin-bottom: 6px;\n}\n\n.clx-sp-kv i {\n  font-style: normal;\n  color: var(--dsw-alias-label-tertiary);\n  margin-right: 5px;\n}\n\n.clx-sp-loads {\n  margin: 8px 0;\n}\n\n.clx-sp-tree > .clx-card {\n  border: 0;\n  background: none;\n  padding: 0;\n  margin: 0;\n}\n\n.clx-sp-inline .clx-mside-body {\n  max-height: 520px;\n  overflow: auto;\n}\n\n.clx-dash {\n  display: grid;\n  grid-template-columns: minmax(0, 1fr);\n  gap: 10px;\n  align-items: stretch;\n}\n\n.clx-dash > * {\n  min-width: 0;\n  margin: 0;\n}\n\n.clx-dash > .span2 > .clx-card {\n  margin: 0;\n}\n\n@container (min-width: 760px) {\n  .clx-dash {\n    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);\n  }\n  .clx-dash > .span2 {\n    grid-column: 1/-1;\n  }\n}\n.clx-card-head h4, .clx-ctitle {\n  font-size: 13px;\n  font-weight: 600;\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-ctitle {\n  display: inline-flex;\n  align-items: center;\n  gap: 7px;\n  margin: 0;\n  flex: 1;\n  min-width: 0;\n}\n\n.clx-ctitle .ic {\n  flex: none;\n  display: inline-grid;\n  place-items: center;\n  width: 22px;\n  height: 22px;\n  border-radius: 6px;\n  color: var(--dsw-alias-state-business-primary);\n  background: color-mix(in srgb, var(--dsw-alias-state-business-primary) 12%, transparent);\n}\n\n.clx-chead-meta {\n  font-size: 11.5px;\n  color: var(--dsw-alias-label-tertiary);\n  font-variant-numeric: tabular-nums;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  min-width: 0;\n}\n\n.clx-more {\n  flex: none;\n  border: 0;\n  background: transparent;\n  padding: 2px 4px;\n  font-size: 11.5px;\n  color: var(--dsw-alias-state-business-primary);\n  cursor: pointer;\n  border-radius: 5px;\n}\n\n.clx-more:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-hero-card .clx-liveline {\n  margin-top: 2px;\n}\n\n.clx-goalline {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  margin-top: 10px;\n  padding-top: 8px;\n  border-top: 1px solid var(--dsw-alias-border-l1);\n  font-size: 12px;\n  min-width: 0;\n}\n\n.clx-goalline .txt {\n  flex: 1;\n  min-width: 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-donutwrap {\n  display: flex;\n  align-items: center;\n  gap: 16px;\n}\n\n.clx-donut {\n  flex: none;\n}\n\n.clx-donut circle {\n  transition: opacity 0.15s, stroke-width 0.15s;\n}\n\n.clx-donut-v {\n  font-size: 17px;\n  font-weight: 650;\n  fill: var(--dsw-alias-label-primary);\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-donut-k {\n  font-size: 10px;\n  fill: var(--dsw-alias-label-tertiary);\n}\n\n.clx-dlegend {\n  flex: 1;\n  min-width: 0;\n  display: grid;\n  grid-template-columns: minmax(0, 1fr);\n  gap: 1px;\n}\n\n.clx-dlegend button {\n  display: grid;\n  grid-template-columns: 8px minmax(0, 1fr) 46px 44px;\n  align-items: center;\n  gap: 8px;\n  height: 24px;\n  padding: 0 6px;\n  border: 0;\n  border-radius: 6px;\n  background: transparent;\n  color: var(--dsw-alias-label-secondary);\n  font: inherit;\n  font-size: 12px;\n  text-align: left;\n  cursor: pointer;\n}\n\n.clx-dlegend button:hover, .clx-dlegend button.on {\n  background: var(--dsw-alias-interactive-bg-hover);\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-dlegend .nm {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.clx-dlegend .pc, .clx-dlegend .tk {\n  text-align: right;\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-dlegend .tk {\n  font-weight: 600;\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-peek {\n  display: flex;\n  flex-direction: column;\n}\n\n.clx-peek .clx-tl {\n  padding: 0 6px;\n}\n\n.clx-peekrow {\n  padding: 0 6px;\n  border-radius: 7px;\n}\n\n.clx-peekrow .clx-mrow-kind {\n  width: 44px;\n}\n\n.clx-peek-pct {\n  flex: none;\n  width: 34px;\n  text-align: right;\n  font-size: 11px;\n  color: var(--dsw-alias-label-tertiary);\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-peek-foot {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  margin-top: auto;\n  padding-top: 8px;\n  border-top: 1px solid var(--dsw-alias-border-l1);\n  font-size: 11.5px;\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-peek-foot .clx-ctitle {\n  flex: none;\n  font-size: 12px;\n}\n\n.clx-peek-foot .clx-ctitle .ic {\n  width: 18px;\n  height: 18px;\n}\n\n.clx-dash .clx-infocard, .clx-dash .clx-steptrend, .clx-dash > .clx-card {\n  height: 100%;\n  box-sizing: border-box;\n}\n\n.clx-flowsec .clx-flow-wrap > .clx-card, .clx-flowsec .clx-flow-side-panel > .clx-card {\n  background: var(--dsw-alias-bg-base);\n}\n\n.clx-stat-link {\n  cursor: pointer;\n}\n\n.clx-stat-link:hover {\n  outline: 1px solid var(--dsw-alias-border-l3);\n}\n\n.clx-lay {\n  display: flex;\n  flex-direction: column;\n  gap: 14px;\n}\n\n.clx-lay-h {\n  display: flex;\n  align-items: baseline;\n  gap: 8px;\n  font-size: 12.5px;\n  margin-bottom: 6px;\n}\n\n.clx-lay-h .clx-muted {\n  font-size: 11px;\n}\n\n.clx-lay-rule {\n  font-size: 11.5px;\n  line-height: 1.55;\n  color: var(--dsw-alias-label-secondary);\n  padding: 6px 8px;\n  border-radius: 6px;\n  background: var(--dsw-alias-interactive-bg-hover);\n  margin-bottom: 8px;\n}\n\n.clx-lay-group {\n  margin-bottom: 8px;\n}\n\n.clx-lay-gh {\n  display: flex;\n  align-items: baseline;\n  gap: 8px;\n  font-size: 11.5px;\n  font-weight: 600;\n  color: var(--dsw-alias-label-secondary);\n  margin: 4px 0 2px;\n}\n\n.clx-lay-gh .clx-muted {\n  font-weight: 400;\n  font-size: 11px;\n}\n\n.clx-lay-level {\n  margin: 4px 0 6px;\n  padding-left: 8px;\n  border-left: 2px solid var(--dsw-alias-border-l1);\n}\n\n.clx-lay-dir {\n  display: flex;\n  align-items: center;\n  gap: 6px;\n  font-size: 11.5px;\n  min-width: 0;\n  margin-bottom: 1px;\n}\n\n.clx-lay-dir .p {\n  font-family: var(--dsw-font-mono, ui-monospace, monospace);\n  color: var(--dsw-alias-label-secondary);\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  min-width: 0;\n}\n\n.clx-lay-row {\n  display: grid;\n  grid-template-columns: 14px minmax(0, 1fr) auto auto;\n  align-items: center;\n  gap: 8px;\n  min-height: 26px;\n  padding: 0 4px;\n  border-radius: 6px;\n  font-size: 12px;\n}\n\n.clx-lay-row:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-lay-row .st {\n  width: 8px;\n  height: 8px;\n  border-radius: 50%;\n  corner-shape: round;\n  justify-self: center;\n  box-sizing: border-box;\n}\n\n.clx-lay-row.loaded .st {\n  background: var(--dsw-alias-state-success-primary);\n}\n\n.clx-lay-row.exists .st {\n  background: var(--dsw-alias-label-tertiary);\n}\n\n.clx-lay-row.missing .st {\n  border: 1.5px dashed var(--dsw-alias-label-tertiary);\n}\n\n.clx-lay-row .nm {\n  font-family: var(--dsw-font-mono, ui-monospace, monospace);\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  min-width: 0;\n}\n\n.clx-lay-row .nm code {\n  margin-left: 8px;\n  font-size: 11px;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-lay-row.missing .nm {\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-lay-row .ss {\n  font-size: 11px;\n  white-space: nowrap;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-lay-row.loaded .ss {\n  color: var(--dsw-alias-state-success-primary);\n}\n\n.clx-lay-row .ac {\n  display: inline-flex;\n  gap: 2px;\n}\n\n.clx-lay-row .rk {\n  justify-self: center;\n  font-size: 10.5px;\n  font-weight: 600;\n  color: var(--dsw-alias-label-tertiary);\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-lay-absent {\n  display: flex;\n  flex-wrap: wrap;\n  align-items: center;\n  gap: 4px;\n  padding: 2px 4px 2px 26px;\n  font-size: 11px;\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-lay-absent code {\n  padding: 0 5px;\n  border-radius: 4px;\n  border: 1px dashed var(--dsw-alias-border-l2);\n}\n\n.clx-mnode.open {\n  background: none;\n  margin: 4px 0 8px;\n  border: 1px solid var(--dsw-alias-settings-card-stroke);\n  border-radius: 10px;\n  background: var(--dsw-alias-settings-card-fill);\n}\n\n.clx-mnode.open > .clx-mrow {\n  position: sticky;\n  top: 56px;\n  z-index: 2;\n  border-radius: 10px 10px 0 0;\n  background: color-mix(in srgb, var(--dsw-alias-state-business-primary) 10%, var(--dsw-alias-settings-card-fill));\n  border-bottom: 1px solid var(--dsw-alias-border-l1);\n}\n\n.clx-mopen {\n  padding: 8px 12px 6px;\n}\n\n.clx-mopen > .clx-detail {\n  margin: 0;\n}\n\n.clx-mopen-close {\n  display: block;\n  margin: 6px auto 0;\n  padding: 3px 14px;\n  font-size: 11.5px;\n  border: 0;\n  border-radius: 6px;\n  background: none;\n  color: var(--dsw-alias-label-secondary);\n  cursor: pointer;\n}\n\n.clx-mopen-close:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-stepbar {\n  display: flex;\n  flex-direction: column;\n  gap: 6px;\n  margin-bottom: 10px;\n  padding: 8px 10px;\n  border: 1px solid var(--dsw-alias-settings-card-stroke);\n  border-radius: 10px;\n  background: var(--dsw-alias-settings-card-fill);\n}\n\n.clx-stepbar-top,\n.clx-stepbar-diff {\n  display: flex;\n  flex-wrap: wrap;\n  align-items: center;\n  gap: 6px 8px;\n  font-size: 12px;\n  min-width: 0;\n}\n\n.clx-stepbar-top .clx-chipbtn:disabled {\n  opacity: 0.35;\n  cursor: default;\n}\n\n.clx-stepbar-tools {\n  min-width: 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-stepbar-now {\n  margin-left: auto;\n  font-size: 11.5px;\n}\n\n.clx-stepbar-strip {\n  display: flex;\n  align-items: flex-end;\n  gap: 2px;\n  height: 34px;\n  overflow-x: auto;\n  scrollbar-width: thin;\n}\n\n.clx-stepbar-strip .b {\n  flex: 1 0 8px;\n  max-width: 22px;\n  height: 100%;\n  padding: 0;\n  display: flex;\n  align-items: flex-end;\n  border: 0;\n  border-radius: 3px;\n  background: none;\n  cursor: pointer;\n}\n\n.clx-stepbar-strip .b i {\n  display: block;\n  width: 100%;\n  border-radius: 2px;\n  background: var(--dsw-alias-label-tertiary);\n  opacity: 0.55;\n}\n\n.clx-stepbar-strip .b:hover i {\n  opacity: 0.9;\n}\n\n.clx-stepbar-strip .b.on i {\n  background: var(--dsw-alias-state-business-primary);\n  opacity: 1;\n}\n\n.clx-stepbar-strip .b.later i {\n  opacity: 0.25;\n}\n\n.clx-stchip.warn {\n  color: var(--dsw-alias-state-warn-primary);\n}\n\n.clx-stepbar-diff .clx-chipbtn.on {\n  background: color-mix(in srgb, var(--dsw-alias-state-business-primary) 14%, transparent);\n}\n\n.clx-stepbar-diff em {\n  margin-left: 4px;\n  font-style: normal;\n  font-variant-numeric: tabular-nums;\n}\n\n.clx-stepbar-diff em.up {\n  color: var(--dsw-alias-state-warn-primary);\n}\n\n.clx-stepbar-diff em.down {\n  color: var(--dsw-alias-state-success-primary);\n}\n\n.clx-mnode.instep > .clx-mrow {\n  box-shadow: inset 2px 0 0 var(--dsw-alias-state-business-primary);\n}\n\n.clx-mnode.later {\n  opacity: 0.4;\n}\n\n.clx-tl.hot {\n  background: color-mix(in srgb, var(--dsw-alias-state-business-primary) 10%, transparent);\n}\n\n.clx-diag-row {\n  display: grid;\n  grid-template-columns: 10px minmax(0, 1fr) auto;\n  align-items: center;\n  gap: 10px;\n  padding: 7px 8px;\n  border-radius: 8px;\n  font-size: 12.5px;\n  line-height: 1.5;\n}\n\n.clx-diag-row[role=button] {\n  cursor: pointer;\n}\n\n.clx-diag-row[role=button]:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-diag-row .clx-dot {\n  width: 8px;\n  height: 8px;\n  background: var(--dsw-alias-state-business-primary);\n}\n\n.clx-diag-row.warn .clx-dot {\n  background: var(--dsw-alias-state-warn-primary);\n}\n\n.clx-diag-row .go {\n  font-size: 11.5px;\n  color: var(--dsw-alias-label-tertiary);\n  white-space: nowrap;\n}\n\n.clx-pv {\n  display: flex;\n  flex-direction: column;\n  gap: 10px;\n}\n\n.clx-pv-map {\n  display: flex;\n  height: 22px;\n  gap: 1px;\n  border-radius: 6px;\n  overflow: hidden;\n}\n\n.clx-pv-map button {\n  flex-basis: 0;\n  min-width: 1px;\n  padding: 0;\n  border: 0;\n  cursor: pointer;\n  opacity: 0.85;\n}\n\n.clx-pv-map button:hover {\n  opacity: 1;\n}\n\n.clx-pv-chips {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 6px;\n  margin-top: 8px;\n}\n\n.clx-pv-chips .clx-chipbtn:not(.on) {\n  opacity: 0.45;\n}\n\n.clx-pv-list {\n  display: flex;\n  flex-direction: column;\n  gap: 4px;\n}\n\n.clx-pv-item {\n  border-left: 3px solid var(--cat);\n  border-radius: 2px 8px 8px 2px;\n  background: var(--dsw-alias-settings-card-fill);\n  border-top: 1px solid var(--dsw-alias-border-l1);\n  border-right: 1px solid var(--dsw-alias-border-l1);\n  border-bottom: 1px solid var(--dsw-alias-border-l1);\n  min-width: 0;\n}\n\n.clx-pv-item.fresh {\n  background: color-mix(in srgb, var(--cat) 8%, var(--dsw-alias-settings-card-fill));\n}\n\n.clx-pv-head {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  min-height: 28px;\n  padding: 0 10px;\n  font-size: 12.5px;\n  cursor: pointer;\n  min-width: 0;\n}\n\n.clx-pv-head .sq {\n  color: var(--dsw-alias-label-tertiary);\n  font-size: 11px;\n}\n\n.clx-pv-head .tk {\n  margin-left: auto;\n  font-variant-numeric: tabular-nums;\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-pv-head .tk small {\n  color: var(--dsw-alias-label-tertiary);\n  font-size: 10.5px;\n}\n\n.clx-pv-text {\n  padding: 0 10px 8px 28px;\n  font-size: 12px;\n  line-height: 1.55;\n  color: var(--dsw-alias-label-secondary);\n  display: -webkit-box;\n  -webkit-line-clamp: 3;\n  -webkit-box-orient: vertical;\n  overflow: hidden;\n  word-break: break-word;\n  cursor: pointer;\n}\n\n.clx-pv-item.tools .clx-pv-text {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 4px;\n  -webkit-line-clamp: unset;\n  cursor: default;\n}\n\n.clx-pv-tool {\n  padding: 0 6px;\n  border-radius: 4px;\n  background: var(--dsw-alias-interactive-bg-hover);\n  font-size: 11px;\n}\n\n.clx-pv-tool small {\n  color: var(--dsw-alias-label-tertiary);\n}\n\n.clx-pv-body {\n  padding: 0 10px 10px 18px;\n}\n\n.clx-pv-body > .clx-detail {\n  margin: 0;\n}\n\n.clx-pv-div {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  margin: 8px 0 4px;\n  padding: 3px 10px;\n  font-size: 11.5px;\n  border-radius: 6px;\n  border: 1px dashed var(--dsw-alias-border-l2);\n  color: var(--dsw-alias-label-secondary);\n  cursor: pointer;\n}\n\n.clx-pv-div:hover,\n.clx-pv-div.on {\n  border-style: solid;\n  border-color: var(--dsw-alias-state-business-primary);\n  background: color-mix(in srgb, var(--dsw-alias-state-business-primary) 8%, transparent);\n}\n\n.clx-pv-div span:first-child {\n  font-weight: 600;\n}\n\n.clx-pv-later {\n  text-align: center;\n  font-size: 12px;\n  padding: 8px;\n}\n\n.clx-story {\n  display: flex;\n  flex-direction: column;\n  gap: 2px;\n}\n\n.clx-story-row {\n  display: grid;\n  grid-template-columns: 34px minmax(0, 1fr);\n  gap: 8px;\n  padding: 4px 6px;\n  border-radius: 6px;\n  font-size: 12px;\n  line-height: 1.5;\n  cursor: pointer;\n}\n\n.clx-story-row:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n\n.clx-story-row .k {\n  color: var(--dsw-alias-label-tertiary);\n  font-size: 11px;\n  padding-top: 1px;\n}\n\n.clx-story-row .tx {\n  min-width: 0;\n  word-break: break-word;\n  display: -webkit-box;\n  -webkit-line-clamp: 3;\n  -webkit-box-orient: vertical;\n  overflow: hidden;\n}\n\n.clx-story-row.call .tx code {\n  font-size: 11px;\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-story-row .res {\n  display: block;\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-story-row .res .tk {\n  font-variant-numeric: tabular-nums;\n  color: var(--dsw-alias-label-primary);\n}\n\n.clx-story-row.err .res {\n  color: var(--dsw-alias-state-error-primary);\n}\n\n.clx-az {\n  display: flex;\n  flex-direction: column;\n  gap: 10px;\n}\n\n.clx-az-intro ul {\n  margin: 4px 0 12px 18px;\n  padding: 0;\n  font-size: 12.5px;\n  line-height: 1.7;\n}\n\n.clx-az-go {\n  align-self: flex-start;\n}\n\n.clx-az-bar {\n  display: flex;\n  flex-wrap: wrap;\n  align-items: center;\n  gap: 6px 8px;\n  font-size: 12px;\n}\n\n.clx-az-bar .clx-chipbtn.on {\n  background: color-mix(in srgb, var(--dsw-alias-state-business-primary) 14%, transparent);\n}\n\n.clx-az-tok {\n  margin-left: auto;\n}\n\n.clx-az-asks {\n  display: flex;\n  flex-direction: column;\n  align-items: flex-start;\n  gap: 6px;\n}\n\n.clx-az-user {\n  align-self: flex-end;\n  max-width: 85%;\n  padding: 7px 12px;\n  border-radius: 12px 12px 4px 12px;\n  background: color-mix(in srgb, var(--dsw-alias-state-business-primary) 14%, transparent);\n  font-size: 13px;\n  line-height: 1.55;\n  white-space: pre-wrap;\n  word-break: break-word;\n}\n\n.clx-az-ans {\n  font-size: 13px;\n  line-height: 1.65;\n}\n\n.clx-az-think {\n  margin-bottom: 8px;\n  font-size: 12px;\n  color: var(--dsw-alias-label-secondary);\n}\n\n.clx-az-think > div {\n  margin-top: 4px;\n  max-height: 160px;\n  overflow: auto;\n  white-space: pre-wrap;\n}\n\n.clx-az-refs {\n  display: flex;\n  flex-wrap: wrap;\n  align-items: center;\n  gap: 6px;\n  margin-top: 8px;\n  font-size: 12px;\n}\n\n.clx-az-use {\n  margin-top: 6px;\n  font-size: 11px;\n}\n\n.clx-az-input {\n  position: sticky;\n  bottom: 8px;\n  display: flex;\n  align-items: flex-end;\n  gap: 8px;\n}\n\n.clx-az-input textarea {\n  flex: 1 1 auto;\n  min-width: 0;\n  resize: none;\n  border: 0;\n  outline: 0;\n  background: none;\n  font: inherit;\n  font-size: 13px;\n  line-height: 1.5;\n  color: inherit;\n}\n\n.clx-pv-ask {\n  padding: 0 6px;\n  border: 0;\n  border-radius: 4px;\n  background: none;\n  color: var(--dsw-alias-label-tertiary);\n  cursor: pointer;\n  font-size: 12px;\n}\n\n.clx-pv-ask:hover {\n  color: var(--dsw-alias-state-business-primary);\n  background: var(--dsw-alias-interactive-bg-hover);\n}"
 
 // ===== src/parts/01-context-lens.js
 "use strict";
@@ -1423,53 +1773,12 @@ part({
             buffer: 'Autocompact buffer',
             free: 'Free space',
         };
-        const SPLIT_CATS = new Set(['assistantText', 'reasoning', 'toolCalls']);
         /** Category name; outside the English UI the English term follows in muted type. */
         function CatName({ t, k }) {
             const key = k === 'buffer' || k === 'free' ? `g.${k}` : `c.${k}`;
             const label = t(key);
             const term = label !== en[key] ? CAT_EN[k] : null;
             return h('span', { className: 'clx-catname' }, h('span', { className: 'zh' }, label), term ? h('span', { className: 'en' }, term) : null);
-        }
-        /** Nodes holding a category, with the share of each node that belongs to it. */
-        function catNodes(data, k) {
-            const out = [];
-            for (const n of data.nodes || []) {
-                let tok = 0;
-                if (n.split) {
-                    if (!SPLIT_CATS.has(k))
-                        continue;
-                    const cal = n.tokens ? (n.tokensCal ?? n.tokens) / n.tokens : 1;
-                    tok = (n.split[k] || 0) * cal;
-                }
-                else if (n.category === k) {
-                    tok = n.tokensCal ?? n.tokens ?? 0;
-                }
-                if (tok >= 0.5)
-                    out.push({ n, tok });
-            }
-            return out.sort((a, b) => b.tok - a.tok);
-        }
-        function CategoryDetail({ k, data, t, sessionId, onShowAll }) {
-            const [openSeq, setOpenSeq] = useState(null);
-            const [limit, setLimit] = useState(8);
-            const color = CAT_COLOR[k] || CAT_COLOR.other;
-            if (k === 'systemTools' || k === 'mcpTools') {
-                const tools = (data.tools || []).filter((x) => (k === 'mcpTools') === (x.kind === 'mcp'));
-                const max = Math.max(1, ...tools.map((x) => x.tokensCal));
-                return h('div', { className: 'clx-catdetail', style: { '--cat': color } }, h('div', { className: 'clx-muted', style: { fontSize: 12, marginBottom: 6 } }, fmt(t('ov.cat.tools'), { n: tools.length })), tools.slice(0, limit).map((x) => h('div', { key: x.name, className: 'clx-catitem', title: x.description }, h('div', { className: 'main' }, h('div', { className: 'name' }, x.name, x.kind === 'mcp' ? h('span', { className: 'clx-muted' }, ` · ${x.server}`) : null), x.description ? h('div', { className: 'desc' }, x.description) : null, h('div', { className: 'clx-minibar' }, h('span', { style: { width: `${Math.max(1, x.tokensCal / max * 100)}%`, background: color } }))), h('span', { className: 'tok' }, fmtK(x.tokensCal)))), tools.length > limit ? h('button', { className: 'clx-rich-more', onClick: () => setLimit(limit + 30) }, fmt(t('msg.more'), { n: Math.min(30, tools.length - limit) })) : null);
-            }
-            if (k === 'skills') {
-                const skills = data.skills || [];
-                const max = Math.max(1, ...skills.map((x) => x.tokensCal));
-                return h('div', { className: 'clx-catdetail', style: { '--cat': color } }, h('div', { className: 'clx-muted', style: { fontSize: 12, marginBottom: 6 } }, t('ov.cat.skills')), skills.map((x) => h('div', { key: x.name, className: 'clx-catitem' }, h('div', { className: 'main' }, h('div', { className: 'name' }, x.name), h('div', { className: 'desc' }, x.description), h('div', { className: 'clx-minibar' }, h('span', { style: { width: `${Math.max(1, x.tokensCal / max * 100)}%`, background: color } }))), h('span', { className: 'tok' }, fmtK(x.tokensCal)))));
-            }
-            const list = catNodes(data, k);
-            const max = Math.max(1, ...list.map((x) => x.tok));
-            const files = k === 'memory' ? (data.memoryFiles || []) : [];
-            const fileMax = Math.max(1, ...files.map((x) => x.tokens));
-            return h('div', { className: 'clx-catdetail', style: { '--cat': color } }, files.length ? h('div', { style: { marginBottom: 8 } }, h('div', { className: 'clx-muted', style: { fontSize: 12, marginBottom: 6 } }, fmt(t('ov.cat.memory'), { n: files.length })), files.map((x) => h('div', { key: x.path, className: 'clx-catitem' }, h('div', { className: 'main' }, h('div', { className: 'name' }, x.path, x.loads > 1 ? h('span', { className: 'clx-muted' }, ` ×${x.loads}`) : null), h('div', { className: 'clx-minibar' }, h('span', { style: { width: `${Math.max(1, x.tokens / fileMax * 100)}%`, background: color } }))), h('span', { className: 'tok' }, fmtK(x.tokens))))) : null, k === 'injected' && (data.injectedKinds || []).length ? h('div', { className: 'clx-chips', style: { marginBottom: 6 } }, data.injectedKinds.map((x) => h('span', { key: x.kind, className: 'clx-chip', style: { cursor: 'default' } }, `${x.kind} ×${x.count} · ${fmtK(x.tokens)}`))) : null, SPLIT_CATS.has(k) ? h('div', { className: 'clx-muted', style: { fontSize: 11.5, marginBottom: 4 } }, t('ov.cat.splitNote')) : null, list.length ? list.slice(0, limit).map(({ n, tok }) => h('div', { key: n.seq, className: `clx-node${openSeq === n.seq ? ' open' : ''}`, style: { '--cat': CAT_COLOR[n.category] || CAT_COLOR.other } }, h(NodeRowSimple, { n: { ...n, tokensCal: tok }, t, max, open: openSeq === n.seq, onClick: () => setOpenSeq(openSeq === n.seq ? null : n.seq) }), openSeq === n.seq ? h(NodeDetail, { sessionId, seq: n.seq, t }) : null))
-                : h('div', { className: 'clx-muted', style: { fontSize: 12 } }, t('ov.cat.empty')), h('div', { className: 'clx-catfoot' }, list.length > limit ? h('button', { className: 'clx-chipbtn', onClick: () => setLimit(limit + 20) }, fmt(t('msg.more'), { n: Math.min(20, list.length - limit) })) : null, list.length ? h('button', { className: 'clx-chipbtn', onClick: () => onShowAll(k) }, fmt(t('ov.cat.showAll'), { n: list.length })) : null));
         }
         const reducedMotion = () => {
             try {
@@ -1544,37 +1853,516 @@ part({
             }, dot, label);
             return h(React.Fragment, null, h('div', { className: 'clx-bar anim clx-ibar', 'data-active': active ? '' : undefined, 'aria-hidden': true }, parts.map((c) => h('span', { key: c.key, ...seg(c.key), style: { width: `${c.tokens / s.win * 100}%`, background: c.color } })), h('span', { key: 'free', ...seg('free', 'free'), style: { flex: '1 1 auto' } }), s.buffer > 0 ? h('span', { key: 'buffer', ...seg('buffer', 'clx-hatch'), style: { width: `${s.buffer / s.win * 100}%` } }) : null), h('div', { className: 'clx-legend clx-ilegend', 'data-active': active ? '' : undefined }, [...parts].sort((a, b) => b.tokens - a.tokens).map((c) => legendItem(c.key, h('i', { className: 'clx-dot', style: { background: c.color } }), c.label)), s.buffer > 0 ? legendItem('buffer', h('i', { className: 'clx-dot clx-hatch' }), t('g.buffer')) : null, legendItem('free', h('i', { className: 'clx-dot free' }), t('g.free'))));
         }
-        function Overview({ data, t, onJump, onShowCat, sessionId }) {
-            const [openCat, setOpenCat] = useState(null);
+        /** The breakdown's flow data (steps, turns, live state), refreshed while a turn runs. */
+        function useFlow(sessionId, liveKey) {
+            const [st, setSt] = useState({ data: null, error: null, sid: null });
+            const [tick, setTick] = useState(0);
+            useEffect(() => {
+                if (!sessionId)
+                    return undefined;
+                let dead = false;
+                call('flow', { sessionId }).then((v) => { if (!dead)
+                    setSt({ data: v, error: null, sid: sessionId }); }, (e) => { if (!dead)
+                    setSt((s) => ({ ...s, error: String(e?.message || e) })); });
+                return () => { dead = true; };
+            }, [sessionId, liveKey, tick]);
+            const data = st.sid === sessionId ? st.data : null;
+            const busy = !!data?.live && data.live.phase !== 'idle';
+            useEffect(() => {
+                if (!busy)
+                    return undefined;
+                const id = setTimeout(() => setTick((x) => x + 1), 2500);
+                return () => clearTimeout(id);
+            }, [busy, data]);
+            return { flow: data, flowError: st.error };
+        }
+        /** One line of what the conversation is doing right now. */
+        function LiveLine({ flow, t }) {
+            const live = flow?.live;
+            const ph = live?.phase || 'idle';
+            const now = useNow(ph !== 'idle');
+            if (!live)
+                return null;
+            const where = live.turn ? (live.step ? fmt(t('flow.where'), { t: live.turn, s: live.step }) : fmt(t('msg.turn'), { n: live.turn })) : null;
+            const last = live.lastSeq !== undefined
+                ? `${t(`flow.n.${live.lastStage}`) || ''} ${live.lastTitle || ''}`.trim()
+                : '';
+            return h('div', { className: 'clx-liveline' }, h('i', { className: `clx-live-dot${ph === 'idle' ? '' : ' on'}`, style: { background: LIVE_COLOR[ph] } }), h('b', null, t(`flow.live.${ph}`)), where ? h('span', { className: 'clx-muted' }, where) : null, last ? h('span', { className: 'clx-liveline-last', title: last }, last) : null, live.lastTime ? h('span', { className: 'clx-muted clx-liveline-ago' }, fmt(t('flow.ago'), { d: fmtDur(Math.max(0, now - live.lastTime)) })) : null);
+        }
+        function Stat({ k, v, sub = undefined, tone = '' }) {
+            return h('div', { className: `clx-stat${tone ? ` ${tone}` : ''}` }, h('div', { className: 'k' }, k), h('div', { className: 'v' }, v, sub ? h('small', null, sub) : null));
+        }
+        /** Context composition at every step that sent a request, grouped for stacking. */
+        /** Stacking order for the per-step bars: fixed preamble at the bottom, the conversation on top. */
+        const SERIES_CATS = ['system', 'systemTools', 'mcpTools', 'skills', 'memory', 'injected', 'summary', 'user', 'reasoning', 'assistantText', 'toolCalls', 'toolResults', 'other'];
+        function useStepSeries(bd, flow) {
+            return useMemo(() => {
+                const steps = flow?.steps || [];
+                return steps.map((st, i) => {
+                    const comp = compositionAt(bd, st);
+                    const groups = SERIES_CATS.map((k) => comp.by[k] || 0);
+                    return { st, i, comp, groups };
+                });
+            }, [bd, flow]);
+        }
+        /** What one request added to the context compared with the one before it. */
+        function stepDiff(bd, series, idx) {
+            const cur = series[idx];
+            if (!cur)
+                return null;
+            const prev = idx > 0 ? series[idx - 1] : null;
+            const cutOf = (x) => x.st.requestSeq ?? x.st.endSeq ?? x.st.startSeq;
+            const cut = cutOf(cur);
+            const prevCut = prev ? cutOf(prev) : 0;
+            const added = (bd.nodes || []).filter((n) => n.seq >= prevCut && n.seq < cut);
+            const addedTok = added.reduce((a, n) => a + n.tokensCal, 0);
+            const byCat = SERIES_CATS.map((k, gi) => ({ k, v: cur.groups[gi], d: prev ? cur.groups[gi] - prev.groups[gi] : cur.groups[gi] })).filter((x) => Math.abs(x.d) >= 1);
+            const compacted = (bd.compactionEvents || []).filter((c) => c.seq >= prevCut && c.seq <= Math.max(cut, cur.st.endSeq ?? cut));
+            const delta = prev ? cur.comp.total - prev.comp.total : cur.comp.total;
+            return { idx, cur, prev, cut, prevCut, added, addedTok, byCat, compacted, delta, last: idx === series.length - 1 };
+        }
+        const dsign = (v) => (Math.abs(v) < 0.5 ? "±0" : `${v > 0 ? "+" : "−"}${fmtK(Math.abs(v))}`);
+        /** The step every page follows: a strip of requests, and what the picked one changed. */
+        function StepBar({ series, diff, onSel, t, onNav, stepOnly, setStepOnly, nav }) {
+            const scroller = useRef(null);
+            useLayoutEffect(() => {
+                const el = scroller.current;
+                const b = el?.querySelector(".on");
+                if (el && b)
+                    el.scrollLeft = Math.max(0, b.offsetLeft - el.clientWidth / 2);
+            }, [diff?.idx, series.length]);
+            if (!diff)
+                return null;
+            const peak = Math.max(1, ...series.map((x) => x.comp.total));
+            const st = diff.cur.st;
+            const go = (i) => onSel(Math.min(series.length - 1, Math.max(0, i)));
+            return h("div", { className: "clx-stepbar" }, h("div", { className: "clx-stepbar-top" }, h("button", { className: "clx-chipbtn", disabled: diff.idx <= 0, onClick: () => go(diff.idx - 1), "aria-label": "‹" }, "‹"), h("button", { className: "clx-chipbtn", disabled: diff.last, onClick: () => go(diff.idx + 1), "aria-label": "›" }, "›"), h("b", null, fmt(t("flow.where"), { t: st.turn, s: st.step })), h("span", { className: "clx-stchip" }, h("span", { className: "k" }, t("st.ctx")), fmtK(diff.cur.comp.total)), h("span", { className: `clx-stchip${diff.delta > 0 ? " up" : ""}` }, h("span", { className: "k" }, t("st.delta")), dsign(diff.delta)), diff.compacted.length ? h("span", { className: "clx-stchip warn" }, "✂ ", t("sd.compacted")) : null, st.tools.length ? h("span", { className: "clx-stepbar-tools", title: st.tools.join(", ") }, groupNames(st.tools)) : null, diff.last ? h("span", { className: "clx-muted clx-stepbar-now" }, t("sd.now")) : h("button", { className: "clx-chipbtn clx-stepbar-now", onClick: () => onSel(null) }, t("sd.backNow"))), h("div", { className: "clx-stepbar-strip", ref: scroller }, series.map((x) => h("button", {
+                key: x.st.startSeq, type: "button", className: `b${x.i === diff.idx ? " on" : ""}${x.i > diff.idx ? " later" : ""}`,
+                title: `${fmt(t("flow.where"), { t: x.st.turn, s: x.st.step })} · ${fmtK(x.comp.total)}`, onClick: () => onSel(x.i),
+            }, h("i", { style: { height: `${Math.max(6, x.comp.total / peak * 100)}%` } })))), h("div", { className: "clx-stepbar-diff" }, h("span", { className: "clx-muted" }, t("sd.added")), diff.added.length
+                ? h("button", { className: `clx-chipbtn${stepOnly && nav === "messages" ? " on" : ""}`, "aria-pressed": stepOnly, onClick: () => { setStepOnly(true); onNav("messages"); }, title: t("sd.onlyNew") }, fmt(t("sd.items"), { n: diff.added.length, k: fmtK(diff.addedTok) }))
+                : h("span", { className: "clx-muted" }, t("sd.none")), diff.byCat.sort((a, b) => Math.abs(b.d) - Math.abs(a.d)).slice(0, 5).map((g) => h("span", { key: g.k, className: "clx-stchip" }, h("i", { className: "clx-dot", style: { background: CAT_COLOR[g.k] } }), t(`c.${g.k}`), h("em", { className: g.d > 0 ? "up" : "down" }, dsign(g.d)))), stepOnly ? h("button", { className: "clx-chipbtn clx-stepbar-now", onClick: () => setStepOnly(false) }, t("sd.showAll")) : null));
+        }
+        /** Per-step stacked bars (what each request carried), with the picked step's detail under them. */
+        /** The message a step is about: what the model said or called in it, else its first message. */
+        function stepNode(bd, st) {
+            const inStep = (bd.nodes || []).filter((n) => n.seq >= st.startSeq && (st.endSeq === undefined || n.seq <= st.endSeq));
+            const own = inStep.find((n) => n.category === 'toolCalls' || n.category === 'assistantText' || n.category === 'reasoning');
+            return (own || inStep[0])?.seq ?? st.startSeq;
+        }
+        function StepTrend({ data, flow, t, onJump, series, pickIdx, onSel }) {
+            const [hover, setHover] = useState(null);
+            const scroller = useRef(null);
+            const s = summarize(data);
+            const comp = s.comp;
+            useLayoutEffect(() => {
+                const el = scroller.current;
+                if (el)
+                    el.scrollLeft = el.scrollWidth;
+            }, [series.length]);
+            if (!series.length)
+                return h(Trend, { data, t, onJump });
+            const peak = Math.max(1, ...series.map((x) => x.comp.total));
+            const yMax = Math.max(peak * 1.08, comp?.thresholdTokens && comp.thresholdTokens < peak * 1.6 ? comp.thresholdTokens * 1.04 : 0);
+            const cur = series[hover ?? pickIdx];
+            const prev = cur && cur.i > 0 ? series[cur.i - 1] : null;
+            const st = cur.st;
+            const u = st.usage;
+            const delta = prev ? cur.comp.total - prev.comp.total : cur.comp.total;
+            const thY = comp?.thresholdTokens && comp.thresholdTokens <= yMax ? comp.thresholdTokens / yMax * 100 : null;
+            const segs = SERIES_CATS.map((k, gi) => ({ key: k, label: t(`c.${k}`), color: CAT_COLOR[k], tokens: cur.groups[gi], d: prev ? cur.groups[gi] - prev.groups[gi] : cur.groups[gi] }));
+            return h('div', { className: 'clx-card clx-steptrend' }, h('div', { className: 'clx-card-head' }, h(CardTitle, { icon: 'trend', text: t('st.title') }), h('span', { className: 'clx-muted' }, fmt(t('st.count'), { n: series.length }))), h('div', { className: 'clx-stbars-wrap' }, thY !== null ? h('div', { className: 'clx-stbars-th', style: { bottom: `${thY}%` } }, h('span', null, `${t('trend.threshold')} ${fmtK(comp.thresholdTokens)}`)) : null, h('div', { className: 'clx-stbars', ref: scroller, onMouseLeave: () => setHover(null) }, series.map((x) => {
+                const newTurn = x.i === 0 || series[x.i - 1].st.turn !== x.st.turn;
+                const on = x.i === pickIdx;
+                return h('button', {
+                    key: x.st.startSeq, type: 'button',
+                    className: `clx-stbar${on ? ' on' : ''}${newTurn ? ' turn' : ''}${x.st.errors ? ' err' : ''}`,
+                    title: `${fmt(t('flow.where'), { t: x.st.turn, s: x.st.step })} · ${fmtK(x.comp.total)}`,
+                    onMouseEnter: () => setHover(x.i),
+                    onClick: () => onSel(x.i),
+                }, h('span', { className: 'col', style: { height: `${Math.max(2, x.comp.total / yMax * 100)}%` } }, SERIES_CATS.map((k, gi) => (x.groups[gi] > 0 ? h('i', { key: k, style: { flexGrow: x.groups[gi], background: CAT_COLOR[k] } }) : null))), newTurn ? h('span', { className: 'lbl' }, `T${x.st.turn}`) : null);
+            }))), h('div', { className: 'clx-stdetail' }, h('div', { className: 'clx-stdetail-head' }, h('b', null, fmt(t('flow.where'), { t: st.turn, s: st.step })), st.status !== 'done' ? h('span', { className: st.status === 'error' ? 'clx-err' : st.status === 'running' ? 'clx-live' : 'clx-warn' }, t(`flow.status.${st.status}`)) : null, h('span', { className: 'clx-stchip' }, h('span', { className: 'k' }, t('st.ctx')), fmtK(cur.comp.total)), h('span', { className: `clx-stchip${delta > 0 ? ' up' : ''}` }, h('span', { className: 'k' }, t('st.delta')), dsign(delta)), u ? h('span', { className: 'clx-stchip' }, h('span', { className: 'k' }, t('st.output')), fmtK(u.output || 0)) : null, u ? h('span', { className: 'clx-stchip' }, h('span', { className: 'k' }, t('st.cache')), pct(u.cacheRead || 0, st.promptTokens || 0, 0)) : null, h('button', { className: 'clx-chipbtn clx-stdetail-go', onClick: () => onJump(stepNode(data, st)) }, `${t('st.viewMsgs')} ›`)), st.tools.length ? h('div', { className: 'clx-stdetail-tools', title: st.tools.join(', ') }, h('span', { className: 'clx-muted' }, `${t('flow.calls')} `), groupNames(st.tools)) : null, h(UsageBar, { segments: segs, win: s.win, buffer: 0 }), h('div', { className: 'clx-stlegend' }, [...segs].sort((p, q) => q.tokens - p.tokens).filter((g) => g.tokens >= 1 || Math.abs(g.d) >= 1).map((g) => h('span', { key: g.key }, h('i', { className: 'clx-dot', style: { background: g.color } }), g.label, h('b', null, fmtK(g.tokens)), prev && Math.abs(g.d) >= 1 ? h('em', { className: g.d > 0 ? 'up' : 'down' }, dsign(g.d)) : null))), !cur.comp.exact ? h('div', { className: 'clx-muted', style: { fontSize: 11 } }, t('flow.ctxEstNoUsage')) : null));
+        }
+        /** Where the context sits against the compaction triggers, and the policy behind them. */
+        function CompactionCard({ data, comp, s, t }) {
+            const win = s.win || 1;
+            const at = (v) => `${Math.min(100, Math.max(0, v / win * 100))}%`;
+            const marks = [
+                comp.thresholdTokens ? { k: 'th', v: comp.thresholdTokens, label: t('ov.threshold'), cls: 'warn' } : null,
+                comp.emergencyTokens ? { k: 'em', v: comp.emergencyTokens, label: t('ov.emergency'), cls: 'err' } : null,
+            ].filter(Boolean);
+            const over = comp.thresholdTokens && s.used >= comp.thresholdTokens;
+            const ratio = typeof comp.thresholdRatio === 'number' ? `${Math.round(comp.thresholdRatio * 100)}%` : null;
+            return h('div', { className: 'clx-card clx-infocard' }, h('div', { className: 'clx-card-head' }, h(CardTitle, { icon: 'compress', text: t('ov.compaction') }), h('span', { className: 'clx-pill' }, comp.engine || '—'), h('span', { className: `clx-pill ${comp.auto ? 'on' : 'off'}` }, `${t('ov.auto')} · ${comp.auto ? t('ov.on') : t('ov.off')}`)), h('div', { className: 'clx-cgauge' }, h('div', { className: 'track' }, h('span', { className: `fill${over ? ' over' : ''}`, style: { width: at(s.used) } }), marks.map((x) => h('i', { key: x.k, className: x.cls, style: { left: at(x.v) }, title: `${x.label} ${fmtInt(x.v)}` }))), h('div', { className: 'scale' }, h('span', null, `${t('ov.used')} ${fmtK(s.used)}`), marks.map((x) => h('span', { key: x.k, className: x.cls, style: { left: at(x.v) } }, fmtK(x.v))), h('span', { className: 'end' }, fmtK(s.win)))), h('div', { className: 'clx-tiles' }, comp.thresholdTokens ? h(Stat, { k: t('ov.threshold'), v: fmtK(comp.thresholdTokens), sub: ratio ? ` ${ratio}` : undefined }) : null, h(Stat, { k: t('ov.remaining'), v: comp.remainingTokens > 0 ? fmtK(comp.remainingTokens) : t('pop.over'), tone: comp.remainingTokens > 0 ? '' : 'warn' }), comp.emergencyTokens ? h(Stat, { k: t('ov.emergency'), v: fmtK(comp.emergencyTokens), sub: comp.emergencyRatio ? ` ${Math.round(comp.emergencyRatio * 100)}%` : undefined }) : null, h(Stat, { k: t('ov.buffer'), v: fmtK(comp.bufferTokens) }), comp.headroomTokens !== undefined ? h(Stat, { k: t('ov.headroom'), v: fmtK(comp.headroomTokens) }) : null, comp.retainBudget !== undefined ? h(Stat, { k: t('ov.retain'), v: comp.retainTokens !== undefined ? fmtK(comp.retainTokens) : fmtK(comp.retainBudget), sub: comp.retainTokens === undefined ? ` ${Math.round((comp.retainRatio || 0) * 100)}%` : undefined }) : null, comp.summaryMaxTokens ? h(Stat, { k: t('ov.summaryMax'), v: fmtK(comp.summaryMaxTokens) }) : null, h(Stat, { k: t('ov.compactions'), v: String((data.compactionEvents || []).length) }), comp.override ? h(Stat, { k: t('ov.override'), v: comp.override.model, sub: ` ${comp.override.provider}` }) : null), h('div', { className: 'clx-note' }, comp.engine === 'billion-context' ? `${t('ov.biliNote')}${comp.defaults ? ` ${t('ov.biliDefaults')}` : ''}` : t('ov.formula')));
+        }
+        /** How "used" was measured, how the estimate was calibrated to it, and what the last request cost. */
+        function MeasureCard({ data, s, t }) {
+            const m = data.measured || {};
+            const u = m.lastRequest;
+            const inTot = u ? (u.inputTokens || 0) + (u.cacheReadTokens || 0) + (u.cacheWriteTokens || 0) : 0;
+            const seg = (v, cls) => (v > 0 ? h('span', { className: cls, style: { flexGrow: v } }) : null);
+            const types = Object.entries(data.typeCounts || {}).sort((a, b) => b[1] - a[1]);
+            return h('div', { className: 'clx-card clx-infocard' }, h('div', { className: 'clx-card-head' }, h(CardTitle, { icon: 'gauge', text: t('ov.measure') }), h('span', { className: 'clx-pill' }, t(`pop.src.${m.usedSource || 'estimate'}`)), h('span', { className: 'clx-pill', title: t('ov.baseline') }, t(`ov.baseline.${m.baselineKind || 'none'}`))), h('div', { className: 'clx-tiles' }, h(Stat, { k: t('ov.used'), v: fmtK(m.totalTokens) }), h(Stat, { k: t('ov.rawTotal'), v: fmtK(m.rawTotalTokens), sub: m.rawTotalTokens > m.totalTokens ? ` −${pct(m.rawTotalTokens - m.totalTokens, m.rawTotalTokens, 0)}` : undefined }), h(Stat, { k: t('ov.estSum'), v: fmtK(m.estimatedSum) }), h(Stat, { k: t('ov.factor'), v: `×${(m.factor || 1).toFixed(3)}` }), h(Stat, { k: t('ov.baseline'), v: fmtK(m.baselineTokens) }), h(Stat, { k: t('ov.delta'), v: fmtK(m.surfaceDeltaTokens) }), h(Stat, { k: t('ov.window'), v: fmtK(data.contextWindow) }), h(Stat, { k: t('ov.maxOut'), v: fmtK(data.maxTokens) })), u ? h('div', { className: 'clx-req' }, h('div', { className: 'clx-req-head' }, h('span', null, fmt(t('ov.lastReq'), { seq: u.seq, time: fmtTime(u.time) })), h('b', null, `${t('ov.hit')} ${pct(u.cacheReadTokens || 0, inTot, 0)}`)), h('div', { className: 'clx-req-bar' }, seg(u.cacheReadTokens, 'cr'), seg(u.cacheWriteTokens, 'cw'), seg(u.inputTokens, 'in'), seg(u.outputTokens, 'out')), h('div', { className: 'clx-req-legend' }, h('span', null, h('i', { className: 'cr' }), t('ov.cacheRead'), h('b', null, fmtK(u.cacheReadTokens || 0))), h('span', null, h('i', { className: 'cw' }), t('ov.cacheWrite'), h('b', null, fmtK(u.cacheWriteTokens || 0))), h('span', null, h('i', { className: 'in' }), t('ov.uncached'), h('b', null, fmtK(u.inputTokens || 0))), h('span', null, h('i', { className: 'out' }), t('ov.output'), h('b', null, fmtK(u.outputTokens || 0))))) : null, types.length ? h('div', { className: 'clx-types', title: t('ov.types') }, h('span', { className: 'clx-muted' }, `${t('ov.types')} · ${fmtInt(data.eventCount)}`), types.slice(0, 8).map(([k, v]) => h('span', { key: k, className: 'clx-type' }, k, h('b', null, fmtInt(v)))), types.length > 8 ? h('span', { className: 'clx-type more', title: types.slice(8).map(([k, v]) => `${k} ${v}`).join('\n') }, `+${types.length - 8}`) : null) : null, h('div', { className: 'clx-note' }, t('ov.calNote')));
+        }
+        // ================================================================== dashboard cards
+        // Every card on every page opens the same way: an icon, a title, a figure on the right, and (on
+        // the overview) a link to the page that has the whole story.
+        const CARD_ICON = {
+            stats: ['M4 20V10', 'M10 20V4', 'M16 20v-7', 'M22 20H2'],
+            donut: ['M12 3a9 9 0 1 0 9 9h-9z', 'M15 3.5A9 9 0 0 1 20.5 9H15z'],
+            trend: ['M3 17l5-5 4 3 8-8', 'M15 7h5v5'],
+            tools: ['M14.5 6.5a4 4 0 0 0-5 5L4 17l3 3 5.5-5.5a4 4 0 0 0 5-5l-2.5 2.5-2.5-.5-.5-2.5z'],
+            messages: ['M4 5h16v11H9l-5 4z'],
+            sources: ['M5 4h9a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z', 'M5 17a3 3 0 0 1 3-3h9'],
+            compress: ['M4 9h16', 'M4 15h16', 'M9 4l3 3 3-3', 'M9 20l3-3 3 3'],
+            gauge: ['M4 15a8 8 0 1 1 16 0', 'M12 15l4-4'],
+            flow: ['M6 4h5v5H6z', 'M13 15h5v5h-5z', 'M8.5 9v3.5h7V15'],
+            cmd: ['M4 6l5 5-5 5', 'M12 18h8'],
+        };
+        function CardTitle({ icon, text }) {
+            return h('h4', { className: 'clx-ctitle' }, h('span', { className: 'ic' }, h('svg', { width: 14, height: 14, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.9, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true }, (CARD_ICON[icon] || []).map((d, i) => h('path', { key: i, d })))), text);
+        }
+        function CardHead({ icon, title, meta = null, more = null, t }) {
+            return h('div', { className: 'clx-card-head' }, h(CardTitle, { icon, text: title }), meta ? h('span', { className: 'clx-chead-meta' }, meta) : null, more ? h('button', { className: 'clx-more', onClick: more }, `${t('ov.more')} ›`) : null);
+        }
+        /** Category shares as a ring, the used total in its middle; the legend opens that category's messages. */
+        function CompositionCard({ data, s, t, onShowCat, stepLabel = null }) {
+            const [hov, setHov] = useState(null);
+            const parts = CATS.map((k) => ({ k, v: s.byCat[k]?.tokens || 0, n: s.byCat[k]?.count || 0 })).filter((x) => x.v > 0).sort((a, b) => b.v - a.v);
+            const total = parts.reduce((a, b) => a + b.v, 0) || 1;
+            const R = 50;
+            const C = 2 * Math.PI * R;
+            let off = 0;
+            const segs = parts.map((x) => {
+                const len = x.v / total * C;
+                const seg = { ...x, dash: `${Math.max(0, len - (parts.length > 1 ? 1.2 : 0))} ${C}`, off: -off };
+                off += len;
+                return seg;
+            });
+            const cur = hov ? parts.find((x) => x.k === hov) : null;
+            return h('div', { className: 'clx-card' }, h(CardHead, { t, icon: 'donut', title: t('ov.composition'), meta: `${stepLabel ? stepLabel + ' · ' : ''}${fmtK(s.used)} · ${pct(s.used, s.win)}` }), h('div', { className: 'clx-donutwrap' }, h('svg', { className: 'clx-donut', viewBox: '0 0 128 128', width: 128, height: 128 }, h('circle', { cx: 64, cy: 64, r: R, fill: 'none', stroke: 'var(--dsw-alias-border-l1)', strokeWidth: 16 }), segs.map((x) => h('circle', {
+                key: x.k, cx: 64, cy: 64, r: R, fill: 'none', stroke: CAT_COLOR[x.k], strokeWidth: hov === x.k ? 20 : 16,
+                strokeDasharray: x.dash, strokeDashoffset: x.off, transform: 'rotate(-90 64 64)', opacity: hov && hov !== x.k ? 0.35 : 1,
+                onMouseEnter: () => setHov(x.k), onMouseLeave: () => setHov(null), onClick: () => onShowCat(x.k), style: { cursor: 'pointer' },
+            }, h('title', null, `${t(`c.${x.k}`)} ${fmtInt(x.v)}`))), h('text', { x: 64, y: 62, textAnchor: 'middle', className: 'clx-donut-v' }, cur ? fmtK(cur.v) : fmtK(s.used)), h('text', { x: 64, y: 78, textAnchor: 'middle', className: 'clx-donut-k' }, cur ? t(`c.${cur.k}`) : t('ov.usedShort'))), h('div', { className: 'clx-dlegend' }, parts.map((x) => h('button', {
+                key: x.k, type: 'button', className: hov === x.k ? 'on' : undefined, title: `${CAT_EN[x.k]} · ${fmtInt(x.v)} · ${t('ov.openCat')}`,
+                onMouseEnter: () => setHov(x.k), onMouseLeave: () => setHov(null), onClick: () => onShowCat(x.k),
+            }, h('i', { className: 'clx-dot', style: { background: CAT_COLOR[x.k] } }), h('span', { className: 'nm' }, t(`c.${x.k}`)), h('span', { className: 'pc' }, pct(x.v, total, 1)), h('span', { className: 'tk' }, fmtK(x.v)))))));
+        }
+        /** The heaviest tools of the session, as on the tools page. */
+        function ToolsPeek({ data, t, onNav }) {
+            const stats = [...(data.toolStats || [])].sort((a, b) => (b.callTokens + b.resultTokens) - (a.callTokens + a.resultTokens));
+            const errsBy = {};
+            for (const x of data.invocations || [])
+                if (x.isError)
+                    errsBy[x.name] = (errsBy[x.name] || 0) + 1;
+            const max = Math.max(1, ...stats.map((x) => x.callTokens + x.resultTokens));
+            const cmds = data.commands || [];
+            const calls = stats.reduce((a, x) => a + x.calls, 0);
+            return h('div', { className: 'clx-card clx-peek' }, h(CardHead, { t, icon: 'tools', title: t('nav.tools'), meta: fmt(t('ov.peek.tools'), { n: stats.length, c: calls }), more: () => onNav('tools') }), stats.length ? stats.slice(0, 5).map((x) => h(ToolLine, {
+                key: x.name, name: x.name, color: CAT_COLOR.toolResults, sel: false, onClick: () => onNav('tools'),
+                title: `${t('pair.call')} ${fmtInt(x.callTokens)} + ${t('pair.result')} ${fmtInt(x.resultTokens)}`,
+                bar: h(React.Fragment, null, h('span', { style: { width: `${x.callTokens / max * 100}%`, background: CAT_COLOR.toolCalls } }), h('span', { style: { width: `${x.resultTokens / max * 100}%`, background: CAT_COLOR.toolResults } })),
+                count: `×${x.calls}`, errs: errsBy[x.name], tok: fmtK(x.callTokens + x.resultTokens),
+            })) : h('div', { className: 'clx-tempty clx-muted' }, t('tools.noUse')), cmds.length ? h('div', { className: 'clx-peek-foot' }, h(CardTitle, { icon: 'cmd', text: t('cmd.title') }), h('span', null, fmt(t('ov.peek.cmds'), { n: cmds.length, d: fmtMs(cmds.reduce((a, c) => a + (c.durationMs || 0), 0)), f: cmds.filter((c) => c.status === 'failed').length }))) : null);
+        }
+        /** The biggest messages in the context: where the tokens actually sit. */
+        function MessagesPeek({ data, t, onJump, onNav }) {
+            const nodes = data.nodes || [];
+            const top = [...nodes].sort((a, b) => b.tokensCal - a.tokensCal).slice(0, 6);
+            const sum = nodes.reduce((a, n) => a + n.tokensCal, 0);
+            return h('div', { className: 'clx-card clx-peek' }, h(CardHead, { t, icon: 'messages', title: t('ov.peek.bigMsgs'), meta: fmt(t('msg.count'), { n: nodes.length, t: fmtK(sum) }), more: () => onNav('messages') }), top.map((n) => h('div', { key: n.seq, className: 'clx-mrow clx-peekrow', role: 'button', tabIndex: 0, onClick: () => onJump(n.seq), title: `#${n.seq}` }, h('span', { className: 'clx-mrow-kind', style: { '--cat': CAT_COLOR[n.category] || CAT_COLOR.other } }, t(`k.${n.category}`)), h('span', { className: 'clx-mrow-text' }, n.tool ? h('b', { className: 'clx-mrow-tool' }, `${n.tool} `) : null, n.preview || '—'), h('span', { className: 'clx-peek-pct' }, pct(n.tokensCal, sum, 0)), h('span', { className: 'clx-mrow-tok' }, fmtK(n.tokensCal)))));
+        }
+        /** Memory files, skills and runtime facts in three lines. */
+        function SourcesPeek({ sessionId, liveKey, bd, t, onNav }) {
+            const { data: src } = useSources(sessionId, liveKey);
+            const rows = useMemo(() => (src ? skillRows(src) : []), [src]);
+            if (!src)
+                return h('div', { className: 'clx-card clx-peek' }, h(CardHead, { t, icon: 'sources', title: t('nav.sources'), more: () => onNav('sources') }), h('div', { className: 'clx-muted' }, t('loading')));
+            const active = (src.memory?.files || []).filter((f) => f.status === 'active');
+            const memTok = active.reduce((a, f) => a + (f.tokens || 0), 0);
+            const loaded = rows.filter((r) => r.loads.length);
+            const inCat = rows.filter((r) => r.cat).length;
+            const catTok = (bd?.skills || []).reduce((a, x) => a + (x.tokensCal || 0), 0);
+            const rt = (src.runtime?.sections || []).length + (src.timeContext ? 1 : 0);
+            const line = (color, name, badge, tok) => h(SrcLine, { key: name, color, name, badge, tok, sel: false, onClick: () => onNav('sources') });
+            return h('div', { className: 'clx-card clx-peek' }, h(CardHead, { t, icon: 'sources', title: t('nav.sources'), meta: fmtK(memTok + catTok), more: () => onNav('sources') }), line(CAT_COLOR.memory, t('nav.memory'), active.length ? active.map((f) => f.displayPath).slice(0, 2).join(', ') + (active.length > 2 ? ` +${active.length - 2}` : '') : t('src.memoryZero'), active.length ? fmtK(memTok) : '—'), line(CAT_COLOR.skills, t('src.skills'), rows.length ? fmt(t('ov.peek.skills'), { l: loaded.length, c: inCat, n: rows.length }) : t('src.skillsZero'), catTok ? fmtK(catTok) : '—'), line(CAT_COLOR.injected, t('src.runtime'), fmt(t('src.itemsN'), { n: rt }), ''));
+        }
+        /** What happened inside one step: what the model said, what it called, what came back. */
+        function stepStory(bd, st) {
+            const inRange = (q) => q !== undefined && q >= st.startSeq && (st.endSeq === undefined || q <= st.endSeq);
+            const said = [];
+            for (const n of bd.nodes || []) {
+                if (!inRange(n.seq) || !n.split)
+                    continue;
+                if ((n.split.assistantText || 0) > 0 || (n.split.reasoning || 0) > 0) {
+                    const kind = (n.split.assistantText || 0) >= (n.split.reasoning || 0) ? "answer" : "thinking";
+                    if (n.preview && !(n.tools || []).length || (n.preview && n.preview !== (n.tools || []).join(", ")))
+                        said.push({ seq: n.seq, kind, text: n.preview, tok: n.tokensCal });
+                }
+            }
+            const calls = (bd.invocations || []).filter((x) => inRange(x.callSeq) || (x.callSeq === undefined && inRange(x.resultSeq)));
+            return { said, calls };
+        }
+        function StepStory({ bd, st, t, onJump }) {
+            if (!st)
+                return null;
+            const { said, calls } = stepStory(bd, st);
+            if (!said.length && !calls.length)
+                return h("div", { className: "clx-muted clx-tempty" }, t("sd.storyNone"));
+            return h("div", { className: "clx-story" }, said.map((x) => h("div", { key: "s" + x.seq, className: "clx-story-row said", role: "button", onClick: () => onJump(x.seq) }, h("span", { className: "k" }, t(x.kind === "answer" ? "sd.said" : "sd.thought")), h("span", { className: "tx" }, x.text))), calls.map((x, i) => h("div", { key: "c" + i, className: `clx-story-row call${x.isError ? " err" : ""}`, role: "button", onClick: () => onJump(x.resultSeq ?? x.callSeq) }, h("span", { className: "k" }, t("sd.called")), h("span", { className: "tx" }, h("b", null, x.name), " ", h("code", null, x.args || ""), x.resultSeq !== undefined
+                ? h("span", { className: "res" }, x.isError ? "⚠ " : "→ ", h("span", { className: "tk" }, fmtK(x.resultTokens || 0)), " ", x.resultPreview || "")
+                : h("span", { className: "res clx-muted" }, "…")))));
+        }
+        /** The prompt the model read, in the order it read it; picking a step shows that request. */
+        function PromptView({ data, t, diff, series, onSel, sessionId, ctx, cwd, onJump, onAsk }) {
+            const [open, setOpen] = useState(null);
+            const [hide, setHide] = useState({});
+            const [toolsOpen, setToolsOpen] = useState(false);
+            const all = data.nodes || [];
+            const cut = diff && !diff.last ? diff.cut : Infinity;
+            const sent = all.filter((n) => n.seq < cut);
+            const later = all.length - sent.length;
+            const laterTok = all.filter((n) => n.seq >= cut).reduce((a, n) => a + n.tokensCal, 0);
+            const sys = sent.filter((n) => n.category === "system");
+            const rest = sent.filter((n) => n.category !== "system");
+            const tools = data.tools || [];
+            const toolTok = tools.reduce((a, x) => a + (x.tokensCal || 0), 0);
+            const total = sent.reduce((a, n) => a + n.tokensCal, 0) + toolTok || 1;
+            const present = {};
+            for (const n of sent)
+                present[n.category] = (present[n.category] || 0) + 1;
+            const shown = (n) => !hide[n.category];
+            const cutOf = (x) => x.st.requestSeq ?? x.st.endSeq ?? x.st.startSeq;
+            const dividers = new Map();
+            for (const x of series) {
+                const c = cutOf(x);
+                const first = rest.find((n) => n.seq >= c);
+                const key = first ? first.seq : "end";
+                if (!dividers.has(key))
+                    dividers.set(key, []);
+                dividers.get(key).push(x);
+            }
+            const goto = (id) => document.getElementById(id)?.scrollIntoView({ block: "center", behavior: "smooth" });
+            const segs = [
+                ...sys.map((n) => ({ id: `pv-${n.seq}`, w: n.tokensCal, c: CAT_COLOR.system, title: `${t("c.system")} · ${fmtInt(n.tokensCal)}` })),
+                { id: "pv-tools", w: toolTok, c: CAT_COLOR.systemTools, title: `${t("c.systemTools")} · ${fmtInt(toolTok)}` },
+                ...rest.map((n) => ({ id: `pv-${n.seq}`, w: n.tokensCal, c: CAT_COLOR[n.category] || CAT_COLOR.other, title: `#${n.seq} ${t(`c.${n.category}`)} · ${fmtInt(n.tokensCal)}` })),
+            ].filter((x) => x.w > 0);
+            const itemEl = (n) => {
+                const isOpen = open === n.seq;
+                const color = CAT_COLOR[n.category] || CAT_COLOR.other;
+                const fresh = diff && n.seq >= diff.prevCut && n.seq < diff.cut;
+                return h("div", { key: n.seq, id: `pv-${n.seq}`, className: `clx-pv-item${isOpen ? " open" : ""}${fresh ? " fresh" : ""}`, style: { "--cat": color } }, h("div", { className: "clx-pv-head", role: "button", tabIndex: 0, onClick: () => setOpen(isOpen ? null : n.seq),
+                    onKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        setOpen(isOpen ? null : n.seq);
+                    } } }, h(Chevron, { open: isOpen, size: 10 }), h("span", { className: "clx-mrow-kind", style: { "--cat": color } }, t(`k.${n.category}`)), n.tool ? h("b", { className: "clx-mrow-tool" }, n.tool) : null, (n.tools || []).length ? h("b", { className: "clx-mrow-tool" }, groupNames(n.tools)) : null, fresh ? h("span", { className: "clx-pill" }, t("sd.fresh")) : null, h("span", { className: "sq" }, `#${n.seq}`), h("button", { className: "clx-pv-ask", title: t("az.askThis"), onClick: (e) => { e.stopPropagation(); onAsk(n.seq); } }, "✦"), h("span", { className: "tk" }, fmtK(n.tokensCal), h("small", null, ` ${pct(n.tokensCal, total, 1)}`))), isOpen ? h("div", { className: "clx-pv-body" }, h(NodeDetail, { sessionId, seq: n.seq, t, ctx, cwd }))
+                    : h("div", { className: "clx-pv-text", onClick: () => setOpen(n.seq) }, n.preview || "—"));
+            };
+            const rows = [];
+            for (const n of sys)
+                if (shown(n))
+                    rows.push(itemEl(n));
+            rows.push(h("div", { key: "tools", id: "pv-tools", className: `clx-pv-item tools${toolsOpen ? " open" : ""}`, style: { "--cat": CAT_COLOR.systemTools } }, h("div", { className: "clx-pv-head", role: "button", tabIndex: 0, onClick: () => setToolsOpen(!toolsOpen) }, h(Chevron, { open: toolsOpen, size: 10 }), h("span", { className: "clx-mrow-kind", style: { "--cat": CAT_COLOR.systemTools } }, t("c.systemTools")), h("span", { className: "clx-muted" }, fmt(t("sd.toolDefs"), { n: tools.length })), h("span", { className: "tk" }, fmtK(toolTok), h("small", null, ` ${pct(toolTok, total, 1)}`))), h("div", { className: "clx-pv-text" }, tools.slice().sort((a, b) => b.tokensCal - a.tokensCal).slice(0, toolsOpen ? 999 : 12).map((x) => h("code", { key: x.name, className: "clx-pv-tool" }, x.name, h("small", null, ` ${fmtK(x.tokensCal)}`))), !toolsOpen && tools.length > 12 ? h("span", { className: "clx-muted" }, ` +${tools.length - 12}`) : null)));
+            for (const n of rest) {
+                const ds = dividers.get(n.seq);
+                if (ds)
+                    for (const x of ds)
+                        rows.push(h("div", { key: `d${x.st.startSeq}`, className: `clx-pv-div${diff && x.i === diff.idx ? " on" : ""}`, role: "button", onClick: () => onSel(x.i) }, h("span", null, fmt(t("flow.where"), { t: x.st.turn, s: x.st.step })), h("span", { className: "clx-muted" }, `${t("sd.request")} · ${fmtK(x.comp.total)}`)));
+                if (shown(n))
+                    rows.push(itemEl(n));
+            }
+            const endDs = dividers.get("end");
+            if (endDs)
+                for (const x of endDs)
+                    rows.push(h("div", { key: `d${x.st.startSeq}`, className: `clx-pv-div${diff && x.i === diff.idx ? " on" : ""}`, role: "button", onClick: () => onSel(x.i) }, h("span", null, fmt(t("flow.where"), { t: x.st.turn, s: x.st.step })), h("span", { className: "clx-muted" }, `${t("sd.request")} · ${fmtK(x.comp.total)}`)));
+            return h("div", { className: "clx-pv" }, h("div", { className: "clx-card" }, h(CardHead, { t, icon: "messages", title: t("sd.promptTitle"), meta: `${fmtK(total)} · ${fmt(t("sd.itemsN"), { n: sent.length })}` }), h("div", { className: "clx-muted", style: { fontSize: 11.5, marginBottom: 6 } }, diff && !diff.last ? fmt(t("sd.promptAt"), { t: diff.cur.st.turn, s: diff.cur.st.step }) : t("sd.promptNow")), h("div", { className: "clx-pv-map" }, segs.map((x, i) => h("button", { key: i, type: "button", title: x.title, style: { flexGrow: x.w, background: x.c }, onClick: () => goto(x.id) }))), h("div", { className: "clx-pv-chips" }, CATS.filter((k) => present[k]).map((k) => h("button", {
+                key: k, type: "button", className: `clx-chipbtn${hide[k] ? "" : " on"}`, "aria-pressed": !hide[k], onClick: () => setHide({ ...hide, [k]: !hide[k] }),
+            }, h("i", { className: "clx-dot", style: { background: CAT_COLOR[k] } }), ` ${t(`c.${k}`)} ${present[k]}`)))), diff ? h("div", { className: "clx-card" }, h(CardHead, { t, icon: "flow", title: t("sd.story"), meta: fmt(t("flow.where"), { t: diff.cur.st.turn, s: diff.cur.st.step }) }), h(StepStory, { bd: data, st: diff.cur.st, t, onJump })) : null, h("div", { className: "clx-pv-list" }, rows), later > 0 ? h("div", { className: "clx-muted clx-pv-later" }, fmt(t("sd.later"), { n: later, k: fmtK(laterTok) })) : null);
+        }
+        /** Ask the session's model about this context. Off until enabled; each send is one explicit call. */
+        const AZ_ASKS = ['az.q1', 'az.q2', 'az.q3', 'az.q4'];
+        function AnalyzeView({ data, t, sessionId, onJump, seqs, setSeqs }) {
+            const key = `dsh-context-lens:az:${sessionId}`;
+            const [enabled, setEnabledState] = useState(() => { try {
+                return sessionStorage.getItem(key) === "1";
+            }
+            catch {
+                return false;
+            } });
+            const setEnabled = (v) => { setEnabledState(v); try {
+                sessionStorage.setItem(key, v ? "1" : "0");
+            }
+            catch { } };
+            const [msgs, setMsgs] = useState([]);
+            const [input, setInput] = useState("");
+            const [inc, setInc] = useState({ system: false, tools: false });
+            const [prev, setPrev] = useState(null);
+            const [busy, setBusy] = useState(false);
+            const job = useRef(null);
+            const endRef = useRef(null);
+            const lang = /[一-鿿]/.test(t("nav.prompt")) ? "zh" : "en";
+            const include = { ...inc, seqs };
+            // the estimate costs nothing: it only measures what a send would carry
+            useEffect(() => {
+                let dead = false;
+                const id = setTimeout(() => {
+                    call("analyze-preview", { sessionId, include, question: input, history: msgs.filter((m) => !m.busy).map((m) => ({ role: m.role, text: m.text })) })
+                        .then((v) => { if (!dead)
+                        setPrev(v); }, () => { if (!dead)
+                        setPrev(null); });
+                }, 350);
+                return () => { dead = true; clearTimeout(id); };
+            }, [sessionId, inc.system, inc.tools, seqs.join(","), msgs.length, input.length > 0]);
+            useEffect(() => () => { if (job.current)
+                call("analyze-stop", { jobId: job.current }).catch(() => { }); }, []);
+            useEffect(() => { endRef.current?.scrollIntoView({ block: "nearest" }); }, [msgs]);
+            const patch = (id, v) => setMsgs((xs) => xs.map((m) => (m.id === id ? { ...m, ...v } : m)));
+            const send = async (q) => {
+                const question = (q ?? input).trim();
+                if (!question || busy)
+                    return;
+                const history = msgs.filter((m) => !m.busy && !m.error).map((m) => ({ role: m.role, text: m.text }));
+                const uid = `u${Date.now()}`;
+                const aid = `a${Date.now()}`;
+                setMsgs((xs) => [...xs, { id: uid, role: "user", text: question }, { id: aid, role: "assistant", text: "", busy: true }]);
+                setInput("");
+                setBusy(true);
+                try {
+                    const { jobId, inputTokens } = await call("analyze-start", { sessionId, question, history, include, lang });
+                    job.current = jobId;
+                    patch(aid, { inputTokens });
+                    for (;;) {
+                        await new Promise((r) => setTimeout(r, 450));
+                        if (job.current !== jobId)
+                            break;
+                        const v = await call("analyze-poll", { jobId });
+                        patch(aid, { text: v.text, reasoning: v.reasoning, usage: v.usage, error: v.error, busy: !v.done });
+                        if (v.done)
+                            break;
+                    }
+                }
+                catch (e) {
+                    patch(aid, { error: String(e?.message || e), busy: false });
+                }
+                finally {
+                    job.current = null;
+                    setBusy(false);
+                }
+            };
+            const stop = () => { if (job.current)
+                call("analyze-stop", { jobId: job.current }).catch(() => { }); };
+            if (!enabled) {
+                return h("div", { className: "clx-card clx-az-intro" }, h(CardHead, { t, icon: "gauge", title: t("az.title"), meta: prev?.model ? `${prev.model}` : null }), h("ul", null, h("li", null, t("az.i1")), h("li", null, t("az.i2")), h("li", null, t("az.i3")), prev?.tokens ? h("li", null, fmt(t("az.i4"), { k: fmtK(prev.tokens), m: prev.model || "" })) : null), prev && !prev.ready ? h("div", { className: "clx-err", style: { fontSize: 12 } }, t("az.noLlm")) : null, h("button", { className: "clx-chipbtn clx-az-go", disabled: !!prev && !prev.ready, onClick: () => setEnabled(true) }, t("az.enable")));
+            }
+            const tokens = prev?.tokens || 0;
+            const refs = (text) => [...new Set([...String(text || "").matchAll(/#(\d{1,6})/g)].map((m) => Number(m[1])))].filter((n) => (data.nodes || []).some((x) => x.seq === n)).slice(0, 8);
+            return h("div", { className: "clx-az" }, h("div", { className: "clx-card clx-az-bar" }, h("span", { className: "clx-pill" }, t("az.on")), prev?.model ? h("span", { className: "clx-muted" }, prev.model) : null, h("span", { className: "clx-muted" }, t("az.attach")), h("button", { className: `clx-chipbtn${inc.system ? " on" : ""}`, "aria-pressed": inc.system, onClick: () => setInc({ ...inc, system: !inc.system }) }, t("az.sys")), h("button", { className: `clx-chipbtn${inc.tools ? " on" : ""}`, "aria-pressed": inc.tools, onClick: () => setInc({ ...inc, tools: !inc.tools }) }, t("az.toolDesc")), seqs.map((q) => h("button", { key: q, className: "clx-chipbtn on", title: t("az.detach"), onClick: () => setSeqs(seqs.filter((x) => x !== q)) }, `#${q} ×`)), h("span", { className: "clx-az-tok clx-muted" }, tokens ? fmt(t("az.cost"), { k: fmtK(tokens) }) : ""), msgs.length ? h("button", { className: "clx-chipbtn", disabled: busy, onClick: () => setMsgs([]) }, t("az.clear")) : null, h("button", { className: "clx-chipbtn", disabled: busy, onClick: () => { setEnabled(false); setMsgs([]); } }, t("az.off"))), msgs.length === 0 ? h("div", { className: "clx-card" }, h("div", { className: "clx-muted", style: { fontSize: 12, marginBottom: 8 } }, t("az.hint")), h("div", { className: "clx-az-asks" }, AZ_ASKS.map((k) => h("button", { key: k, className: "clx-chipbtn", disabled: busy, onClick: () => send(t(k)) }, t(k))))) : null, msgs.map((m) => m.role === "user"
+                ? h("div", { key: m.id, className: "clx-az-user" }, m.text)
+                : h("div", { key: m.id, className: "clx-card clx-az-ans" }, m.reasoning ? h("details", { className: "clx-az-think", open: m.busy && !m.text }, h("summary", null, t("az.thinking")), h("div", null, m.reasoning)) : null, m.text ? h(RichText, { text: m.text, hint: "md", t, bare: true }) : m.busy ? h("div", { className: "clx-muted" }, t("az.working")) : null, m.error ? h("div", { className: "clx-err" }, fmt(t("failed"), { msg: m.error })) : null, !m.busy && refs(m.text).length ? h("div", { className: "clx-az-refs" }, h("span", { className: "clx-muted" }, t("az.refs")), refs(m.text).map((n) => h("button", { key: n, className: "clx-chipbtn", onClick: () => onJump(n) }, `#${n}`))) : null, m.usage ? h("div", { className: "clx-muted clx-az-use" }, fmt(t("az.usage"), { i: fmtK((m.usage.inputTokens || 0) + (m.usage.cacheReadTokens || 0)), o: fmtK(m.usage.outputTokens || 0) })) : null)), h("div", { ref: endRef }), h("div", { className: "clx-card clx-az-input" }, h("textarea", {
+                value: input, rows: 2, placeholder: t("az.placeholder"), onChange: (e) => setInput(e.target.value),
+                onKeyDown: (e) => { if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
+                    e.preventDefault();
+                    send();
+                } },
+            }), busy ? h("button", { className: "clx-chipbtn", onClick: stop }, t("az.stop"))
+                : h("button", { className: "clx-chipbtn on", disabled: !input.trim(), onClick: () => send() }, t("az.send"))));
+        }
+        /** Plain-language findings: what is making the context heavy, and what to do about it. */
+        function diagnose(data, s, series, t) {
+            const out = [];
+            const used = s.used || 0;
+            if (!used)
+                return out;
+            const comp = s.comp;
+            const tok = (k) => s.byCat[k]?.tokens || 0;
+            // runway to the compaction trigger, from the recent growth
+            if (comp?.auto && comp.thresholdTokens && series.length >= 3) {
+                const recent = series.slice(-6);
+                const g = (recent[recent.length - 1].comp.total - recent[0].comp.total) / (recent.length - 1);
+                const left = comp.thresholdTokens - used;
+                if (g > 50 && left > 0) {
+                    const n = Math.ceil(left / g);
+                    if (n <= 50)
+                        out.push({ id: "runway", level: n <= 5 ? "warn" : "info", text: fmt(t("dg.runway"), { g: fmtK(g), n, r: fmtK(left) }), nav: "overview" });
+                }
+                else if (left <= 0)
+                    out.push({ id: "runway", level: "warn", text: t("dg.over"), nav: "overview" });
+            }
+            // what is there before any work happens
+            const fixed = tok("system") + tok("systemTools") + tok("mcpTools") + tok("skills") + tok("memory");
+            if (fixed / used >= 0.25) {
+                out.push({ id: "fixed", level: fixed / used >= 0.4 ? "warn" : "info", text: fmt(t("dg.fixed"), { k: fmtK(fixed), p: pct(fixed, used, 0), tk: fmtK(tok("systemTools") + tok("mcpTools")), sk: fmtK(tok("skills") + tok("memory")) }), nav: "tools" });
+            }
+            // tool results dominate
+            const res = tok("toolResults");
+            if (res / used >= 0.45) {
+                const top = [...(data.toolStats || [])].sort((a, b) => b.resultTokens - a.resultTokens)[0];
+                out.push({ id: "results", level: "warn", text: fmt(t("dg.results"), { p: pct(res, used, 0), name: top?.name || "—", k: fmtK(top?.resultTokens || 0) }), nav: "tools" });
+            }
+            // one message that is a big share
+            const big = [...(data.nodes || [])].sort((a, b) => b.tokensCal - a.tokensCal)[0];
+            if (big && big.tokensCal >= 2000 && big.tokensCal / used >= 0.1) {
+                out.push({ id: "big", level: big.tokensCal / used >= 0.2 ? "warn" : "info", text: fmt(t("dg.big"), { seq: big.seq, p: pct(big.tokensCal, used, 0), k: fmtK(big.tokensCal), what: (big.tool ? big.tool + " " : "") + (big.preview || "").slice(0, 60) }), seq: big.seq });
+            }
+            // the same call made again and again
+            const seen = new Map();
+            for (const x of data.invocations || []) {
+                const key = x.name + " " + (x.args || "");
+                seen.set(key, (seen.get(key) || 0) + 1);
+            }
+            const rep = [...seen.entries()].filter(([, n]) => n >= 3).sort((a, b) => b[1] - a[1])[0];
+            if (rep)
+                out.push({ id: "repeat", level: "warn", text: fmt(t("dg.repeat"), { n: rep[1], what: rep[0].slice(0, 70) }), nav: "tools" });
+            // tool definitions nobody called
+            const called = new Set((data.toolStats || []).map((x) => x.name));
+            const idle = (data.tools || []).filter((x) => !called.has(x.name));
+            const idleTok = idle.reduce((a, x) => a + (x.tokensCal || 0), 0);
+            if (idle.length >= 3 && idleTok >= 1500)
+                out.push({ id: "idle", level: "info", text: fmt(t("dg.idle"), { n: idle.length, k: fmtK(idleTok) }), nav: "tools" });
+            // failing calls
+            const errs = (data.invocations || []).filter((x) => x.isError);
+            if (errs.length)
+                out.push({ id: "errors", level: "warn", text: fmt(t("dg.errors"), { n: errs.length, names: [...new Set(errs.map((x) => x.name))].slice(0, 3).join(", ") }), nav: "tools" });
+            // cache
+            const u = data.measured?.lastRequest;
+            if (u) {
+                const inTot = (u.inputTokens || 0) + (u.cacheReadTokens || 0) + (u.cacheWriteTokens || 0);
+                if (inTot >= 4000 && (u.cacheReadTokens || 0) / inTot < 0.5)
+                    out.push({ id: "cache", level: "info", text: fmt(t("dg.cache"), { p: pct(u.cacheReadTokens || 0, inTot, 0) }), nav: "overview" });
+            }
+            return out;
+        }
+        function DiagnosisCard({ data, s, series, t, onJump, onNav }) {
+            const items = useMemo(() => diagnose(data, s, series, t), [data, s, series, t]);
+            return h("div", { className: "clx-card clx-diag span2" }, h(CardHead, { t, icon: "gauge", title: t("dg.title"), meta: items.length ? fmt(t("dg.count"), { n: items.length }) : null }), items.length
+                ? items.map((x) => h("div", { key: x.id, className: `clx-diag-row ${x.level}`, role: x.seq !== undefined || x.nav !== "overview" ? "button" : undefined,
+                    onClick: () => (x.seq !== undefined ? onJump(x.seq) : x.nav !== "overview" ? onNav(x.nav) : undefined) }, h("i", { className: "clx-dot" }), h("span", { className: "tx" }, x.text), x.seq !== undefined || x.nav !== "overview" ? h("span", { className: "go" }, `${t("dg.view")} ›`) : null))
+                : h("div", { className: "clx-muted clx-tempty" }, t("dg.ok")));
+        }
+        function Overview({ data, flow, t, onJump, onShowCat, onNav, sessionId, liveKey, series, diff, onSel }) {
             const [pick, setPick] = useState(null);
             const [hov, setHov] = useState(null);
             const s = summarize(data);
             const m = data.measured || {};
             const usage = m.lastRequest;
             const cats = CATS.map((k) => ({ key: k, label: t(`c.${k}`), color: CAT_COLOR[k], ...(s.byCat[k] || { tokens: 0, raw: 0, count: 0 }) }));
-            const shown = cats.filter((c) => c.tokens > 0 || c.count > 0).sort((a, b) => b.tokens - a.tokens);
-            const catMax = Math.max(1, ...shown.map((c) => c.tokens));
             const comp = s.comp;
             const inputTotal = usage ? (usage.inputTokens || 0) + (usage.cacheReadTokens || 0) + (usage.cacheWriteTokens || 0) : 0;
             const warn = comp && comp.thresholdTokens ? (s.used >= comp.thresholdTokens ? 2 : s.used >= comp.thresholdTokens * 0.85 ? 1 : 0) : 0;
             const usedAnim = useCountUp(s.used);
-            const side = (k, v, cls = '') => h('div', { className: 'clx-hero-kv' }, h('span', { className: 'k' }, k), h('span', { className: `v${cls ? ` ${cls}` : ''}` }, v));
-            return h('div', { className: 'clx-ov' }, h('div', { className: 'clx-card clx-hero-card' }, h('div', { className: 'clx-hero' }, h(Ring, { ratio: s.win ? usedAnim / s.win : 0, size: 76, stroke: 8, warn }), h('div', { className: 'clx-hero-main' }, h('div', null, h('span', { className: 'clx-hero-pct' }, pct(usedAnim, s.win)), h('span', { className: 'clx-sub' }, ` ${t('pop.used')}`)), h('div', { className: 'clx-sub', style: { fontVariantNumeric: 'tabular-nums' } }, `${fmtInt(Math.round(usedAnim))} / ${fmtInt(s.win)} tokens`), h('div', { className: 'clx-muted', style: { fontSize: 12 } }, t(`pop.src.${m.usedSource || 'estimate'}`))), h('div', { className: 'clx-hero-side' }, side(t('ov.model'), [data.model, data.reasoningEffort].filter(Boolean).join(' · ') || '—'), side(t('ov.maxOut'), fmtK(data.maxTokens)), comp && comp.thresholdTokens ? side(t('ov.threshold'), `${fmtK(comp.thresholdTokens)} · ${comp.engine || ''}`) : null, comp && comp.auto && comp.thresholdTokens ? side(t('ov.remaining'), comp.remainingTokens > 0 ? fmtK(comp.remainingTokens) : t('pop.over'), comp.remainingTokens > 0 ? '' : 'clx-warn') : null)), h(HeroBar, {
-                cats, s, t, active: hov || pick, pick,
-                onHover: setHov,
-                onPick: (k) => setPick(pick === k ? null : k),
-            })), h('div', { className: 'clx-card' }, h('div', { className: 'clx-card-head' }, h('h4', null, t('ov.categories')), h('span', { className: 'clx-muted' }, t('ov.cat.hint'))), h('div', { className: 'clx-catrow head' }, h('span', null, t('ov.col.cat')), h('span', null, ''), h('span', null, t('ov.col.tokens')), h('span', null, t('ov.col.used')), h('span', null, t('ov.col.count'))), shown.map((c, i) => {
-                const open = openCat === c.key;
-                return h('div', { key: c.key, id: `clx-cat-${c.key}`, className: `clx-catblock${open ? ' open' : ''}${(hov || pick) === c.key ? ' hl' : ''}`, style: { '--i': i, '--cat': c.color } }, h('div', {
-                    className: 'clx-catrow', role: 'button', tabIndex: 0, 'aria-expanded': open,
-                    title: `${CAT_EN[c.key]} · ${t('ov.col.window')} ${pct(c.tokens, s.win)} · ${t('ov.col.raw')} ${fmtInt(c.raw)}`,
-                    onClick: () => setOpenCat(open ? null : c.key),
-                    onKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        setOpenCat(open ? null : c.key);
-                    } },
-                }, h('span', { className: 'clx-catcell' }, h(Chevron, { open }), h('i', { className: 'clx-dot', style: { background: c.color } }), h(CatName, { t, k: c.key })), h('span', { className: 'clx-catbar' }, h('span', { style: { width: `${Math.max(1, c.tokens / catMax * 100)}%`, background: c.color } })), h('span', { className: 'num' }, fmtK(c.tokens)), h('span', { className: 'num clx-muted' }, pct(c.tokens, s.used)), h('span', { className: 'num clx-muted' }, c.count || '')), open ? h(CategoryDetail, { k: c.key, data, t, sessionId, onShowAll: onShowCat }) : null);
-            }), h('div', { className: 'clx-catrow static', style: { '--i': shown.length } }, h('span', { className: 'clx-catcell' }, h('span', { className: 'clx-caret' }), h('i', { className: 'clx-dot clx-hatch' }), h(CatName, { t, k: 'buffer' })), h('span', { className: 'clx-muted', style: { fontSize: 11.5 } }, pct(s.buffer, s.win)), h('span', { className: 'num' }, fmtK(s.buffer)), h('span', null), h('span', null)), h('div', { className: 'clx-catrow static', style: { '--i': shown.length } }, h('span', { className: 'clx-catcell' }, h('span', { className: 'clx-caret' }), h('i', { className: 'clx-dot free' }), h(CatName, { t, k: 'free' })), h('span', { className: 'clx-muted', style: { fontSize: 11.5 } }, pct(s.free, s.win)), h('span', { className: 'num' }, fmtK(s.free)), h('span', null), h('span', null))), h(Trend, { data, t, onJump }), comp ? h('div', { className: 'clx-card' }, h('h4', null, t('ov.compaction')), h('div', { className: 'clx-kv' }, kv(t('ov.engine'), comp.engine || '—'), kv(t('ov.auto'), comp.auto ? t('ov.on') : t('ov.off')), kv(t('ov.ratio'), typeof comp.thresholdRatio === 'number' ? `${Math.round(comp.thresholdRatio * 100)}%` : '—'), comp.headroomTokens !== undefined ? kv(t('ov.headroom'), fmtInt(comp.headroomTokens)) : null, kv(t('ov.threshold'), fmtInt(comp.thresholdTokens)), comp.emergencyTokens ? kv(t('ov.emergency'), `${fmtInt(comp.emergencyTokens)} (${Math.round(comp.emergencyRatio * 100)}%)`) : null, kv(t('ov.buffer'), fmtInt(comp.bufferTokens)), kv(t('ov.remaining'), fmtInt(comp.remainingTokens)), comp.retainBudget !== undefined ? kv(t('ov.retain'), comp.retainTokens !== undefined ? fmtInt(comp.retainTokens) : `${Math.round((comp.retainRatio || 0) * 100)}% ≈ ${fmtK(comp.retainBudget)}`) : null, comp.summaryMaxTokens ? kv(t('ov.summaryMax'), fmtInt(comp.summaryMaxTokens)) : null, comp.override ? kv(t('ov.override'), `${comp.override.provider}/${comp.override.model}`) : null, kv(t('ov.compactions'), String((data.compactionEvents || []).length))), h('div', { className: 'clx-muted', style: { fontSize: 11.5, marginTop: 8 } }, comp.engine === 'billion-context' ? `${t('ov.biliNote')}${comp.defaults ? ` ${t('ov.biliDefaults')}` : ''}` : t('ov.formula'))) : null, h('div', { className: 'clx-card' }, h(React.Fragment, null, h('h4', null, t('ov.details')), h('h5', { className: 'clx-subh' }, t('ov.measure')), h('div', { className: 'clx-kv' }, kv(t('ov.used'), fmtInt(m.totalTokens)), kv(t('ov.usedSource'), t(`pop.src.${m.usedSource || 'estimate'}`)), kv(t('ov.rawTotal'), fmtInt(m.rawTotalTokens)), m.rawTotalTokens > m.totalTokens ? kv(t('ov.saved'), `${fmtInt(m.rawTotalTokens - m.totalTokens)} (${pct(m.rawTotalTokens - m.totalTokens, m.rawTotalTokens, 0)})`) : null, kv(t('ov.baseline'), t(`ov.baseline.${m.baselineKind || 'none'}`)), kv(t('ov.baselineTokens'), fmtInt(m.baselineTokens)), kv(t('ov.delta'), fmtInt(m.surfaceDeltaTokens)), kv(t('ov.estSum'), fmtInt(m.estimatedSum)), kv(t('ov.factor'), `×${(m.factor || 1).toFixed(3)}`), kv(t('ov.window'), fmtInt(data.contextWindow)), kv(t('ov.events'), `${fmtInt(data.eventCount)} / ${fmtInt((data.nodes || []).length)}`)), h('div', { className: 'clx-muted', style: { fontSize: 11.5, marginTop: 8 } }, t('ov.calNote')), usage ? h(React.Fragment, null, h('h5', { className: 'clx-subh sep' }, fmt(t('ov.lastReq'), { seq: usage.seq, time: fmtTime(usage.time) })), h('div', { className: 'clx-kv' }, kv(t('ov.uncached'), fmtInt(usage.inputTokens)), kv(t('ov.cacheRead'), fmtInt(usage.cacheReadTokens)), kv(t('ov.cacheWrite'), fmtInt(usage.cacheWriteTokens)), kv(t('ov.output'), fmtInt(usage.outputTokens)), kv(t('ov.hit'), pct(usage.cacheReadTokens || 0, inputTotal)))) : null, h('h5', { className: 'clx-subh sep' }, t('ov.types')), h('div', { className: 'clx-kv' }, Object.entries(data.typeCounts || {}).sort((a, b) => b[1] - a[1]).map(([k, v]) => kv(k, fmtInt(v)))))));
+            const turnCount = (flow?.turns || []).length || new Set((data.nodes || []).map((n) => n.turn).filter((x) => x !== undefined)).size;
+            const stepCount = flow ? (flow.steps || []).length + (flow.stepsTruncated || 0) : null;
+            const calls = (data.invocations || []).length;
+            const errs = (data.invocations || []).filter((x) => x.isError).length;
+            const g = flow?.goal;
+            const sView = diff && !diff.last
+                ? { ...s, used: diff.cur.comp.total, byCat: Object.fromEntries(CATS.map((k) => [k, { tokens: diff.cur.comp.by[k] || 0, count: 0 }])) }
+                : s;
+            return h('div', { className: 'clx-dash' }, h('div', { className: 'clx-card clx-hero-card span2' }, h(CardHead, { t, icon: 'stats', title: t('ov.statsTitle'), meta: [data.model, data.reasoningEffort].filter(Boolean).join(' · ') }), h(LiveLine, { flow, t }), h('div', { className: 'clx-hero' }, h(Ring, { ratio: s.win ? usedAnim / s.win : 0, size: 58, stroke: 7, warn }), h('div', { className: 'clx-hero-main' }, h('div', null, h('span', { className: 'clx-hero-pct' }, fmtK(usedAnim)), h('span', { className: 'clx-sub' }, ` / ${fmtK(s.win)} · ${pct(usedAnim, s.win)}`)), h('div', { className: 'clx-muted', style: { fontSize: 11.5 } }, t(`pop.src.${m.usedSource || 'estimate'}`))), h('div', { className: 'clx-stats' }, h(Stat, { k: t('ov.stat.turns'), v: fmtInt(turnCount) }), h(Stat, { k: t('ov.stat.steps'), v: stepCount === null ? '—' : fmtInt(stepCount) }), h(Stat, { k: t('ov.stat.calls'), v: fmtInt(calls), sub: errs ? ` ⚠${errs}` : undefined, tone: errs ? 'warn' : '' }), usage ? h(Stat, { k: t('ov.stat.hit'), v: pct(usage.cacheReadTokens || 0, inputTotal, 0) }) : null, comp && comp.auto && comp.thresholdTokens
+                ? h(Stat, { k: t('ov.stat.left'), v: comp.remainingTokens > 0 ? fmtK(comp.remainingTokens) : t('pop.over'), tone: warn ? 'warn' : '' })
+                : null)), h(HeroBar, { cats, s, t, active: hov || pick, pick, onHover: setHov, onPick: (k) => setPick(pick === k ? null : k) }), g ? h('div', { className: 'clx-goalline' }, h('b', null, t('flow.goal')), h('span', { className: 'clx-pill' }, `${t(`flow.phase.${g.phase}`) || g.phase} · ${g.roundsStarted ?? 0}/${g.maxGoalRounds ?? '∞'}`), h('span', { className: 'txt' }, g.objective)) : null), h(DiagnosisCard, { data, s, series, t, onJump, onNav }), h(CompositionCard, { data, s: sView, t, onShowCat, stepLabel: diff && !diff.last ? fmt(t('flow.where'), { t: diff.cur.st.turn, s: diff.cur.st.step }) : null }), h(StepTrend, { data, flow, t, onJump, series, pickIdx: diff ? diff.idx : 0, onSel }), h(ToolsPeek, { data, t, onNav }), h(MessagesPeek, { data, t, onJump, onNav }), h(SourcesPeek, { sessionId, liveKey, bd: data, t, onNav }), comp ? h(CompactionCard, { data, comp, s, t }) : null, h('div', { className: 'span2' }, h(MeasureCard, { data, s, t })), h('section', { className: 'clx-card span2 clx-flowsec' }, h(CardHead, { t, icon: 'flow', title: t('nav.flow'), meta: flow?.live ? t(`flow.live.${flow.live.phase || 'idle'}`) : null }), h(FlowTab, { sessionId, liveKey, bd: data, t, onJump })));
         }
         function kv(k, v, title = undefined) {
             return h('div', { key: k, title: title || (typeof v === 'string' ? v : undefined) }, h('div', { className: 'k' }, k), h('div', { className: 'v' }, v ?? '—'));
@@ -1586,22 +2374,9 @@ part({
                 m.set(x, (m.get(x) || 0) + 1);
             return [...m].map(([k, v]) => (v > 1 ? `${k}×${v}` : k)).join(', ');
         }
-        function catLabel(t, n) {
-            return t(`c.${n.category}`);
-        }
         /** The one expand affordance used everywhere: a chevron that turns down when open. */
         function Chevron({ open, size = 12 }) {
             return h('span', { className: `clx-chev${open ? ' open' : ''}`, 'aria-hidden': true }, h('svg', { width: size, height: size, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2.2, strokeLinecap: 'round', strokeLinejoin: 'round' }, h('path', { d: 'M9 6l6 6-6 6' })));
-        }
-        function NodeRowSimple({ n, t, max, onClick, open }) {
-            const color = CAT_COLOR[n.category] || CAT_COLOR.other;
-            return h('div', {
-                className: `clx-node-row${open ? ' open' : ''}`, onClick, role: 'button', tabIndex: 0, 'aria-expanded': !!open,
-                onKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    onClick?.();
-                } },
-            }, h(Chevron, { open }), h('span', { className: 'seq' }, `#${n.seq}`), h('div', { className: 'main' }, h('div', { className: 'line1' }, h('span', { className: 'clx-tag' }, h('i', { className: 'clx-dot', style: { background: color } }), catLabel(t, n)), n.tool ? h('span', null, `· ${n.callSeq !== undefined ? fmt(t('pair.of'), { name: n.tool, seq: n.callSeq }) : n.tool}`) : null, n.tools && n.tools.length ? h('span', { style: { overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } }, `· ${fmt(t('pair.calls'), { names: groupNames(n.tools) })}`) : null, n.source && n.source !== 'user' && n.source !== 'model' && n.category !== 'toolResults' ? h('span', null, `· ${n.source}`) : null, n.time ? h('span', { style: { marginLeft: 'auto' } }, fmtTime(n.time)) : null), h('div', { className: 'prev' }, n.preview || h('span', { className: 'clx-muted' }, '—')), h('div', { className: 'clx-minibar' }, h('span', { style: { width: `${Math.max(1, n.tokensCal / max * 100)}%`, background: color } }))), h('span', { className: 'tok' }, fmtK(n.tokensCal)));
         }
         // ================================================================== rich content
         // dsh's own renderers (the ones 轨迹 uses), with a plain fallback.
@@ -1830,21 +2605,55 @@ part({
                 return h('div', { key, className: `clx-node${open ? ' open' : ''}`, style: { '--cat': CAT_COLOR.toolResults } }, h(InvocationRow, { x, t, max, open, onClick: () => setOpenKey(open ? null : key) }), open ? h(InvocationDetail, { sessionId, x, t, ctx, cwd }) : null);
             }));
         }
-        function Messages({ data, t, focus, sessionId, preset, ctx, cwd }) {
+        /** A message on one line: what kind it is, what it says, what it costs. A call carries its results. */
+        function MsgRow({ n, t, open, onClick, invs, merged }) {
+            // a message that made calls reads as the call, whatever else it says
+            const kind = invs && invs.length ? 'toolCalls' : n.category;
+            const color = CAT_COLOR[kind] || CAT_COLOR.other;
+            let text = n.preview || '';
+            let extra = null;
+            let tok = n.tokensCal;
+            if (invs && invs.length) {
+                const first = invs[0];
+                text = h(React.Fragment, null, h('b', { className: 'clx-mrow-tool' }, first.name), ` ${first.args || ''}`, invs.length > 1 ? h('span', { className: 'clx-muted' }, `  +${groupNames(invs.slice(1).map((x) => x.name))}`) : null);
+                if (merged) {
+                    const res = invs.reduce((s, x) => s + (x.resultTokens || 0), 0);
+                    const errs = invs.filter((x) => x.isError).length;
+                    const pending = invs.some((x) => x.resultSeq === undefined);
+                    tok += res;
+                    extra = h('span', { className: `clx-mrow-res${errs ? ' err' : ''}`, title: `${t('pair.call')} ${fmtInt(n.tokensCal)} + ${t('pair.result')} ${fmtInt(res)}` }, h('i', { className: 'clx-dot', style: { background: CAT_COLOR.toolResults } }), errs ? `⚠ ${t('pair.error')}` : pending ? t('pair.pending') : fmtK(res));
+                }
+            }
+            else if (n.category === 'toolResults' && n.tool) {
+                text = h(React.Fragment, null, h('b', { className: 'clx-mrow-tool' }, n.tool), ` ${n.preview || ''}`);
+            }
+            return h('div', {
+                className: `clx-mrow${open ? ' open' : ''}`, onClick, role: 'button', tabIndex: 0, 'aria-expanded': !!open,
+                title: `#${n.seq}${n.time ? ` · ${new Date(n.time).toLocaleString()}` : ''}`,
+                onKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    onClick?.();
+                } },
+            }, h(Chevron, { open, size: 10 }), h('span', { className: 'clx-mrow-kind', style: { '--cat': color } }, t(`k.${kind}`)), h('span', { className: 'clx-mrow-text' }, text || h('span', { className: 'clx-muted' }, '—')), extra, h('span', { className: 'clx-mrow-tok' }, fmtK(tok)));
+        }
+        function Messages({ data, flow, t, focus, sessionId, preset, ctx, cwd, diff, stepOnly }) {
             const [query, setQuery] = useState('');
             const [sort, setSort] = useState('order');
-            const [cats, setCats] = useState(() => new Set());
-            const [limit, setLimit] = useState(200);
+            const [cat, setCat] = useState('');
+            const [limit, setLimit] = useState(300);
             const [openSeq, setOpenSeq] = useState(focus ?? null);
-            useEffect(() => { if (focus !== undefined && focus !== null)
-                setOpenSeq(focus); }, [focus]);
+            const [openTurns, setOpenTurns] = useState({});
+            const fromJump = useRef(false);
+            useEffect(() => { if (focus !== undefined && focus !== null) {
+                fromJump.current = true;
+                setOpenSeq(focus);
+            } }, [focus]);
             useEffect(() => {
                 if (!preset)
                     return;
-                setCats(new Set([preset.cat]));
+                setCat(preset.cat);
                 setSort('size');
                 setQuery('');
-                requestAnimationFrame(() => document.querySelector('.clx-pane')?.scrollIntoView({ block: 'start' }));
             }, [preset]);
             const nodes = data.nodes || [];
             const present = useMemo(() => {
@@ -1853,36 +2662,148 @@ part({
                     m[n.category] = (m[n.category] || 0) + n.tokensCal;
                 return m;
             }, [nodes]);
+            // calls by the node that made them, so a call row can carry its results
+            const invsBySeq = useMemo(() => {
+                const m = new Map();
+                for (const x of data.invocations || []) {
+                    if (x.callSeq === undefined)
+                        continue;
+                    if (!m.has(x.callSeq))
+                        m.set(x.callSeq, []);
+                    m.get(x.callSeq).push(x);
+                }
+                return m;
+            }, [data.invocations]);
+            const stepMode = !!diff && !diff.last;
+            const inStep = (n) => !!diff && n.seq >= diff.prevCut && n.seq < diff.cut;
+            const stepFilter = !!stepOnly && !!diff;
+            const filtering = !!query.trim() || !!cat || stepFilter;
             const list = useMemo(() => {
                 const q = query.trim().toLowerCase();
-                const inCat = (n) => cats.has(n.category) || (n.split && Object.entries(n.split).some(([k, v]) => v > 0 && cats.has(k)));
-                let out = nodes.filter((n) => (cats.size === 0 || inCat(n))
+                const inCat = (n) => n.category === cat || (n.split && (n.split[cat] || 0) > 0);
+                let out = nodes.filter((n) => (!cat || inCat(n)) && (!stepFilter || inStep(n))
                     && (!q || (n.preview || '').toLowerCase().includes(q) || (n.tool || '').toLowerCase().includes(q)
                         || (n.tools || []).some((x) => x.toLowerCase().includes(q)) || String(n.seq) === q));
                 if (sort === 'size')
                     out = [...out].sort((a, b) => b.tokensCal - a.tokensCal);
                 return out;
-            }, [nodes, query, sort, cats]);
+            }, [nodes, query, sort, cat, stepFilter, diff?.prevCut, diff?.cut]);
+            // in order, a result whose call is listed folds into the call's row
+            const shownSet = useMemo(() => new Set(list.map((n) => n.seq)), [list]);
+            const rows = useMemo(() => (sort === 'order'
+                ? list.filter((n) => !(n.category === 'toolResults' && n.callSeq !== undefined && shownSet.has(n.callSeq) && invsBySeq.has(n.callSeq)))
+                : list), [list, sort, shownSet, invsBySeq]);
+            const total = list.reduce((s, n) => s + n.tokensCal, 0);
+            // turn → step grouping (order only)
+            const stepsByTurn = useMemo(() => {
+                const m = new Map();
+                for (const st of flow?.steps || []) {
+                    if (!m.has(st.turn))
+                        m.set(st.turn, []);
+                    m.get(st.turn).push(st);
+                }
+                return m;
+            }, [flow]);
+            const turnInfo = useMemo(() => new Map((flow?.turns || []).map((x) => [x.turn, x])), [flow]);
+            const stepOf = (n) => {
+                const ss = stepsByTurn.get(n.turn);
+                if (!ss)
+                    return null;
+                let hit = null;
+                for (const st of ss)
+                    if (st.startSeq <= n.seq)
+                        hit = st;
+                return hit;
+            };
+            const lastTurn = useMemo(() => {
+                let x;
+                for (const n of nodes)
+                    if (n.turn !== undefined)
+                        x = n.turn;
+                return x;
+            }, [nodes]);
+            const focusTurn = useMemo(() => {
+                const n = openSeq !== null ? nodes.find((y) => y.seq === openSeq) : null;
+                if (!n)
+                    return undefined;
+                if (n.category === 'toolResults' && n.callSeq !== undefined)
+                    return nodes.find((y) => y.seq === n.callSeq)?.turn ?? n.turn;
+                return n.turn;
+            }, [openSeq, nodes]);
+            const keyOf = (turn) => (turn === undefined ? 'pre' : String(turn));
+            const isOpen = (k) => openTurns[k] ?? (filtering || k === keyOf(lastTurn) || k === keyOf(focusTurn));
+            const from = sort === 'order' ? Math.max(0, rows.length - limit) : 0;
+            const visible = sort === 'order' ? rows.slice(from) : rows.slice(0, limit);
+            // a jump opens its row, and a result jump lands on the call that carries it
             useEffect(() => {
                 if (openSeq === null || openSeq === undefined)
                     return;
-                const idx = list.findIndex((n) => n.seq === openSeq);
-                if (idx >= limit)
+                const n = nodes.find((y) => y.seq === openSeq);
+                if (n && sort === 'order' && n.category === 'toolResults' && n.callSeq !== undefined && invsBySeq.has(n.callSeq) && shownSet.has(n.callSeq)) {
+                    setOpenSeq(n.callSeq);
+                    return;
+                }
+                const idx = rows.findIndex((y) => y.seq === openSeq);
+                if (sort === 'order' && idx >= 0 && idx < rows.length - limit)
+                    setLimit(rows.length - idx + 20);
+                else if (sort !== 'order' && idx >= limit)
                     setLimit(idx + 50);
-                requestAnimationFrame(() => document.getElementById(`clx-node-${openSeq}`)?.scrollIntoView({ block: 'center' }));
+                if (!fromJump.current)
+                    return;
+                fromJump.current = false;
+                requestAnimationFrame(() => requestAnimationFrame(() => document.getElementById(`clx-node-${openSeq}`)?.scrollIntoView({ block: 'center' })));
             }, [openSeq]);
-            const max = useMemo(() => Math.max(1, ...nodes.map((n) => n.tokensCal)), [nodes]);
-            const shownSeqs = useMemo(() => new Set(list.slice(0, limit).map((n) => n.seq)), [list, limit]);
-            const total = list.reduce((s, n) => s + n.tokensCal, 0);
-            const toggle = (k) => setCats((prev) => {
-                const next = new Set(prev);
-                if (next.has(k))
-                    next.delete(k);
-                else
-                    next.add(k);
-                return next;
-            });
-            return h(React.Fragment, null, h('div', { className: 'clx-msgtools' }, h('input', { value: query, placeholder: t('msg.search'), onChange: (e) => setQuery(e.target.value) }), h('button', { className: 'clx-chipbtn', 'aria-pressed': sort === 'order', onClick: () => setSort('order') }, t('msg.sort.order')), h('button', { className: 'clx-chipbtn', 'aria-pressed': sort === 'size', onClick: () => setSort('size') }, t('msg.sort.size'))), h('div', { className: 'clx-chips' }, h('button', { className: 'clx-chip', 'aria-pressed': cats.size === 0, onClick: () => setCats(new Set()) }, t('msg.all')), CATS.filter((k) => present[k]).map((k) => h('button', { key: k, className: 'clx-chip', 'aria-pressed': cats.has(k), onClick: () => toggle(k) }, h('i', { className: 'clx-dot', style: { background: CAT_COLOR[k] } }), `${t(`c.${k}`)} ${fmtK(present[k])}`))), h('div', { className: 'clx-muted', style: { fontSize: 12, marginBottom: 4 } }, fmt(t('msg.count'), { n: list.length, t: fmtK(total) }), data.nodesTruncated ? ` · ${fmt(t('msg.trunc'), { n: data.nodesTruncated })}` : ''), list.slice(0, limit).map((n, i) => h('div', { key: n.seq, id: `clx-node-${n.seq}`, className: `clx-node${openSeq === n.seq ? ' open' : ''}${sort === 'order' && n.callSeq !== undefined && shownSeqs.has(n.callSeq) ? ' paired' : ''}`, style: { '--cat': CAT_COLOR[n.category] || CAT_COLOR.other, '--i': Math.min(i, 24) } }, h(NodeRowSimple, { n, t, max, open: openSeq === n.seq, onClick: () => setOpenSeq(openSeq === n.seq ? null : n.seq) }), openSeq === n.seq ? h(NodeDetail, { sessionId, seq: n.seq, t, ctx, cwd }) : null)), list.length > limit ? h('button', { className: 'clx-chipbtn', style: { marginTop: 8 }, onClick: () => setLimit(limit + 200) }, fmt(t('msg.more'), { n: Math.min(200, list.length - limit) })) : null);
+            const rowEl = (n, i) => {
+                const open = openSeq === n.seq;
+                const invs = invsBySeq.get(n.seq);
+                return h('div', { key: n.seq, id: `clx-node-${n.seq}`, className: `clx-mnode${open ? ' open' : ''}${diff && inStep(n) && !stepFilter ? ' instep' : ''}${stepMode && diff && n.seq >= diff.cut ? ' later' : ''}`, style: { '--cat': CAT_COLOR[invs ? 'toolCalls' : n.category] || CAT_COLOR.other } }, h(MsgRow, { n, t, open, invs, merged: sort === 'order', onClick: () => setOpenSeq(open ? null : n.seq) }), open ? h('div', { className: 'clx-mopen' }, h(NodeDetail, { sessionId, seq: n.seq, t, ctx, cwd }), h('button', { className: 'clx-mopen-close', onClick: () => { setOpenSeq(null); requestAnimationFrame(() => { const el = document.getElementById(`clx-node-${n.seq}`); if (el && el.getBoundingClientRect().top < 60)
+                        el.scrollIntoView({ block: 'center' }); }); } }, t('msg.collapse'))) : null);
+            };
+            let body;
+            if (sort !== 'order') {
+                body = h('div', { className: 'clx-mlist' }, visible.map(rowEl));
+            }
+            else {
+                // consecutive runs of one turn, then of one step inside it
+                const groups = [];
+                for (const n of visible) {
+                    const k = keyOf(n.turn);
+                    let g = groups[groups.length - 1];
+                    if (!g || g.key !== k)
+                        groups.push(g = { key: k, turn: n.turn, items: [], tok: 0 });
+                    g.items.push(n);
+                    g.tok += n.tokensCal + (invsBySeq.get(n.seq) || []).reduce((s, x) => s + (x.resultTokens || 0), 0);
+                }
+                body = h('div', { className: 'clx-mlist' }, groups.map((g, gi) => {
+                    const opened = isOpen(g.key);
+                    const tu = g.turn !== undefined ? turnInfo.get(g.turn) || {} : {};
+                    const ss = g.turn !== undefined ? stepsByTurn.get(g.turn) || [] : [];
+                    const children = [];
+                    if (opened) {
+                        let curStep;
+                        for (const n of g.items) {
+                            const st = stepOf(n);
+                            if (st && st !== curStep) {
+                                curStep = st;
+                                children.push(h('div', { key: `s${st.startSeq}`, className: 'clx-mstep' }, h('span', { className: 'n' }, fmt(t('msg.step'), { n: st.step })), st.tools.length ? h('span', { className: 'tools' }, groupNames(st.tools)) : h('span', { className: 'tools clx-muted' }, st.stages.includes('assistant') ? t('flow.textOnly') : ''), st.errors ? h('span', { className: 'clx-err' }, `⚠${st.errors}`) : null, st.promptTokens ? h('span', { className: 'ctx', title: t('st.ctx') }, fmtK(st.promptTokens)) : null));
+                            }
+                            children.push(rowEl(n, 0));
+                        }
+                    }
+                    return h('section', { key: `${g.key}-${gi}`, className: `clx-mturn${opened ? ' open' : ''}` }, h('div', {
+                        className: 'clx-mturn-head', role: 'button', tabIndex: 0, 'aria-expanded': opened,
+                        onClick: () => setOpenTurns({ ...openTurns, [g.key]: !opened }),
+                        onKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            setOpenTurns({ ...openTurns, [g.key]: !opened });
+                        } },
+                    }, h(Chevron, { open: opened }), h('b', null, g.turn === undefined ? t('msg.pre') : fmt(t('msg.turn'), { n: g.turn })), h('span', { className: 'clx-mturn-prompt' }, tu.prompt || ''), h('span', { className: 'clx-mturn-meta' }, [ss.length ? fmt(t('msg.stepsN'), { n: ss.length }) : fmt(t('msg.itemsN'), { n: g.items.length }), tu.start && tu.end ? fmtDur(tu.end - tu.start) : null].filter(Boolean).join(' · ')), h('span', { className: 'clx-mturn-tok' }, fmtK(g.tok))), opened ? h('div', { className: 'clx-mturn-body' }, children) : null);
+                }));
+            }
+            const allTok = nodes.reduce((a, n) => a + n.tokensCal, 0);
+            const biggest = nodes.reduce((a, n) => (!a || n.tokensCal > a.tokensCal ? n : a), null);
+            const turnsN = (flow?.turns || []).length || new Set(nodes.map((n) => n.turn).filter((x) => x !== undefined)).size;
+            return h(React.Fragment, null, h('div', { className: 'clx-tiles clx-tsum' }, h(Stat, { k: t('msg.sum.nodes'), v: fmtInt(nodes.length) }), h(Stat, { k: t('msg.sum.tok'), v: fmtK(allTok) }), h(Stat, { k: t('msg.sum.turns'), v: fmtInt(turnsN) }), h(Stat, { k: t('msg.sum.steps'), v: flow ? fmtInt((flow.steps || []).length) : '—' }), h(Stat, { k: t('msg.sum.calls'), v: fmtInt((data.invocations || []).length) }), biggest ? h('div', { className: 'clx-stat clx-stat-link', role: 'button', tabIndex: 0, onClick: () => { fromJump.current = true; setOpenSeq(biggest.seq); }, title: biggest.preview }, h('div', { className: 'k' }, t('msg.sum.max')), h('div', { className: 'v' }, fmtK(biggest.tokensCal), h('small', null, ` #${biggest.seq}`))) : null), h('div', { className: 'clx-msgs' }, h('div', { className: 'clx-mmain' }, h('div', { className: 'clx-msgbar' }, h('div', { className: 'clx-msgsearch' }, h('svg', { width: 13, height: 13, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', 'aria-hidden': true }, h('circle', { cx: 11, cy: 11, r: 6.5 }), h('path', { d: 'M16 16l4 4' })), h('input', { value: query, placeholder: t('msg.search'), onChange: (e) => setQuery(e.target.value) }), query ? h('button', { className: 'clx-msgclear', 'aria-label': '×', onClick: () => setQuery('') }, '×') : null), h('span', { className: 'clx-segmini' }, h('button', { className: 'clx-chipbtn', 'aria-pressed': sort === 'order', onClick: () => setSort('order') }, t('msg.sort.order')), h('button', { className: 'clx-chipbtn', 'aria-pressed': sort === 'size', onClick: () => setSort('size') }, t('msg.sort.size'))), h('label', { className: 'clx-msgcat', style: { '--cat': cat ? CAT_COLOR[cat] : 'transparent' } }, h('i', { className: 'clx-dot' }), h('select', { value: cat, onChange: (e) => setCat(e.target.value) }, h('option', { value: '' }, t('msg.allCats')), CATS.filter((k) => present[k]).map((k) => h('option', { key: k, value: k }, `${t(`c.${k}`)} · ${fmtK(present[k])}`)))), h('span', { className: 'clx-msgcount' }, fmt(t('msg.count'), { n: list.length, t: fmtK(total) }), data.nodesTruncated ? ` · ${fmt(t('msg.trunc'), { n: data.nodesTruncated })}` : '')), sort === 'order' && from > 0 ? h('button', { className: 'clx-chipbtn clx-mmore', onClick: () => setLimit(limit + 300) }, fmt(t('msg.earlier'), { n: Math.min(300, from) })) : null, rows.length ? body : h('div', { className: 'clx-muted', style: { fontSize: 12, padding: '12px 2px' } }, t('msg.none')), sort !== 'order' && rows.length > limit ? h('button', { className: 'clx-chipbtn clx-mmore', onClick: () => setLimit(limit + 300) }, fmt(t('msg.more'), { n: Math.min(300, rows.length - limit) })) : null)));
         }
         /** A tool's full definition, fetched when its row is opened. */
         function ToolDetail({ sessionId, name, t }) {
@@ -2059,30 +2980,73 @@ part({
                 return h('div', { key: c.id, className: `clx-node clx-cmd-item${open ? ' open' : ''}${c.status === 'failed' ? ' failed' : ''}`, style: { '--cat': cat, '--i': Math.min(i, 24) } }, h(CmdRow, { c, t, open, onClick: () => setOpenId(open ? null : c.id) }), open ? h(CmdDetail, { c, t, sessionId }) : null);
             }) : h('div', { className: 'clx-muted', style: { padding: '12px 4px' } }, t('cmd.empty')), list.length > limit ? h('button', { className: 'clx-chipbtn', style: { marginTop: 8 }, onClick: () => setLimit(limit + 100) }, fmt(t('cmd.more'), { n: Math.min(100, list.length - limit) })) : null)));
         }
-        function Tools({ data, t, sessionId, ctx, cwd }) {
-            const [openDef, setOpenDef] = useState(null);
-            const [openUse, setOpenUse] = useState(null);
+        /** One tool on one line: name, what it costs, how often it ran. */
+        function ToolLine({ name, color, kind, bar, count, errs, tok, sel, onClick, title, hot = false }) {
+            return h('div', {
+                className: `clx-tl${sel ? ' sel' : ''}${hot ? ' hot' : ''}`, role: 'button', tabIndex: 0, 'aria-pressed': !!sel, onClick, title,
+                onKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    onClick();
+                } },
+            }, h('i', { className: 'clx-dot', style: { background: color } }), h('code', { className: 'nm' }, name), h('span', { className: 'kd' }, kind || ''), h('span', { className: 'bar' }, bar), count !== undefined ? h('span', { className: 'ct' }, count) : null, errs ? h('span', { className: 'er' }, `⚠${errs}`) : h('span', { className: 'er' }), h('span', { className: 'tk' }, tok));
+        }
+        /** A tool opened: its calls this session (each with its result), then its definition. */
+        function ToolPanel({ data, name, t, sessionId, ctx, cwd }) {
+            const def = (data.tools || []).find((x) => x.name === name);
+            const st = (data.toolStats || []).find((x) => x.name === name);
+            const errs = (data.invocations || []).filter((x) => x.name === name && x.isError).length;
+            return h(React.Fragment, null, h('div', { className: 'clx-mside-head' }, h('code', { className: 'clx-mrow-tool', style: { fontSize: 13 } }, name), def ? h('span', { className: 'clx-pill' }, def.kind === 'mcp' ? `MCP · ${def.server}` : t('tools.system')) : null, st ? h('span', { className: 'clx-muted' }, `${fmt(t('tools.callsN'), { n: st.calls })}${errs ? ` · ⚠${errs}` : ''}`) : null, h('span', { className: 'clx-mside-tok' }, [def ? `${t('tools.defTok')} ${fmtK(def.tokensCal)}` : null, st ? `${t('tools.useTok')} ${fmtK(st.callTokens + st.resultTokens)}` : null].filter(Boolean).join(' · '))), h('div', { className: 'clx-mside-body' }, st && st.calls ? h(ToolInvocations, { data, name, sessionId, t, ctx, cwd }) : null, def ? h('div', { className: 'clx-tp-def' }, h('div', { className: 'clx-tp-h' }, t('tools.definition')), h(ToolDetail, { sessionId, name, t })) : h('div', { className: 'clx-muted', style: { fontSize: 12 } }, t('tools.noDef'))));
+        }
+        function Tools({ data, t, sessionId, ctx, cwd, diff }) {
+            const hotTools = useMemo(() => new Set(diff && !diff.last ? diff.cur.st.tools : diff ? diff.cur.st.tools : []), [diff]);
+            const [rootRef, rootW] = useWidth(800);
+            const wide = rootW >= 760;
+            const [sel, setSel] = useState(null);
+            const [q, setQ] = useState('');
+            const [allDefs, setAllDefs] = useState(false);
             const tools = data.tools || [];
-            const shellSet = new Set(data.shellTools || []);
-            const stats = (data.toolStats || []).filter((x) => !shellSet.has(x.name));
-            const kind = (x) => (x.kind === 'mcp' ? `MCP · ${x.server}` : t('tools.system'));
-            const defMax = Math.max(1, ...tools.map((x) => x.tokensCal));
+            const stats = useMemo(() => [...(data.toolStats || [])].sort((a, b) => (b.callTokens + b.resultTokens) - (a.callTokens + a.resultTokens)), [data.toolStats]);
+            const errsBy = useMemo(() => {
+                const m = {};
+                for (const x of data.invocations || [])
+                    if (x.isError)
+                        m[x.name] = (m[x.name] || 0) + 1;
+                return m;
+            }, [data.invocations]);
+            const defBy = useMemo(() => new Map(tools.map((x) => [x.name, x])), [tools]);
+            const query = q.trim().toLowerCase();
+            const match = (x) => !query || x.name.toLowerCase().includes(query) || (x.description || '').toLowerCase().includes(query);
+            const used = stats.filter((x) => match({ name: x.name, description: defBy.get(x.name)?.description }));
+            const defs = [...tools].sort((a, b) => b.tokensCal - a.tokensCal).filter(match);
+            const defsShown = allDefs || query ? defs : defs.slice(0, 10);
             const useMax = Math.max(1, ...stats.map((x) => x.callTokens + x.resultTokens));
-            const toggle = (cur, set, k) => set(cur === k ? null : k);
-            const keyOpen = (fn) => (e) => { if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                fn();
-            } };
-            return h(React.Fragment, null, h('div', { className: 'clx-card' }, h('div', { className: 'clx-card-head' }, h('h4', null, `${t('tools.defs')} · ${tools.length} · ${fmtK(data.toolsTokens)}`), h('span', { className: 'clx-muted' }, t('tools.expandHint'))), tools.length ? h(React.Fragment, null, h('div', { className: 'clx-trow head' }, h('span', null), h('span', null, t('tools.col.name')), h('span', null, t('tools.col.kind')), h('span', null, t('tools.col.params')), h('span', null), h('span', null, 'Tokens')), tools.map((x, i) => {
-                const open = openDef === x.name;
+            const defMax = Math.max(1, ...tools.map((x) => x.tokensCal));
+            const callsTotal = stats.reduce((s, x) => s + x.calls, 0);
+            const resTotal = stats.reduce((s, x) => s + x.resultTokens, 0);
+            const errTotal = Object.values(errsBy).reduce((a, b) => a + b, 0);
+            const mcp = tools.filter((x) => x.kind === 'mcp').length;
+            const cmds = data.commands || [];
+            // on a wide pane the most used tool is open from the start
+            const current = sel ?? (wide && stats[0] ? stats[0].name : null);
+            const pick = (name) => setSel(current === name && !wide ? null : name);
+            const panel = (name) => h(ToolPanel, { key: name, data, name, t, sessionId, ctx, cwd });
+            const inline = (name) => (!wide && current === name ? h('div', { className: 'clx-tl-inline' }, panel(name)) : null);
+            const list = h('div', { className: 'clx-tlists' }, h('div', { className: 'clx-msgsearch clx-tsearch' }, h('svg', { width: 13, height: 13, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', 'aria-hidden': true }, h('circle', { cx: 11, cy: 11, r: 6.5 }), h('path', { d: 'M16 16l4 4' })), h('input', { value: q, placeholder: t('tools.search'), onChange: (e) => setQ(e.target.value) }), q ? h('button', { className: 'clx-msgclear', onClick: () => setQ('') }, '×') : null), h('div', { className: 'clx-card clx-tcard' }, h('div', { className: 'clx-card-head' }, h('h4', null, t('tools.usage')), h('span', { className: 'clx-tlegend' }, h('span', null, h('i', { style: { background: CAT_COLOR.toolCalls } }), t('pair.call')), h('span', null, h('i', { style: { background: CAT_COLOR.toolResults } }), t('pair.result')))), used.length ? used.map((x) => h(React.Fragment, { key: x.name }, h(ToolLine, {
+                name: x.name, color: CAT_COLOR.toolResults, sel: current === x.name, onClick: () => pick(x.name), hot: hotTools.has(x.name),
+                title: `${t('pair.call')} ${fmtInt(x.callTokens)} + ${t('pair.result')} ${fmtInt(x.resultTokens)} · ${t('tools.col.max')} ${fmtInt(x.maxResult)}`,
+                bar: h(React.Fragment, null, h('span', { style: { width: `${x.callTokens / useMax * 100}%`, background: CAT_COLOR.toolCalls } }), h('span', { style: { width: `${x.resultTokens / useMax * 100}%`, background: CAT_COLOR.toolResults } })),
+                count: `×${x.calls}`, errs: errsBy[x.name], tok: fmtK(x.callTokens + x.resultTokens),
+            }), inline(x.name))) : h('div', { className: 'clx-muted clx-tempty' }, query ? t('msg.none') : t('tools.noUse'))), h('div', { className: 'clx-card clx-tcard' }, h('div', { className: 'clx-card-head' }, h('h4', null, t('tools.defsShort')), h('span', { className: 'clx-muted' }, t('tools.defsNote'))), defsShown.map((x) => {
                 const color = x.kind === 'mcp' ? CAT_COLOR.mcpTools : CAT_COLOR.systemTools;
-                const fn = () => toggle(openDef, setOpenDef, x.name);
-                return h('div', { key: x.name, className: `clx-tblock${open ? ' open' : ''}`, style: { '--cat': color, '--i': Math.min(i, 24) } }, h('div', { className: 'clx-trow', role: 'button', tabIndex: 0, 'aria-expanded': open, title: x.description, onClick: fn, onKeyDown: keyOpen(fn) }, h(Chevron, { open }), h('span', { className: 'clx-tname' }, h('i', { className: 'clx-dot', style: { background: color } }), h('code', null, x.name)), h('span', { className: 'clx-muted' }, kind(x)), h('span', { className: 'num' }, x.params), h('span', { className: 'clx-catbar' }, h('span', { style: { width: `${Math.max(1, x.tokensCal / defMax * 100)}%`, background: color } })), h('span', { className: 'num' }, fmtInt(x.tokensCal))), open ? h(ToolDetail, { sessionId, name: x.name, t }) : null);
-            })) : h('div', { className: 'clx-muted' }, t('tools.none'))), h('div', { className: 'clx-card' }, h('div', { className: 'clx-card-head' }, h('h4', null, t('tools.usage')), stats.length ? h('span', { className: 'clx-muted' }, t('tools.expandHint')) : null), stats.length ? h(React.Fragment, null, h('div', { className: 'clx-urow head' }, h('span', null), h('span', null, t('tools.col.name')), h('span', null, t('tools.col.calls')), h('span', null, t('tools.col.callTok')), h('span', null, t('tools.col.results')), h('span', null, t('tools.col.resTok')), h('span', null, t('tools.col.max'))), stats.map((x, i) => {
-                const open = openUse === x.name;
-                const fn = () => toggle(openUse, setOpenUse, x.name);
-                return h('div', { key: x.name, className: `clx-tblock${open ? ' open' : ''}`, style: { '--cat': CAT_COLOR.toolResults, '--i': Math.min(i, 24) } }, h('div', { className: 'clx-urow', role: 'button', tabIndex: 0, 'aria-expanded': open, onClick: fn, onKeyDown: keyOpen(fn) }, h(Chevron, { open }), h('span', { className: 'clx-tname' }, h('code', null, x.name), h('span', { className: 'clx-ubar' }, h('span', { style: { width: `${x.callTokens / useMax * 100}%`, background: CAT_COLOR.toolCalls } }), h('span', { style: { width: `${x.resultTokens / useMax * 100}%`, background: CAT_COLOR.toolResults } }))), h('span', { className: 'num' }, x.calls), h('span', { className: 'num clx-muted' }, fmtInt(x.callTokens)), h('span', { className: 'num' }, x.results), h('span', { className: 'num clx-muted' }, fmtInt(x.resultTokens)), h('span', { className: 'num clx-muted' }, fmtInt(x.maxResult))), open ? h(ToolInvocations, { data, name: x.name, sessionId, t, ctx, cwd }) : null);
-            })) : h('div', { className: 'clx-muted' }, t('tools.none'))), h(Commands, { data, t, sessionId }), (data.deferred || []).length ? h('div', { className: 'clx-card' }, h('h4', null, `${t('tools.deferred')} · ${data.deferred.length}`), h('table', { className: 'clx-table' }, h('tbody', null, data.deferred.map((x) => h('tr', { key: x.name, title: x.description }, h('td', null, h('code', { className: 'clx-tcode' }, x.name)), h('td', { className: 'clx-muted wrap', style: { textAlign: 'left' } }, kind(x))))))) : null);
+                return h(React.Fragment, { key: x.name }, h(ToolLine, {
+                    name: x.name, color, kind: x.kind === 'mcp' ? `MCP · ${x.server}` : null, sel: current === x.name, onClick: () => pick(x.name), title: x.description,
+                    bar: h('span', { style: { width: `${x.tokensCal / defMax * 100}%`, background: color } }),
+                    count: fmt(t('tools.paramsShort'), { n: x.params }), tok: fmtK(x.tokensCal),
+                }), inline(x.name));
+            }), !query && defs.length > 10 ? h('button', { className: 'clx-chipbtn clx-tmore', onClick: () => setAllDefs(!allDefs) }, allDefs ? t('ui.collapseAll') : fmt(t('tools.showAllDefs'), { n: defs.length })) : null, (data.deferred || []).length ? h('div', { className: 'clx-tdeferred' }, h('span', { className: 'clx-muted' }, fmt(t('tools.deferredN'), { n: data.deferred.length })), data.deferred.map((x) => h('code', { key: x.name, title: x.description }, x.name))) : null));
+            return h('div', { className: 'clx-tools', ref: rootRef }, h('div', { className: 'clx-tiles clx-tsum' }, h(Stat, { k: t('tools.sum.defs'), v: fmtInt(tools.length), sub: mcp ? ` MCP ${mcp}` : undefined }), h(Stat, { k: t('tools.sum.defTok'), v: fmtK(data.toolsTokens) }), h(Stat, { k: t('tools.sum.used'), v: fmtInt(stats.length) }), h(Stat, { k: t('tools.sum.calls'), v: fmtInt(callsTotal), sub: errTotal ? ` ⚠${errTotal}` : undefined, tone: errTotal ? 'warn' : '' }), h(Stat, { k: t('tools.sum.resTok'), v: fmtK(resTotal) }), h(Stat, { k: t('tools.sum.cmds'), v: fmtInt(cmds.length), sub: cmds.length ? ` ${fmtMs(cmds.reduce((s, c) => s + (c.durationMs || 0), 0))}` : undefined })), wide
+                ? h('div', { className: 'clx-tsplit' }, list, h('aside', { className: 'clx-mside' }, current ? panel(current) : h('div', { className: 'clx-mside-empty' }, t('tools.pick'))))
+                : list, h(Commands, { data, t, sessionId }));
         }
         function useSources(sessionId, liveKey) {
             const [state, setState] = useState({ data: null, error: null });
@@ -2104,16 +3068,6 @@ part({
                     setOpen(!open);
                 } },
             }, h('span', { className: 'clx-disc-caret' }, h(Chevron, { open })), head), open ? h('div', { className: 'clx-disc-body' }, children) : null);
-        }
-        function oneLineText(text, cap) {
-            const x = String(text || '').replace(/\s+/g, ' ').trim();
-            const first = /^(.{12,}?[。.!?！？])(\s|$)/.exec(x)?.[1] || x;
-            return first.length > cap ? `${first.slice(0, cap - 1)}…` : first;
-        }
-        function fmtBytes(n) {
-            if (!(n >= 0))
-                return '—';
-            return n < 1024 ? `${n} B` : n < 1048576 ? `${(n / 1024).toFixed(1)} KB` : `${(n / 1048576).toFixed(1)} MB`;
         }
         // ------------------------------------------------------------------ file preview
         // File contents are not rendered here: a click opens the file in dsh's right
@@ -2211,120 +3165,6 @@ part({
             const open = () => setNote(openInSidebar(ctx, sessionId, cwd, file));
             return h('span', { className: 'clx-filepreview', onClick: (e) => e.stopPropagation() }, h('button', { type: 'button', className: 'clx-filebtn', title: `${file}\n${t('ft.preview')}`, onClick: open }, h('svg', { width: 13, height: 13, viewBox: '0 0 16 16', fill: 'none', stroke: 'currentColor', strokeWidth: 1.3, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true }, h('path', { d: 'M6.5 2.5h-3a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1v-3' }), h('path', { d: 'M9.5 2.5h4v4M13.2 2.8 7.5 8.5' })), t('ft.previewShort')), note ? h('span', { className: 'clx-filepreview-note' }, t(`ft.${note}`)) : null);
         }
-        // ------------------------------------------------------------- file structure
-        const FT_COLOR = {
-            root: '#4FA35B', memory: '#C9772F', git: '#8A8F98', dir: '#5DA9A0', skills: CAT_COLOR.skills,
-            config: '#2BA3A0', data: '#4E8FD6', skill: CAT_COLOR.skills,
-        };
-        const FT_GROUP = {
-            projectRoot: 'root', workdirRoot: 'root', dshHome: 'root', agentsHome: 'root',
-            memProject: 'memory', memClaude: 'memory', memLocal: 'memory', memNested: 'memory', memGlobal: 'memory', memShared: 'memory',
-            git: 'git', gitMissing: 'git',
-            projDsh: 'dir', projAgents: 'dir', subDir: 'dir', cwdDir: 'dir', profiles: 'dir', profile: 'dir',
-            skillsProjectDsh: 'skills', skillsProjectAgents: 'skills', skillsUser: 'skills', skillsShared: 'skills',
-            patchGlobal: 'config', patchProfile: 'config', env: 'config', sessions: 'data', skillItem: 'skill',
-        };
-        const FILE_PATH = 'M4 1.5h5.2L12.5 4.8v9.2a.5.5 0 0 1-.5.5H4a.5.5 0 0 1-.5-.5V2a.5.5 0 0 1 .5-.5zM9 1.7V5h3.3M5.6 8h4.8M5.6 10.5h4.8';
-        function FtIcon({ dir, color }) {
-            return dir
-                ? h('svg', { viewBox: '0 0 16 16', width: 15, height: 15, 'aria-hidden': true, className: 'clx-ft-icon' }, h('path', { d: 'M1.5 4a1 1 0 0 1 1-1h3.7l1.5 1.6h5.8a1 1 0 0 1 1 1v6.9a1 1 0 0 1-1 1H2.5a1 1 0 0 1-1-1z', fill: color, opacity: .9 }))
-                : h('svg', { viewBox: '0 0 16 16', width: 14, height: 14, 'aria-hidden': true, className: 'clx-ft-icon' }, h('path', { d: FILE_PATH, fill: `color-mix(in srgb, ${color} 14%, transparent)`, stroke: color, strokeWidth: 1.1, strokeLinejoin: 'round' }));
-        }
-        function FileTree({ src, t, onJump, ctx, sessionId }) {
-            const st = src.structure;
-            const [more, setMore] = useState(() => new Set());
-            const [onlyExisting, setOnlyExisting] = useState(false);
-            const [noteLine, preview] = useSidebarPreview(ctx, sessionId, src.cwd, t);
-            const regByPath = useMemo(() => {
-                const m = new Map();
-                for (const r of src.skills?.registry || [])
-                    if (r.path)
-                        m.set(r.path.replace(/\/SKILL\.md$/i, ''), r);
-                return m;
-            }, [src]);
-            if (!st || !st.trees?.length)
-                return null;
-            const homeRe = st.home ? new RegExp(`^${st.home.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?=/|$)`) : null;
-            const tilde = (p) => (homeRe ? p.replace(homeRe, '~') : p);
-            const rows = [];
-            // guides: one entry per ancestor level (true = that ancestor has later siblings → draw a line)
-            const walk = (n, guides, last, depth) => {
-                rows.push({ n, guides, last, depth });
-                let kids = (n.children || []).filter((k) => !onlyExisting || k.exists);
-                if (n.items) {
-                    const all = more.has(n.path);
-                    const shown = all ? n.items : n.items.slice(0, 5);
-                    kids = shown.map((x) => ({ name: x.bundle ? `${x.name}/` : `${x.name}.md`, role: 'skillItem', path: x.path, dir: x.bundle, exists: true, skill: x }));
-                    const rest = (n.count || n.items.length) - shown.length;
-                    if (rest > 0 || all)
-                        kids = [...kids, { more: true, rest, parent: n.path, all }];
-                }
-                kids.forEach((k, i) => walk(k, depth === 0 ? [] : [...guides, !last], i === kids.length - 1, depth + 1));
-            };
-            st.trees.forEach((r) => walk(r, [], true, 0));
-            const toggleMore = (p) => setMore((prev) => { const next = new Set(prev); if (next.has(p))
-                next.delete(p);
-            else
-                next.add(p); return next; });
-            return h('div', { className: 'clx-card clx-ftcard' }, h('div', { className: 'clx-card-head' }, h('h4', null, t('ft.title')), h('span', { className: 'clx-ft-legend' }, h('span', { className: 'clx-ft-st loaded' }, `✓ ${t('ft.loaded')}`), h('span', { className: 'clx-ft-st' }, t('ft.exists')), h('span', { className: 'clx-ft-st missing' }, t('ft.missing')), h('button', { className: 'clx-chip', 'aria-pressed': onlyExisting, onClick: () => setOnlyExisting(!onlyExisting) }, t('ft.onlyExisting')))), h('div', { className: 'clx-mem-hint' }, t('ft.hint')), noteLine, h('div', { className: 'clx-ft' }, rows.map(({ n, guides, last, depth }, i) => {
-                const conn = depth === 0 ? null : h(React.Fragment, null, guides.map((g, j) => h('span', { key: j, className: `clx-ft-g${g ? ' pipe' : ''}` })), h('span', { className: `clx-ft-g ${last ? 'elbow' : 'tee'}` }));
-                if (n.more) {
-                    return h('div', { key: `more-${n.parent}`, className: 'clx-ft-row more' }, h('span', { className: 'clx-ft-tree' }, conn, h('button', { className: 'clx-linkbtn', onClick: () => toggleMore(n.parent) }, n.all ? t('ft.less') : fmt(t('ft.more'), { n: n.rest }))));
-                }
-                const group = FT_GROUP[n.role] || 'dir';
-                const color = FT_COLOR[group];
-                const reg = n.skill ? regByPath.get(n.path) || regByPath.get(n.path.replace(/\.md$/i, '')) : undefined;
-                const desc = n.role === 'skillItem'
-                    ? (reg?.description ? oneLineText(reg.description, 80) : t('ft.r.skillItem'))
-                    : n.role === 'profile' ? `${t('ft.r.profile')} · ${st.profile}` : t(`ft.r.${n.role}`);
-                const jumpSeq = n.loaded && n.seq !== undefined ? n.seq : undefined;
-                const status = n.loaded ? h('span', {
-                    className: `clx-ft-st loaded${jumpSeq !== undefined ? ' link' : ''}`,
-                    ...(jumpSeq !== undefined ? {
-                        role: 'button', tabIndex: 0, title: fmt(t('ft.jump'), { seq: jumpSeq }),
-                        onClick: (e) => { e.stopPropagation(); onJump(jumpSeq); },
-                        onKeyDown: (e) => { if (e.target === e.currentTarget && (e.key === 'Enter' || e.key === ' ')) {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            onJump(jumpSeq);
-                        } },
-                    } : null),
-                }, `✓ ${t('ft.loaded')}${n.tokens ? ` · ≈${fmtK(n.tokens)}` : ''}`)
-                    : !n.exists ? h('span', { className: 'clx-ft-st missing' }, t('ft.missing'))
-                        : n.count !== undefined ? h('span', { className: 'clx-ft-st' }, fmt(t('ft.skills'), { n: n.count }))
-                            : n.size !== undefined && group !== 'skill' ? h('span', { className: 'clx-ft-st' }, fmtBytes(n.size)) : null;
-                // existing files open in dsh's own right Sidebar preview instead of being
-                // rendered here; directories and missing files stay plain rows.
-                const previewable = !!n.exists && !n.dir;
-                return h('div', {
-                    key: `${n.path}-${i}`, className: `clx-ft-row${n.exists ? '' : ' missing'}${depth === 0 ? ' top' : ''}${previewable ? ' open' : ''}`,
-                    style: { '--ft': color, '--i': Math.min(i, 30) }, title: previewable ? `${n.path}\n${t('ft.preview')}` : n.path,
-                    ...(previewable ? {
-                        role: 'button', tabIndex: 0, 'aria-label': `${n.name} · ${t('ft.preview')}`,
-                        onClick: () => preview(n.path),
-                        onKeyDown: (e) => { if (e.target === e.currentTarget && (e.key === 'Enter' || e.key === ' ')) {
-                            e.preventDefault();
-                            preview(n.path);
-                        } },
-                    } : null),
-                }, h('span', { className: 'clx-ft-tree' }, conn, h(FtIcon, { dir: n.dir, color }), h('span', { className: `clx-ft-name${n.dir ? ' dir' : ''}` }, depth === 0 ? `${tilde(n.path)}/` : n.name), status), h('span', { className: 'clx-ft-lead' }), h('span', { className: 'clx-ft-pill' }, desc));
-            })));
-        }
-        function MemoryCard({ src, t, onJump, ctx, sessionId }) {
-            const mem = src.memory;
-            const [noteLine, preview] = useSidebarPreview(ctx, sessionId, src.cwd, t);
-            const active = mem.files.filter((f) => f.status === 'active');
-            const total = active.reduce((s, f) => s + (f.tokens || 0), 0);
-            const statusCls = { active: 'clx-ok', removed: 'clx-warn', replaced: 'clx-muted' };
-            const notice = mem.events.filter((e) => e.budgetNotice).slice(-1)[0]?.budgetNotice;
-            return h('div', { className: 'clx-card clx-memcard' }, h('div', { className: 'clx-card-head' }, h('h4', null, t('nav.memory')), h('span', { className: 'clx-muted' }, active.length ? fmt(t('src.memoryCount'), { n: active.length, t: fmtK(total) }) : t('src.memoryZero'))), mem.files.length ? h('div', { className: 'clx-mem-hint', title: t('src.memoryHint') }, t('src.memoryHintShort')) : null, noteLine, mem.files.length ? h('div', { className: 'clx-mem-files' }, mem.files.map((f) => h(Disclosure, {
-                key: f.displayPath,
-                color: CAT_COLOR.memory,
-                open: mem.files.length <= 2,
-                head: h('div', { className: 'clx-src-row' }, h('span', { className: 'clx-src-name' }, f.displayPath), h('span', { className: statusCls[f.status] || 'clx-muted' }, t(`src.mem.${f.status}`)), f.updates ? h('span', { className: 'clx-muted' }, fmt(t('src.updates'), { n: f.updates })) : null, h('span', { className: 'clx-src-tok' }, f.tokens ? `≈${fmtK(f.tokens)}` : '—')),
-            }, h('div', { className: 'clx-src-meta' }, f.path ? h('span', null, f.path) : null, f.path ? h('a', { className: 'clx-link', title: f.path, onClick: () => preview(f.path) }, `↗ ${t('ft.preview')}`) : null, h('a', { onClick: () => onJump(f.lastSeq) }, `#${f.lastSeq} ${t('src.inMessages')}`)), f.status === 'removed' ? h('div', { className: 'clx-muted' }, t('src.mem.removedHint'))
-                : h(RichText, { text: f.content || '', hint: 'md', t, defaultOpen: true, bare: true })))) : null, notice ? h('div', { className: 'clx-warn', style: { fontSize: 12, margin: '6px 2px' } }, notice) : null, !mem.files.length ? h('div', { className: 'clx-mem-empty' }, t('src.memoryNoneTree')) : null);
-        }
         function SkillBody({ sessionId, name, t }) {
             const [state, setState] = useState({ loading: true });
             useEffect(() => {
@@ -2341,11 +3181,86 @@ part({
             const v = state.value;
             return h(RichText, { bare: true, text: v.content, hint: 'md', t, label: 'SKILL.md', meta: `${fmtInt(v.chars)} ${t('ui.chars')} · ≈${fmtK(v.tokensEst)} tok${v.truncated ? ` · ${t('msg.truncated')}` : ''}` });
         }
-        function SkillsCard({ src, bd, sessionId, t, onJump }) {
-            const sk = src.skills;
-            const [query, setQuery] = useState('');
+        const RT_NAME = {
+            'working-directory:current': 'rt.cwd', 'sandbox:policy': 'rt.sandbox', 'approval:policy': 'rt.approval',
+            'harness:source': 'rt.harness', 'app:web-surface': 'rt.web', 'time-context': 'rt.time',
+        };
+        /** What this agent reads and where, laid out by the rules of the plugins that read it. */
+        function AgentLayout({ src, t, onJump, ctx, sessionId }) {
+            const L = src.layout;
+            const [noteLine, preview] = useSidebarPreview(ctx, sessionId, src.cwd, t);
+            if (!L)
+                return h('div', { className: 'clx-muted' }, t('lay.none'));
+            const home = L.home || '';
+            const tilde = (p) => (home && String(p).startsWith(home) ? `~${String(p).slice(home.length)}` : String(p));
+            const row = (f, label = undefined) => {
+                const st = f.loaded ? 'loaded' : f.exists ? 'exists' : 'missing';
+                return h('div', { key: f.path, className: `clx-lay-row ${st}`, title: f.path }, h('i', { className: 'st' }), h('span', { className: 'nm' }, label || f.name), h('span', { className: 'ss' }, f.loaded ? `${t('ft.loaded')}${f.tokens ? ` · ≈${fmtK(f.tokens)}` : ''}` : f.exists ? t('lay.notLoaded') : t('ft.missing')), h('span', { className: 'ac' }, f.exists ? h('button', { className: 'clx-more', onClick: () => preview(f.path) }, t('ft.previewShort')) : null, f.loaded && f.seq !== undefined ? h('button', { className: 'clx-more', onClick: () => onJump(f.seq) }, `#${f.seq}`) : null));
+            };
+            const gl = L.global || [];
+            const loadedN = [...gl, ...(L.levels || []).flatMap((l) => l.files), ...(L.deeper || [])].filter((f) => f.loaded).length;
+            const SRC_LABEL = { 'project-dsh': 'lay.sk.projectDsh', 'project-agents': 'lay.sk.projectAgents', custom: 'lay.sk.custom', 'user-dsh': 'lay.sk.userDsh', 'user-agents': 'lay.sk.userAgents', bundled: 'lay.sk.bundled' };
+            return h('div', { className: 'clx-lay' }, noteLine, h('section', null, h('div', { className: 'clx-lay-h' }, h('b', null, t('nav.memory')), h('span', { className: 'clx-muted' }, fmt(t('lay.memSum'), { n: loadedN }))), h('div', { className: 'clx-lay-rule' }, t('lay.memRule')), h('div', { className: 'clx-lay-group' }, h('div', { className: 'clx-lay-gh' }, t('lay.global'), h('span', { className: 'clx-muted' }, t('lay.globalNote'))), gl.map((g) => row(g, tilde(g.path)))), h('div', { className: 'clx-lay-group' }, h('div', { className: 'clx-lay-gh' }, t('lay.project'), h('span', { className: 'clx-muted' }, L.root ? fmt(t('lay.rootBy'), { m: L.rootMarker }) : t('lay.noRoot'))), (L.levels || []).map((lv) => {
+                const present = lv.files.filter((f) => f.exists || f.loaded);
+                const absent = lv.files.filter((f) => !f.exists && !f.loaded);
+                return h('div', { key: lv.dir, className: 'clx-lay-level' }, h('div', { className: 'clx-lay-dir', title: lv.dir }, h('span', { className: 'p' }, `${tilde(lv.dir)}/`), lv.isRoot ? h('span', { className: 'clx-pill' }, t('lay.root')) : null, lv.isCwd ? h('span', { className: 'clx-pill on' }, t('lay.cwd')) : null), present.map((f) => row(f)), absent.length ? h('div', { className: 'clx-lay-absent' }, `${t('lay.canPlace')} `, absent.map((f) => h('code', { key: f.name }, f.name))) : null);
+            })), (L.deeper || []).length ? h('div', { className: 'clx-lay-group' }, h('div', { className: 'clx-lay-gh' }, t('lay.deeper'), h('span', { className: 'clx-muted' }, t('lay.deeperNote'))), L.deeper.map((f) => row(f, `${f.rel ? `${f.rel}/` : ''}${f.name}`))) : null), h('section', null, h('div', { className: 'clx-lay-h' }, h('b', null, t('lay.skillRoots')), h('span', { className: 'clx-muted' }, t('lay.skillRule'))), (L.skillRoots || []).map((r, i) => h('div', { key: `${r.source}-${r.path}`, className: `clx-lay-row ${r.registered ? 'loaded' : r.exists ? 'exists' : 'missing'}`, title: r.path }, h('span', { className: 'rk' }, i + 1), h('span', { className: 'nm' }, t(SRC_LABEL[r.source] || r.source), h('code', null, tilde(r.path))), h('span', { className: 'ss' }, !r.exists ? t('ft.missing') : r.registered ? fmt(t('lay.skillsN'), { n: r.registered }) : r.onDisk ? fmt(t('lay.onDisk'), { n: r.onDisk }) : t('lay.empty')), h('span', { className: 'ac' }))), (L.otherSkillSources || []).length ? h('div', { className: 'clx-lay-absent' }, `${t('lay.otherSources')} `, L.otherSkillSources.map((x) => h('code', { key: x.source }, `${x.source} ×${x.count}`))) : null));
+        }
+        /** Skills by name: registry, catalog entry and every load, most-loaded first. */
+        function skillRows(src) {
+            const sk = src.skills || {};
+            const by = new Map();
+            const get = (name) => {
+                if (!by.has(name))
+                    by.set(name, { name, loads: [] });
+                return by.get(name);
+            };
+            for (const s of sk.registry || [])
+                Object.assign(get(s.name), { reg: s });
+            for (const e of sk.catalog?.entries || [])
+                Object.assign(get(e.name), { cat: e });
+            for (const l of sk.loaded || [])
+                get(l.name).loads.push(l);
+            return [...by.values()].sort((a, b) => (b.loads.length - a.loads.length) || ((b.cat ? 1 : 0) - (a.cat ? 1 : 0)) || a.name.localeCompare(b.name));
+        }
+        /** Every node of the file structure, flattened. */
+        function treeNodes(st) {
+            const out = [];
+            const walk = (n) => { out.push(n); for (const k of n.children || [])
+                walk(k); };
+            for (const r of st?.trees || [])
+                walk(r);
+            return out;
+        }
+        function SrcLine({ color, name, badge, tok, sel, onClick, title, dim = false }) {
+            return h('div', {
+                className: `clx-tl clx-sl${sel ? ' sel' : ''}${dim ? ' dim' : ''}`, role: 'button', tabIndex: 0, 'aria-pressed': !!sel, onClick, title,
+                onKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    onClick();
+                } },
+            }, h('i', { className: 'clx-dot', style: { background: color } }), h('span', { className: 'nm' }, name), h('span', { className: 'bd' }, badge), h('span', { className: 'tk' }, tok));
+        }
+        function MemPanel({ f, t, onJump, preview, noteLine }) {
+            return h(React.Fragment, null, h('div', { className: 'clx-mside-head' }, h('b', { className: 'clx-sp-title' }, f.displayPath), h('span', { className: `clx-pill ${f.status === 'active' ? 'on' : 'off'}` }, t(`src.mem.${f.status}`)), f.updates ? h('span', { className: 'clx-muted' }, fmt(t('src.updates'), { n: f.updates })) : null, h('span', { className: 'clx-mside-tok' }, f.tokens ? `≈${fmtK(f.tokens)} tok` : '')), h('div', { className: 'clx-mside-body' }, h('div', { className: 'clx-sp-meta' }, f.path ? h('code', { title: f.path }, f.path) : null, f.path ? h('button', { className: 'clx-chipbtn', onClick: () => preview(f.path) }, `↗ ${t('ft.preview')}`) : null, f.lastSeq !== undefined ? h('button', { className: 'clx-chipbtn', onClick: () => onJump(f.lastSeq) }, `#${f.lastSeq} ${t('src.inMessages')}`) : null), noteLine, f.status === 'removed' ? h('div', { className: 'clx-muted' }, t('src.mem.removedHint'))
+                : h(RichText, { text: f.content || '', hint: 'md', t, defaultOpen: true, bare: true })));
+        }
+        function SkillPanel({ r, sk, sessionId, t, onJump, nodeTok, cost }) {
+            const desc = r.reg?.description ?? r.cat?.description ?? '';
+            return h(React.Fragment, null, h('div', { className: 'clx-mside-head' }, h('b', { className: 'clx-sp-title' }, r.name), r.loads.length ? h('span', { className: 'clx-pill on' }, fmt(t('src.loadedN'), { n: r.loads.length })) : null, h('span', { className: 'clx-pill' }, r.cat ? t('src.inCatalog') : r.reg && !r.reg.modelInvocable ? t('src.userOnly') : t('src.notInCatalog')), h('span', { className: 'clx-mside-tok', title: t('src.catCostHint') }, cost ? `${fmtK(cost)} tok` : '')), h('div', { className: 'clx-mside-body' }, desc ? h('div', { className: 'clx-sp-desc' }, desc) : null, h('div', { className: 'clx-sp-kv' }, h('span', null, h('i', null, t('src.k.provider')), r.reg?.provider || '—'), h('span', null, h('i', null, t('src.k.source')), r.reg?.source || '—'), h('span', null, h('i', null, t('src.k.invocation')), r.reg ? [r.reg.modelInvocable ? t('src.inv.model') : null, r.reg.userInvocable ? t('src.inv.user') : null].filter(Boolean).join(' · ') || '—' : '—')), h('div', { className: 'clx-sp-meta' }, h('code', null, r.reg?.path || r.loads[0]?.base || '—')), r.reg?.whenToUse ? h('div', { className: 'clx-sp-desc' }, h('span', { className: 'clx-muted' }, `${t('src.k.whenToUse')}: `), r.reg.whenToUse) : null, r.loads.length ? h('div', { className: 'clx-sp-loads' }, h('div', { className: 'clx-tp-h' }, t('src.loads')), r.loads.map((l) => h('div', { key: l.seq, className: 'clx-tl clx-sl', role: 'button', tabIndex: 0, onClick: () => onJump(l.seq) }, h('i', { className: 'clx-dot', style: { background: CAT_COLOR.skills } }), h('span', { className: 'nm' }, `#${l.seq} · ${fmtTime(l.time)}`), h('span', { className: 'bd' }, `${t(`src.via.${l.via}`)}${l.isError ? ' · ⚠' : ''}`), h('span', { className: 'tk' }, fmtK(nodeTok[l.seq] ?? l.tokensEst))))) : null, sk.registryAvailable ? h('div', { className: 'clx-tp-def' }, h(SkillBody, { sessionId, name: r.name, t })) : null));
+        }
+        /** 来源: what entered the context from outside the conversation, as a list on the left and the picked item on the right. */
+        function SourcesTab({ sessionId, liveKey, bd, t, onJump, ctx }) {
+            const { data: src, error } = useSources(sessionId, liveKey);
+            const [rootRef, rootW] = useWidth(800);
+            const wide = rootW >= 760;
+            const [sel, setSel] = useState(null);
+            const [q, setQ] = useState('');
             const [filter, setFilter] = useState('all');
-            const catalogCost = useMemo(() => {
+            const [allSkills, setAllSkills] = useState(false);
+            const [noteLine, preview] = useSidebarPreview(ctx, sessionId, src?.cwd, t);
+            const rows = useMemo(() => (src ? skillRows(src) : []), [src]);
+            const cost = useMemo(() => {
                 const m = {};
                 for (const s of bd?.skills || [])
                     m[s.name] = s.tokensCal;
@@ -2357,65 +3272,71 @@ part({
                     m[n.seq] = n.tokensCal;
                 return m;
             }, [bd]);
-            const rows = useMemo(() => {
-                const by = new Map();
-                const get = (name) => {
-                    if (!by.has(name))
-                        by.set(name, { name, loads: [] });
-                    return by.get(name);
-                };
-                for (const s of sk.registry || [])
-                    Object.assign(get(s.name), { reg: s });
-                for (const e of sk.catalog?.entries || [])
-                    Object.assign(get(e.name), { cat: e });
-                for (const l of sk.loaded || [])
-                    get(l.name).loads.push(l);
-                return [...by.values()].sort((a, b) => (b.loads.length - a.loads.length) || a.name.localeCompare(b.name));
-            }, [src]);
-            const loadedNames = rows.filter((r) => r.loads.length).length;
-            const inCatalog = rows.filter((r) => r.cat).length;
+            if (error && !src)
+                return h('div', { className: 'clx-err' }, fmt(t('failed'), { msg: error }));
+            if (!src)
+                return h('div', { className: 'clx-muted' }, t('loading'));
+            const sk = src.skills || {};
+            const files = src.memory?.files || [];
+            const active = files.filter((f) => f.status === 'active');
+            const memTok = active.reduce((s, f) => s + (f.tokens || 0), 0);
+            const loaded = rows.filter((r) => r.loads.length);
+            const inCat = rows.filter((r) => r.cat);
+            const catTok = Object.values(cost).reduce((a, b) => a + b, 0);
             const loadTok = (sk.loaded || []).reduce((s, l) => s + (nodeTok[l.seq] ?? l.tokensEst ?? 0), 0);
-            const catTok = Object.values(catalogCost).reduce((a, b) => a + b, 0);
-            const q = query.trim().toLowerCase();
-            const shown = rows.filter((r) => (filter === 'all' || (filter === 'loaded' ? r.loads.length : filter === 'catalog' ? r.cat : !r.cat))
-                && (!q || r.name.toLowerCase().includes(q) || (r.reg?.description || r.cat?.description || '').toLowerCase().includes(q)));
-            return h('div', { className: 'clx-card' }, h('h4', null, `${t('src.skills')} · ${fmt(t('src.skillsSummary'), { n: rows.length, c: inCatalog, l: loadedNames, ct: fmtK(catTok), lt: fmtK(loadTok) })}`), sk.registryAvailable ? null : h('div', { className: 'clx-warn', style: { fontSize: 12 } }, t('src.noRegistry')), sk.registryError ? h('div', { className: 'clx-err', style: { fontSize: 12 } }, fmt(t('failed'), { msg: sk.registryError })) : null, h('div', { className: 'clx-msgtools' }, h('input', { value: query, placeholder: t('src.skillSearch'), onChange: (e) => setQuery(e.target.value) }), ['all', 'loaded', 'catalog', 'hidden'].map((k) => h('button', { key: k, className: 'clx-chipbtn', 'aria-pressed': filter === k, onClick: () => setFilter(k) }, t(`src.f.${k}`)))), shown.length ? shown.map((r) => {
-                const desc = r.reg?.description ?? r.cat?.description ?? '';
-                return h(Disclosure, {
-                    key: r.name,
-                    color: CAT_COLOR.skills,
-                    head: h('div', { className: 'clx-skill-head' }, h('div', { className: 'clx-src-row' }, h('span', { className: 'clx-src-name' }, r.name), r.loads.length ? h('span', { className: 'clx-badge ok' }, fmt(t('src.loadedN'), { n: r.loads.length })) : null, r.cat ? h('span', { className: 'clx-badge' }, t('src.inCatalog')) : h('span', { className: 'clx-badge dim' }, r.reg && !r.reg.modelInvocable ? t('src.userOnly') : t('src.notInCatalog')), h('span', { className: 'clx-src-tok', title: t('src.catCostHint') }, catalogCost[r.name] ? fmtK(catalogCost[r.name]) : '')), h('div', { className: 'clx-skill-desc' }, desc)),
-                }, h('div', { className: 'clx-src-path' }, h('span', { className: 'clx-muted' }, `${t('src.k.path')} `), r.reg?.path || r.loads[0]?.base || '—'), h('div', { className: 'clx-kv', style: { marginBottom: 8 } }, kv(t('src.k.provider'), r.reg?.provider || '—'), kv(t('src.k.source'), r.reg?.source || '—'), kv(t('src.k.invocation'), r.reg ? [r.reg.modelInvocable ? t('src.inv.model') : null, r.reg.userInvocable ? t('src.inv.user') : null].filter(Boolean).join(' · ') || '—' : '—')), r.reg?.whenToUse ? h('div', { style: { fontSize: 12.5, marginBottom: 8 } }, h('span', { className: 'clx-muted' }, `${t('src.k.whenToUse')}: `), r.reg.whenToUse) : null, r.cat && r.reg && r.cat.description !== r.reg.description ? h('div', { style: { fontSize: 12, marginBottom: 8 } }, h('span', { className: 'clx-muted' }, `${t('src.k.catalogDesc')}: `), r.cat.description) : null, r.loads.length ? h('div', { style: { fontSize: 12, marginBottom: 8 } }, h('div', { className: 'clx-muted' }, t('src.loads')), r.loads.map((l) => h('div', { key: l.seq, className: 'clx-flow-log', onClick: () => onJump(l.seq) }, `#${l.seq} · ${fmtTime(l.time)} · ${t(`src.via.${l.via}`)} · ${fmtK(nodeTok[l.seq] ?? l.tokensEst)} tok${l.isError ? ' · ⚠' : ''}`))) : null, sk.registryAvailable ? h(SkillBody, { sessionId, name: r.name, t }) : null);
-            }) : h('div', { className: 'clx-empty' }, t('src.skillsNone')));
-        }
-        const RT_NAME = {
-            'working-directory:current': 'rt.cwd', 'sandbox:policy': 'rt.sandbox', 'approval:policy': 'rt.approval',
-            'harness:source': 'rt.harness', 'app:web-surface': 'rt.web', 'time-context': 'rt.time',
-        };
-        function RuntimeCard({ src, t, onJump }) {
-            const rt = src.runtime;
-            if (!rt && !src.timeContext)
+            const rt = [...(src.runtime?.sections || []), ...(src.timeContext ? [{ name: 'time-context', text: src.timeContext.text }] : [])];
+            const L = src.layout;
+            const layFiles = L ? [...(L.global || []), ...(L.levels || []).flatMap((l) => l.files), ...(L.deeper || [])] : [];
+            const tree = L ? [1] : treeNodes(src.structure);
+            const treeLoaded = layFiles.filter((f) => f.loaded).length;
+            const treeExists = layFiles.filter((f) => f.exists && !f.loaded).length;
+            const query = q.trim().toLowerCase();
+            const skillShown = rows.filter((r) => (filter === 'all' || (filter === 'loaded' ? r.loads.length : filter === 'catalog' ? r.cat : !r.cat))
+                && (!query || r.name.toLowerCase().includes(query) || (r.reg?.description || r.cat?.description || '').toLowerCase().includes(query)));
+            const skillList = allSkills || query ? skillShown : skillShown.slice(0, 12);
+            const memShown = files.filter((f) => !query || f.displayPath.toLowerCase().includes(query));
+            const fallback = active[0] ? `m:${active[0].displayPath}` : loaded[0] ? `s:${loaded[0].name}` : rt.length ? 'rt' : tree.length ? 'ft' : null;
+            const current = sel ?? (wide ? fallback : null);
+            const pick = (id) => setSel(current === id && !wide ? null : id);
+            const panelFor = (id) => {
+                if (!id)
+                    return null;
+                if (id.startsWith('m:')) {
+                    const f = files.find((x) => `m:${x.displayPath}` === id);
+                    return f ? h(MemPanel, { key: id, f, t, onJump, preview, noteLine }) : null;
+                }
+                if (id.startsWith('s:')) {
+                    const r = rows.find((x) => `s:${x.name}` === id);
+                    return r ? h(SkillPanel, { key: id, r, sk, sessionId, t, onJump, nodeTok, cost: cost[r.name] }) : null;
+                }
+                if (id === 'rt') {
+                    return h(React.Fragment, { key: id }, h('div', { className: 'clx-mside-head' }, h('b', { className: 'clx-sp-title' }, t('src.runtime')), src.runtime ? h('button', { className: 'clx-chipbtn', style: { marginLeft: 'auto' }, onClick: () => onJump(src.runtime.seq) }, `#${src.runtime.seq} ${t('src.inMessages')}`) : null), h('div', { className: 'clx-mside-body' }, h('div', { className: 'clx-note', style: { marginBottom: 8 } }, t('src.runtimeHint')), h('div', { className: 'clx-rt-list' }, rt.map((s) => h('div', { key: s.name, className: 'clx-rt' }, h('span', { className: 'k', title: s.name }, RT_NAME[s.name] ? t(RT_NAME[s.name]) : s.name), h('span', { className: 'v' }, s.text))))));
+                }
+                if (id === 'ft') {
+                    return h(React.Fragment, { key: id }, h('div', { className: 'clx-mside-head' }, h('b', { className: 'clx-sp-title' }, t('lay.title')), h('span', { className: 'clx-muted' }, t('lay.sub'))), h('div', { className: 'clx-mside-body' }, h(AgentLayout, { src, t, onJump, ctx, sessionId })));
+                }
                 return null;
-            const items = [...(rt?.sections || []), ...(src.timeContext ? [{ name: 'time-context', text: src.timeContext.text }] : [])];
-            return h('div', { className: 'clx-card' }, h('div', { className: 'clx-card-head' }, h('h4', null, t('src.runtime')), rt ? h('a', { className: 'clx-link', onClick: () => onJump(rt.seq) }, `#${rt.seq} ${t('src.inMessages')}`) : null), h('div', { className: 'clx-mem-hint' }, t('src.runtimeHint')), h('div', { className: 'clx-rt-list' }, items.map((s) => h('div', { key: s.name, className: 'clx-rt' }, h('span', { className: 'k', title: s.name }, RT_NAME[s.name] ? t(RT_NAME[s.name]) : s.name), h('span', { className: 'v' }, s.text)))));
-        }
-        /** 记忆: the instruction files dsh-agent-instructions loaded, plus the runtime context. */
-        function MemoryTab({ sessionId, liveKey, t, onJump, ctx }) {
-            const { data, error } = useSources(sessionId, liveKey);
-            if (error && !data)
-                return h('div', { className: 'clx-err' }, fmt(t('failed'), { msg: error }));
-            if (!data)
-                return h('div', { className: 'clx-muted' }, t('loading'));
-            return h('div', { className: 'clx-memtab' }, h('div', { className: 'clx-memtab-l' }, h(FileTree, { src: data, t, onJump, ctx, sessionId })), h('div', { className: 'clx-memtab-r' }, h(MemoryCard, { src: data, t, onJump, ctx, sessionId }), h(RuntimeCard, { src: data, t, onJump })));
-        }
-        /** 技能: every skill this session's agent can see, what the model was offered, and what it loaded. */
-        function SkillsTab({ sessionId, liveKey, bd, t, onJump }) {
-            const { data, error } = useSources(sessionId, liveKey);
-            if (error && !data)
-                return h('div', { className: 'clx-err' }, fmt(t('failed'), { msg: error }));
-            if (!data)
-                return h('div', { className: 'clx-muted' }, t('loading'));
-            return h(SkillsCard, { src: data, bd, sessionId, t, onJump });
+            };
+            const inline = (id) => (!wide && current === id ? h('div', { className: 'clx-tl-inline clx-sp-inline' }, panelFor(id)) : null);
+            const list = h('div', { className: 'clx-tlists' }, h('div', { className: 'clx-msgsearch clx-tsearch' }, h('svg', { width: 13, height: 13, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', 'aria-hidden': true }, h('circle', { cx: 11, cy: 11, r: 6.5 }), h('path', { d: 'M16 16l4 4' })), h('input', { value: q, placeholder: t('src.search'), onChange: (e) => setQ(e.target.value) }), q ? h('button', { className: 'clx-msgclear', onClick: () => setQ('') }, '×') : null), h('div', { className: 'clx-card clx-tcard' }, h('div', { className: 'clx-card-head' }, h('h4', null, t('nav.memory')), h('span', { className: 'clx-muted' }, active.length ? fmt(t('src.memoryCount'), { n: active.length, t: fmtK(memTok) }) : t('src.memoryZero'))), memShown.length ? memShown.map((f) => {
+                const id = `m:${f.displayPath}`;
+                return h(React.Fragment, { key: id }, h(SrcLine, {
+                    color: CAT_COLOR.memory, name: f.displayPath, title: f.path, sel: current === id, onClick: () => pick(id), dim: f.status !== 'active',
+                    badge: [t(`src.mem.${f.status}`), f.updates ? fmt(t('src.updates'), { n: f.updates }) : null].filter(Boolean).join(' · '),
+                    tok: f.tokens ? fmtK(f.tokens) : '—',
+                }), inline(id));
+            }) : h('div', { className: 'clx-tempty clx-muted' }, query ? t('msg.none') : t('src.memNoneShort'))), h('div', { className: 'clx-card clx-tcard' }, h('div', { className: 'clx-card-head' }, h('h4', null, t('src.skills')), h('span', { className: 'clx-muted' }, rows.length ? fmt(t('src.skillsShort'), { n: rows.length, l: loaded.length, lt: fmtK(loadTok), c: inCat.length, ct: fmtK(catTok) }) : '')), rows.length ? h('div', { className: 'clx-sp-filters' }, ['all', 'loaded', 'catalog', 'hidden'].map((k) => h('button', { key: k, className: 'clx-chipbtn', 'aria-pressed': filter === k, onClick: () => setFilter(k) }, t(`src.f.${k}`), h('small', null, ` ${k === 'all' ? rows.length : k === 'loaded' ? loaded.length : k === 'catalog' ? inCat.length : rows.length - inCat.length}`)))) : null, sk.registryAvailable === false ? h('div', { className: 'clx-note', style: { padding: '0 8px 4px' } }, t('src.noRegistry')) : null, skillList.length ? skillList.map((r) => {
+                const id = `s:${r.name}`;
+                return h(React.Fragment, { key: id }, h(SrcLine, {
+                    color: r.loads.length ? CAT_COLOR.skills : r.cat ? 'color-mix(in srgb, #EDC948 45%, transparent)' : 'var(--dsw-alias-border-l3)',
+                    name: r.name, title: r.reg?.description || r.cat?.description || '', sel: current === id, onClick: () => pick(id), dim: !r.cat && !r.loads.length,
+                    badge: r.loads.length ? fmt(t('src.loadedN'), { n: r.loads.length }) : r.cat ? t('src.inCatalog') : r.reg && !r.reg.modelInvocable ? t('src.userOnly') : t('src.notInCatalog'),
+                    tok: cost[r.name] ? fmtK(cost[r.name]) : '',
+                }), inline(id));
+            }) : h('div', { className: 'clx-tempty clx-muted' }, rows.length ? t('src.skillsNone') : t('src.skillsZero')), !query && skillShown.length > 12 ? h('button', { className: 'clx-chipbtn clx-tmore', onClick: () => setAllSkills(!allSkills) }, allSkills ? t('ui.collapseAll') : fmt(t('tools.showAllDefs'), { n: skillShown.length })) : null), h('div', { className: 'clx-card clx-tcard' }, h('div', { className: 'clx-card-head' }, h('h4', null, t('src.env'))), rt.length ? h(React.Fragment, null, h(SrcLine, { color: CAT_COLOR.injected, name: t('src.runtime'), badge: fmt(t('src.itemsN'), { n: rt.length }), tok: '', sel: current === 'rt', onClick: () => pick('rt') }), inline('rt')) : null, tree.length ? h(React.Fragment, null, h(SrcLine, { color: '#5DA9A0', name: t('lay.title'), badge: fmt(t('src.treeSum'), { e: treeExists, l: treeLoaded }), tok: '', sel: current === 'ft', onClick: () => pick('ft') }), inline('ft')) : null));
+            return h('div', { className: 'clx-sources2', ref: rootRef }, h('div', { className: 'clx-tiles clx-tsum' }, h(Stat, { k: t('src.sum.mem'), v: fmtInt(active.length), sub: active.length ? ` ≈${fmtK(memTok)}` : undefined }), h(Stat, { k: t('src.sum.loaded'), v: fmtInt(loaded.length), sub: loaded.length ? ` ${fmtK(loadTok)}` : undefined }), h(Stat, { k: t('src.sum.catalog'), v: fmtInt(inCat.length), sub: catTok ? ` ${fmtK(catTok)}` : undefined }), h(Stat, { k: t('src.sum.all'), v: fmtInt(rows.length) }), h(Stat, { k: t('src.sum.rt'), v: fmtInt(rt.length) })), wide
+                ? h('div', { className: 'clx-tsplit' }, list, h('aside', { className: 'clx-mside' }, current ? panelFor(current) : h('div', { className: 'clx-mside-empty' }, t('src.pick'))))
+                : list);
         }
         /** Pixel width of an element, so charts draw at their real size (fixed text, fixed height). */
         function useWidth(fallback) {
@@ -2694,7 +3615,7 @@ part({
             }).join(', ') : (s.stages.includes('assistant') ? t('flow.textOnly') : '—');
             return h('div', { className: `clx-flow-step${sel ? ' sel' : ''}`, onClick: onPick, title: s.stages.map((x) => t(`flow.n.${x}`)).join(' → ') }, h('span', { className: 'clx-muted', style: { fontVariantNumeric: 'tabular-nums' } }, `#${s.step}`), h('span', { className: 'clx-flow-step-tools' }, s.status === 'running' ? h('i', { className: 'clx-live-dot', style: { background: LIVE_COLOR.running, marginRight: 5 } }) : null, tools, s.errors ? h('span', { className: 'clx-err' }, ` ⚠${s.errors}`) : null, s.status === 'interrupted' ? h('span', { className: 'clx-warn' }, ` · ${t('flow.status.interrupted')}`) : null), h('span', { className: 'clx-flow-step-ctx', title: s.promptTokens ? fmtInt(s.promptTokens) : '' }, h('span', { className: 'clx-flow-mini' }, h('span', { style: { width: `${w}%` } })), h('span', { className: 'clx-muted' }, s.promptTokens ? fmtK(s.promptTokens) : '—')));
         }
-        function FlowTab({ sessionId, liveKey, bd, t }) {
+        function FlowTab({ sessionId, liveKey, bd, t, onJump }) {
             const [data, setData] = useState(null);
             const [error, setError] = useState(null);
             const [selKey, setSelKey] = useState(null);
@@ -2791,11 +3712,11 @@ part({
                     const comp = compositionAt(bd, sel);
                     const u = sel.usage;
                     const dur = sel.endTime && sel.startTime ? sel.endTime - sel.startTime : sel.status === 'running' ? now - sel.startTime : undefined;
-                    return h('div', { className: 'clx-card' }, h('div', { className: 'clx-flow-status' }, h('b', null, fmt(t('flow.where'), { t: sel.turn, s: sel.step })), h('span', { className: sel.status === 'error' ? 'clx-err' : sel.status === 'interrupted' ? 'clx-warn' : 'clx-muted' }, t(`flow.status.${sel.status}`)), h('span', { style: { marginLeft: 'auto', display: 'flex', gap: 6 } }, h('button', { className: 'clx-chipbtn', disabled: selIdx <= 0, onClick: () => pick(steps[selIdx - 1]) }, `‹ ${t('flow.prev')}`), h('button', { className: 'clx-chipbtn', disabled: selIdx >= steps.length - 1, onClick: () => pick(steps[selIdx + 1]) }, `${t('flow.next')} ›`), h('button', { className: 'clx-chipbtn', 'aria-pressed': true, onClick: () => pick(null) }, t('flow.backLive')))), h('div', { className: 'clx-muted', style: { fontSize: 12, margin: '2px 0 8px' } }, [sel.startTime ? new Date(sel.startTime).toLocaleString() : null, dur !== undefined ? fmtDur(dur) : null, `#${sel.startSeq}${sel.endSeq ? `–${sel.endSeq}` : ''}`].filter(Boolean).join(' · ')), h('h4', null, t('flow.path')), h('div', { className: 'clx-flow-path' }, sel.stages.map((x, i) => h('span', { key: i, className: 'clx-flow-chip' }, h('b', null, i + 1), ` ${t(`flow.n.${x}`)}`))), sel.tools.length ? h('div', { style: { fontSize: 12, marginTop: 8 } }, h('span', { className: 'clx-muted' }, `${t('flow.calls')}: `), sel.tools.join(', ')) : null, sel.turnEnd ? h('div', { style: { fontSize: 12, marginTop: 4 } }, h('span', { className: 'clx-muted' }, `${t('flow.n.turnEnd')}: `), sel.turnEnd) : null, h('h4', { style: { marginTop: 12 } }, t('flow.ctxAt')), h('div', { className: 'clx-flow-big' }, h('b', null, fmtK(comp.total)), h('span', { className: 'clx-muted' }, ` / ${fmtK(win)} · ${pct(comp.total, win)}`)), u ? h('div', { className: 'clx-muted', style: { fontSize: 12 } }, fmt(t('flow.request'), { c: fmtK(u.cacheRead || 0), r: pct(u.cacheRead || 0, sel.promptTokens || 0, 0), o: fmtK(u.output || 0) })) : null, h(CompositionBar, { by: comp.by, win, t }), h('div', { className: 'clx-muted', style: { fontSize: 11.5 } }, t(comp.exact ? 'flow.ctxEst' : 'flow.ctxEstNoUsage')));
+                    return h('div', { className: 'clx-card' }, h('div', { className: 'clx-flow-status' }, h('b', null, fmt(t('flow.where'), { t: sel.turn, s: sel.step })), h('span', { className: sel.status === 'error' ? 'clx-err' : sel.status === 'interrupted' ? 'clx-warn' : 'clx-muted' }, t(`flow.status.${sel.status}`)), h('span', { style: { marginLeft: 'auto', display: 'flex', gap: 6 } }, h('button', { className: 'clx-chipbtn', disabled: selIdx <= 0, onClick: () => pick(steps[selIdx - 1]) }, `‹ ${t('flow.prev')}`), h('button', { className: 'clx-chipbtn', disabled: selIdx >= steps.length - 1, onClick: () => pick(steps[selIdx + 1]) }, `${t('flow.next')} ›`), h('button', { className: 'clx-chipbtn', 'aria-pressed': true, onClick: () => pick(null) }, t('flow.backLive')))), h('div', { className: 'clx-muted', style: { fontSize: 12, margin: '2px 0 8px' } }, [sel.startTime ? new Date(sel.startTime).toLocaleString() : null, dur !== undefined ? fmtDur(dur) : null, `#${sel.startSeq}${sel.endSeq ? `–${sel.endSeq}` : ''}`].filter(Boolean).join(' · ')), h('h4', null, t('flow.path')), h('div', { className: 'clx-flow-path' }, sel.stages.map((x, i) => h('span', { key: i, className: 'clx-flow-chip' }, h('b', null, i + 1), ` ${t(`flow.n.${x}`)}`))), h('h4', { style: { marginTop: 10 } }, t('sd.story')), h(StepStory, { bd, st: sel, t, onJump }), sel.turnEnd ? h('div', { style: { fontSize: 12, marginTop: 4 } }, h('span', { className: 'clx-muted' }, `${t('flow.n.turnEnd')}: `), sel.turnEnd) : null, h('h4', { style: { marginTop: 12 } }, t('flow.ctxAt')), h('div', { className: 'clx-flow-big' }, h('b', null, fmtK(comp.total)), h('span', { className: 'clx-muted' }, ` / ${fmtK(win)} · ${pct(comp.total, win)}`)), u ? h('div', { className: 'clx-muted', style: { fontSize: 12 } }, fmt(t('flow.request'), { c: fmtK(u.cacheRead || 0), r: pct(u.cacheRead || 0, sel.promptTokens || 0, 0), o: fmtK(u.output || 0) })) : null, h(CompositionBar, { by: comp.by, win, t }), h('div', { className: 'clx-muted', style: { fontSize: 11.5 } }, t(comp.exact ? 'flow.ctxEst' : 'flow.ctxEstNoUsage')));
                 })()
                 : (() => {
                     const ph = live?.phase || 'idle';
-                    return h('div', { className: 'clx-card' }, h('h4', null, t('flow.live')), h('div', { className: 'clx-flow-status' }, h('i', { className: `clx-live-dot${ph === 'idle' ? '' : ' on'}`, style: { background: LIVE_COLOR[ph] } }), h('b', null, t(`flow.live.${ph}`)), live?.turn ? h('span', { className: 'clx-muted' }, live.step ? fmt(t('flow.where'), { t: live.turn, s: live.step }) : fmt(t('msg.turn'), { n: live.turn })) : null), h('div', { style: { fontSize: 12.5, marginTop: 6 } }, h('span', { className: 'clx-muted' }, `${t('flow.stage')}: `), h('b', null, t(`flow.n.${live?.stage}`) || '—'), ph === 'idle' ? h('span', { className: 'clx-muted' }, ` · ${t('flow.idleHint')}`) : null), curStep ? h('div', { className: 'clx-muted', style: { fontSize: 12, marginTop: 2 } }, `${fmt(t('flow.stepFor'), { d: fmtDur(now - curStep.startTime) })}${curStep.tools.length ? ` · ${curStep.tools.join(', ')}` : ''}`) : null, live?.jobs?.length ? h('div', { style: { marginTop: 8, fontSize: 12 } }, h('div', { className: 'clx-muted' }, t('flow.jobs')), live.jobs.map((j) => h('div', { key: j.job, className: 'clx-flow-job' }, h('i', { className: 'clx-live-dot on', style: { background: LIVE_COLOR.tool } }), ` ${j.label} `, h('span', { className: 'clx-muted' }, fmtDur(now - j.startedAt))))) : null, live?.approvals?.length ? h('div', { style: { marginTop: 8, fontSize: 12 } }, h('div', { className: 'clx-warn' }, t('flow.approvals')), live.approvals.map((a) => h('div', { key: a.seq }, a.title))) : null, live?.lastSeq !== undefined ? h('div', { className: 'clx-flow-now', style: { fontSize: 12 } }, h('span', { className: 'clx-muted' }, `${t('flow.lastEvent')} · #${live.lastSeq} · ${fmt(t('flow.ago'), { d: fmtDur(Math.max(0, now - live.lastTime)) })}`), h('div', { className: 'clx-flow-now-text' }, h('b', null, t(`flow.n.${live.lastStage}`)), ' ', live.lastTitle)) : null, h('h4', { style: { marginTop: 12 } }, t('flow.ctxNow')), h('div', { className: 'clx-flow-big' }, h('b', null, fmtK(s.used)), h('span', { className: 'clx-muted' }, ` / ${fmtK(win)} · ${pct(s.used, win)}`), s.comp?.auto && s.comp.thresholdTokens ? h('span', { className: s.used >= s.comp.thresholdTokens ? 'clx-warn' : 'clx-muted', style: { fontSize: 12 } }, ` · ${fmt(t('flow.threshold'), { t: fmtK(s.comp.thresholdTokens) })}`) : null), h(CompositionBar, { by: s.byCat ? Object.fromEntries(Object.entries(s.byCat).map(([k, c]) => [k, c.tokens])) : {}, win, t }));
+                    return h('div', { className: 'clx-card' }, h('h4', null, t('flow.live')), h('div', { className: 'clx-flow-status' }, h('i', { className: `clx-live-dot${ph === 'idle' ? '' : ' on'}`, style: { background: LIVE_COLOR[ph] } }), h('b', null, t(`flow.live.${ph}`)), live?.turn ? h('span', { className: 'clx-muted' }, live.step ? fmt(t('flow.where'), { t: live.turn, s: live.step }) : fmt(t('msg.turn'), { n: live.turn })) : null), h('div', { style: { fontSize: 12.5, marginTop: 6 } }, h('span', { className: 'clx-muted' }, `${t('flow.stage')}: `), h('b', null, t(`flow.n.${live?.stage}`) || '—'), ph === 'idle' ? h('span', { className: 'clx-muted' }, ` · ${t('flow.idleHint')}`) : null), curStep ? h('div', { className: 'clx-muted', style: { fontSize: 12, marginTop: 2 } }, `${fmt(t('flow.stepFor'), { d: fmtDur(now - curStep.startTime) })}${curStep.tools.length ? ` · ${curStep.tools.join(', ')}` : ''}`) : null, live?.jobs?.length ? h('div', { style: { marginTop: 8, fontSize: 12 } }, h('div', { className: 'clx-muted' }, t('flow.jobs')), live.jobs.map((j) => h('div', { key: j.job, className: 'clx-flow-job' }, h('i', { className: 'clx-live-dot on', style: { background: LIVE_COLOR.tool } }), ` ${j.label} `, h('span', { className: 'clx-muted' }, fmtDur(now - j.startedAt))))) : null, live?.approvals?.length ? h('div', { style: { marginTop: 8, fontSize: 12 } }, h('div', { className: 'clx-warn' }, t('flow.approvals')), live.approvals.map((a) => h('div', { key: a.seq }, a.title))) : null, live?.lastSeq !== undefined ? h('div', { className: 'clx-flow-now', style: { fontSize: 12 } }, h('span', { className: 'clx-muted' }, `${t('flow.lastEvent')} · #${live.lastSeq} · ${fmt(t('flow.ago'), { d: fmtDur(Math.max(0, now - live.lastTime)) })}`), h('div', { className: 'clx-flow-now-text' }, h('b', null, t(`flow.n.${live.lastStage}`)), ' ', live.lastTitle)) : null, (curStep || steps[steps.length - 1]) ? h(React.Fragment, null, h('h4', { style: { marginTop: 10 } }, t('sd.story')), h(StepStory, { bd, st: curStep || steps[steps.length - 1], t, onJump })) : null, h('h4', { style: { marginTop: 12 } }, t('flow.ctxNow')), h('div', { className: 'clx-flow-big' }, h('b', null, fmtK(s.used)), h('span', { className: 'clx-muted' }, ` / ${fmtK(win)} · ${pct(s.used, win)}`), s.comp?.auto && s.comp.thresholdTokens ? h('span', { className: s.used >= s.comp.thresholdTokens ? 'clx-warn' : 'clx-muted', style: { fontSize: 12 } }, ` · ${fmt(t('flow.threshold'), { t: fmtK(s.comp.thresholdTokens) })}`) : null), h(CompositionBar, { by: s.byCat ? Object.fromEntries(Object.entries(s.byCat).map(([k, c]) => [k, c.tokens])) : {}, win, t }));
                 })();
             return h('div', { className: 'clx-flow-wrap' }, h('div', { className: 'clx-card clx-flow-diagram' }, h('div', { className: 'clx-muted', style: { fontSize: 11.5, marginBottom: 4 } }, sel ? fmt(t('flow.legend.sel'), { t: sel.turn, s: sel.step }) : t('flow.legend.live')), h(FlowDiagram, { t, totals: data.counts || {}, badges, path, focus, phase, goal: g, onPick: pickStage })), h('div', { className: 'clx-flow-side-panel' }, statusCard, g ? h('div', { className: 'clx-card' }, h('h4', null, t('flow.goal')), h('div', { style: { fontWeight: 600, marginBottom: 4 } }, g.objective), h('div', { className: 'clx-kv' }, kv(t('flow.goal.phase'), t(`flow.phase.${g.phase}`) || g.phase), kv(t('flow.goal.rounds'), `${g.roundsStarted ?? 0} / ${g.maxGoalRounds ?? '∞'}`), g.blockedReason ? kv(t('flow.goal.blocked'), typeof g.blockedReason === 'string' ? g.blockedReason : JSON.stringify(g.blockedReason)) : null), (data.goalHistory || []).length ? h('div', { style: { marginTop: 8, fontSize: 12 } }, data.goalHistory.map((x) => h('div', { key: x.seq, className: 'clx-flow-log' }, h('span', { className: 'clx-muted' }, fmtTime(x.time)), ` ${x.operation}${x.phase ? ` → ${x.phase}` : ''}`))) : null) : null, h('div', { className: 'clx-card' }, h('h4', null, `${t('flow.trajectory')} · ${fmt(t('flow.stepCount'), { n: steps.length + (data.stepsTruncated || 0) })}`), data.stepsTruncated ? h('div', { className: 'clx-muted', style: { fontSize: 11.5 } }, fmt(t('flow.stepsTruncated'), { n: data.stepsTruncated })) : null, steps.length ? h('div', { className: 'clx-flow-steps', ref: listRef, onScroll: onListScroll }, turnNums.map((n) => {
                 const tu = turnsInfo.get(n) || {};
@@ -2815,19 +3736,29 @@ part({
                 return `${m}m ${s % 60}s`;
             return `${Math.floor(m / 60)}h ${m % 60}m`;
         }
-        /** The Context Lens View: always the Conversation's own session. */
         const NAV_ICON = {
             overview: ['M12 3a9 9 0 1 0 9 9', 'M12 3a9 9 0 0 1 9 9h-9z'],
+            analyze: ['M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z', 'M19 16l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z'],
+            prompt: ['M6 3h9l4 4v14H6z', 'M9 11h7', 'M9 15h7', 'M9 7h3'],
             flow: ['M6 4h5v5H6z', 'M13 15h5v5h-5z', 'M8.5 9v3.5h7V15', 'M17 6.5h3'],
             messages: ['M4 6h16', 'M4 11h16', 'M4 16h10'],
             tools: ['M8 5 4 12l4 7', 'M16 5l4 7-4 7', 'M13.5 5l-3 14'],
-            skills: ['M12 3.5l2.4 5.1 5.6.7-4.1 3.9 1 5.6-4.9-2.7-4.9 2.7 1-5.6L4 9.3l5.6-.7z'],
-            memory: ['M5 4h9a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z', 'M5 17a3 3 0 0 1 3-3h9', 'M19 7v13'],
+            sources: ['M5 4h9a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z', 'M5 17a3 3 0 0 1 3-3h9', 'M19 7v13'],
         };
-        const NAVS = ['overview', 'flow', 'messages', 'tools', 'skills', 'memory'];
+        const NAVS = ['overview', 'prompt', 'messages', 'tools', 'sources', 'analyze'];
         const NAV_STORE = 'dsh-context-lens:nav';
+        const NAV_OLD = { flow: 'overview', skills: 'sources', memory: 'sources', system: 'sources' };
         function NavIcon({ k }) {
-            return h('svg', { width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true }, (NAV_ICON[k] || []).map((d, i) => h('path', { key: i, d })));
+            return h('svg', { width: 15, height: 15, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true }, (NAV_ICON[k] || []).map((d, i) => h('path', { key: i, d })));
+        }
+        /** Nearest ancestor that scrolls, so a section switch can start at the top. */
+        function scrollParent(el) {
+            for (let p = el?.parentElement; p; p = p.parentElement) {
+                const oy = getComputedStyle(p).overflowY;
+                if ((oy === 'auto' || oy === 'scroll') && p.scrollHeight > p.clientHeight)
+                    return p;
+            }
+            return null;
         }
         /** The Context Lens View: always the Conversation's own session, always live. */
         function DetailPane(props) {
@@ -2837,12 +3768,13 @@ part({
             const [nav, setNavState] = useState(() => {
                 try {
                     const v = localStorage.getItem(NAV_STORE);
-                    return NAVS.includes(v) ? v : v === 'system' ? 'memory' : 'overview';
+                    return NAVS.includes(v) ? v : NAV_OLD[v] || 'overview';
                 }
                 catch {
                     return 'overview';
                 }
             });
+            const paneRef = useRef(null);
             const setNav = (k) => {
                 setNavState(k);
                 try {
@@ -2850,6 +3782,21 @@ part({
                 }
                 catch { }
             };
+            // each section opens at its top, not at the scroll offset the last one left
+            const firstNav = useRef(true);
+            useLayoutEffect(() => {
+                if (firstNav.current) {
+                    firstNav.current = false;
+                    return;
+                }
+                const pane = paneRef.current;
+                const sc = scrollParent(pane);
+                if (!pane || !sc)
+                    return;
+                const top = pane.getBoundingClientRect().top - sc.getBoundingClientRect().top;
+                if (top < 0)
+                    sc.scrollTop += top;
+            }, [nav]);
             const [focus, setFocus] = useState(null);
             // the selected section's pill slides between buttons
             const navRef = useRef(null);
@@ -2873,12 +3820,30 @@ part({
             const pressure = useSafeProjection(props, 'contextPressure');
             const liveKey = pressure ? `${pressure.pressureTokens}:${pressure.projectedTokens}` : '';
             const { data, error, loading, reload } = useBreakdown(sessionId, liveKey, !!sessionId, pressure ? 0 : 5000);
+            const live = data ? `${liveKey}|${data.logRevision}` : liveKey;
+            const { flow } = useFlow(sessionId, live);
+            const series = useStepSeries(data, flow);
+            const [stepKey, setStepKey] = useState(null);
+            const [stepOnly, setStepOnly] = useState(false);
+            const [askSeqs, setAskSeqs] = useState([]);
+            const ask = (seq) => { setAskSeqs((a) => (a.includes(seq) ? a : [...a, seq].slice(-6))); setNav('analyze'); };
+            const selIdx = series.length ? (stepKey === null ? series.length - 1 : Math.max(0, series.findIndex((x) => x.st.startSeq === stepKey))) : -1;
+            const diff = useMemo(() => (data && selIdx >= 0 ? stepDiff(data, series, selIdx) : null), [data, series, selIdx]);
+            const onSel = (i) => {
+                if (i === null || i >= series.length - 1) {
+                    setStepKey(null);
+                    setStepOnly(false);
+                }
+                else
+                    setStepKey(series[i].st.startSeq);
+            };
             const [updated, setUpdated] = useState(0);
             useEffect(() => { if (data)
                 setUpdated(Date.now()); }, [data]);
             const [preset, setPreset] = useState(null);
             const jump = (seq) => {
-                setFocus(seq);
+                setFocus(null);
+                requestAnimationFrame(() => setFocus(seq));
                 setNav('messages');
             };
             const showCat = (cat) => {
@@ -2898,18 +3863,20 @@ part({
                 body = h('div', { className: 'clx-muted' }, t('pop.empty'));
             }
             else {
-                const live = `${liveKey}|${data.logRevision}`;
-                body = h(React.Fragment, null, error ? h('div', { className: 'clx-err', style: { fontSize: 12, marginBottom: 8 } }, fmt(t('failed'), { msg: error })) : null, nav === 'overview' ? h(Overview, { data, t, onJump: jump, onShowCat: showCat, sessionId })
-                    : nav === 'flow' ? h(FlowTab, { sessionId, liveKey: live, bd: data, t })
-                        : nav === 'messages' ? h(Messages, { data, t, focus, sessionId, preset, ctx, cwd: data.cwd })
-                            : nav === 'tools' ? h(Tools, { data, t, sessionId, ctx, cwd: data.cwd })
-                                : nav === 'skills' ? h(SkillsTab, { sessionId, liveKey: live, bd: data, t, onJump: jump })
-                                    : nav === 'memory' ? h(MemoryTab, { sessionId, liveKey: live, t, onJump: jump, ctx })
-                                        : h(Overview, { data, t, onJump: jump, onShowCat: showCat, sessionId }));
+                body = h(React.Fragment, null, error ? h('div', { className: 'clx-err', style: { fontSize: 12, marginBottom: 8 } }, fmt(t('failed'), { msg: error })) : null, nav === 'analyze' ? h(AnalyzeView, { data, t, sessionId, onJump: jump, seqs: askSeqs, setSeqs: setAskSeqs })
+                    : nav === 'prompt' ? h(PromptView, { data, t, diff, series, onSel, sessionId, ctx, cwd: data.cwd, onJump: jump, onAsk: ask })
+                        : nav === 'messages' ? h(Messages, { data, flow, t, focus, sessionId, preset, ctx, cwd: data.cwd, diff, stepOnly })
+                            : nav === 'tools' ? h(Tools, { data, t, sessionId, ctx, cwd: data.cwd, diff })
+                                : nav === 'sources' ? h(SourcesTab, { sessionId, liveKey: live, bd: data, t, onJump: jump, ctx })
+                                    : h(Overview, { data, flow, t, onJump: jump, onShowCat: showCat, onNav: setNav, sessionId, liveKey: live, series, diff, onSel }));
             }
             const s = data ? summarize(data) : null;
-            const toolbar = h('div', { className: 'clx-toolbar' }, h('div', { className: 'clx-col clx-toolbar-in' }, h('nav', { className: 'clx-segnav', role: 'tablist', 'aria-label': t('tab.title'), ref: navRef }, NAVS.map((k) => h('button', { key: k, role: 'tab', 'aria-selected': nav === k, onClick: () => setNav(k) }, h(NavIcon, { k }), h('span', null, t(`nav.${k}`))))), h('div', { className: 'clx-toolbar-meta', title: updated ? fmt(t('live.updated'), { time: new Date(updated).toLocaleString() }) : '' }, s && s.win ? h(React.Fragment, null, h(Ring, { ratio: s.used / s.win, size: 16, stroke: 2.6 }), h('b', null, pct(s.used, s.win)), h('span', { className: 'clx-muted' }, `${fmtK(s.used)} / ${fmtK(s.win)}`)) : null, h('span', { className: 'clx-toolbar-live' }, h('i', { className: `clx-live-dot${loading ? ' on' : ''}`, style: { background: error ? 'var(--dsw-alias-state-error-primary)' : 'var(--dsw-alias-state-success-primary)' } }), t('live.on')))));
-            return h('div', { className: 'clx-pane notranslate', translate: 'no' }, h(Style), toolbar, h('main', { className: 'clx-main' }, h('div', { className: 'clx-col' }, body)));
+            const counts = data ? {
+                messages: (data.nodes || []).length,
+                tools: (data.invocations || []).length,
+            } : {};
+            const toolbar = h('div', { className: 'clx-toolbar' }, h('div', { className: 'clx-col clx-toolbar-in' }, h('nav', { className: 'clx-segnav', role: 'tablist', 'aria-label': t('tab.title'), ref: navRef }, NAVS.map((k) => h('button', { key: k, role: 'tab', 'aria-selected': nav === k, onClick: () => setNav(k) }, h(NavIcon, { k }), h('span', null, t(`nav.${k}`)), counts[k] ? h('small', { className: 'clx-navcount' }, counts[k] > 999 ? `${Math.floor(counts[k] / 1000)}k+` : counts[k]) : null))), h('div', { className: 'clx-toolbar-meta', title: updated ? fmt(t('live.updated'), { time: new Date(updated).toLocaleString() }) : '' }, s && s.win ? h(React.Fragment, null, h(Ring, { ratio: s.used / s.win, size: 16, stroke: 2.6 }), h('b', null, pct(s.used, s.win)), h('span', { className: 'clx-muted' }, `${fmtK(s.used)} / ${fmtK(s.win)}`)) : null, h('span', { className: 'clx-toolbar-live' }, h('i', { className: `clx-live-dot${loading ? ' on' : ''}`, style: { background: error ? 'var(--dsw-alias-state-error-primary)' : 'var(--dsw-alias-state-success-primary)' } }), t('live.on')))));
+            return h('div', { className: 'clx-pane notranslate', translate: 'no', ref: paneRef }, h(Style), toolbar, h('main', { className: 'clx-main' }, h('div', { className: 'clx-col' }, data && diff ? h(StepBar, { series, diff, onSel, t, onNav: setNav, stepOnly, setStepOnly, nav }) : null, body)));
         }
         // ================================================================== registration
         return {

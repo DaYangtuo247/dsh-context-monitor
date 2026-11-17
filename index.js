@@ -11,6 +11,7 @@
  *   POST /api/context-lens/skill      { sessionId, name } -> one skill's full instructions
  *   POST /api/context-lens/tool       { sessionId, name } -> one tool's full description and parameters
  *   POST /api/context-lens/sessions   {}                 -> live sessions the Host currently holds
+ *   POST /api/context-lens/analyze-*  {...}              -> an on-demand, session-independent model analysis of the context (manual start only)
  *
  * Numbers come from the `tokenMeter` service (the same measurement compaction
  * uses). Per-node tokens are split into categories by event type and message
@@ -1182,6 +1183,51 @@ export function apply(ctx) {
       }
     }
 
+    // What this agent actually reads, by the rules of the two plugins that read it:
+    // dsh-agent-instructions (memory files) and dsh-skill-filesystem (skill roots).
+    const layout = await (async () => {
+      const fileRow = async (abs, name) => {
+        const st = await exists(abs)
+        const f = [...files.values()].find((x) => x.path === abs)
+        return { name, path: abs, exists: !!st, size: st?.size, loaded: loadedAbs.has(abs), tokens: f?.status === 'active' ? f.tokens : undefined, seq: f?.lastSeq }
+      }
+      const global = [
+        { ...(await fileRow(path.join(dshHome, 'AGENTS.md'), 'AGENTS.md')), home: 'dsh', dir: dshHome },
+        { ...(await fileRow(path.join(agentsHome, 'AGENTS.md'), 'AGENTS.md')), home: 'agents', dir: agentsHome },
+      ]
+      const levels = []
+      for (const dir of chain) {
+        const rows = await Promise.all(INSTRUCTION_CANDIDATES.map((nm) => fileRow(path.join(dir, nm), nm)))
+        levels.push({ dir, rel: path.relative(root ?? cwd, dir) || '.', isRoot: dir === (root ?? cwd), isCwd: dir === cwd, files: rows })
+      }
+      // deeper levels join once the agent reads or writes under them
+      const inChain = new Set(levels.flatMap((l) => l.files.map((f) => f.path)))
+      const globalSet = new Set(global.map((g) => g.path))
+      const deeper = []
+      for (const f of files.values()) {
+        if (!f.path || inChain.has(f.path) || globalSet.has(f.path)) continue
+        deeper.push({ name: path.basename(f.path), path: f.path, rel: cwd ? path.relative(cwd, path.dirname(f.path)) : path.dirname(f.path), exists: !!(await exists(f.path)), loaded: f.status === 'active', status: f.status, tokens: f.tokens, seq: f.lastSeq })
+      }
+      // skill roots in the provider's precedence order, with what each one contributed
+      const bySource = {}
+      for (const s of registry || []) (bySource[s.source ?? 'other'] ||= []).push(s)
+      const top = root ?? cwd
+      const skillDir = async (source, abs) => {
+        const st = await statOf(abs)
+        const disk = st?.dir ? await skillsIn(abs) : undefined
+        return { source, path: abs, exists: !!st?.dir, onDisk: disk?.length ?? 0, registered: (bySource[source] || []).length }
+      }
+      const skillRoots = []
+      if (top) skillRoots.push(await skillDir('project-dsh', path.join(top, '.dsh', 'skills')), await skillDir('project-agents', path.join(top, '.agents', 'skills')))
+      const customDirs = [...new Set((bySource.custom || []).map((s) => path.dirname(String(s.path || '').replace(/\/SKILL\.md$/i, ''))).filter(Boolean))]
+      for (const d of customDirs) skillRoots.push({ ...(await skillDir('custom', d)), registered: (bySource.custom || []).filter((s) => String(s.path || '').startsWith(d)).length })
+      skillRoots.push(await skillDir('user-dsh', path.join(dshHome, 'skills')), await skillDir('user-agents', path.join(agentsHome, 'skills')))
+      if ((bySource.bundled || []).length) skillRoots.push({ source: 'bundled', path: path.dirname(String(bySource.bundled[0].path || '').replace(/\/SKILL\.md$/i, '')), exists: true, onDisk: bySource.bundled.length, registered: bySource.bundled.length })
+      const known = new Set(['project-dsh', 'project-agents', 'custom', 'user-dsh', 'user-agents', 'bundled'])
+      const others = Object.entries(bySource).filter(([k]) => !known.has(k)).map(([k, v]) => ({ source: k, count: v.length }))
+      return { home, cwd, root: root ?? null, rootMarker: root ? '.git' : null, global, levels, deeper, skillRoots, otherSkillSources: others }
+    })().catch(() => undefined)
+
     return {
       sessionId: session.id,
       cwd,
@@ -1204,6 +1250,7 @@ export function apply(ctx) {
       runtime,
       timeContext,
       structure,
+      layout,
     }
   }
 
@@ -1549,7 +1596,131 @@ export function apply(ctx) {
     }
   }
 
+  // ---- analysis: ask the session's own model about this context, in a call of its own.
+  // Nothing is written to the session log, and nothing runs until the page asks.
+  const llmRef = { current: undefined }
+  const jobs = new Map()
+  const ANALYZE_SYS = {
+    zh: '你是 dsh（DeepSeek Harness）上下文分析专家。用户给你一份某个 agent 会话的上下文报告，目的是找出 agent 的缺陷、浪费上下文的地方，并给出可操作的改进建议（例如精简工具/技能/记忆、改提示词、避免重复读取、截断大输出、调整压缩策略）。要求：只依据报告里的事实，引用消息用 #序号，数字用报告里的 token；先给结论，再给证据，再给具体改法；证据不足就说明还需要看哪条消息或哪部分内容。回答使用简体中文，简洁，不要复述报告。',
+    en: 'You are an expert on context in dsh (DeepSeek Harness). The user gives you a context report for one agent session, to find the agent\'s defects and wasted context and to get actionable fixes (trim tools/skills/memory, change prompts, avoid repeated reads, truncate large outputs, tune compaction). Rely only on facts in the report, cite messages as #seq, use the report\'s token numbers; give the conclusion first, then evidence, then concrete changes; if evidence is thin, say which message or section you would need. Be concise and do not restate the report.',
+  }
+  const clip = (text, n) => { const v = String(text ?? ''); return v.length > n ? v.slice(0, n) + ' …[+' + (v.length - n) + ' chars]' : v }
+  const partsText = (d) => (d?.parts || []).map((p) => p.text || '').join('\n')
+  const reportFor = (session, include) => {
+    const b = breakdown(session)
+    const f = safe(() => flow(session), undefined)
+    const L = []
+    const comp = b.compaction
+    L.push(`session: ${b.title || b.sessionId} · model ${b.provider || '?'}/${b.model || '?'} · window ${b.contextWindow} · in use ${b.measured?.totalTokens} (${b.measured?.usedSource})`)
+    if (comp) L.push(`compaction: auto=${comp.auto} threshold=${comp.thresholdTokens ?? '?'} remaining=${comp.remainingTokens ?? '?'} events=${(b.compactionEvents || []).length}`)
+    L.push('\n## composition (tokens)')
+    for (const c of b.categories || []) if (c.tokens > 0) L.push(`- ${c.key}: ${Math.round(c.tokens)}${c.count !== undefined ? ` (${c.count})` : ''}`)
+    const called = new Set((b.toolStats || []).map((x) => x.name))
+    const tools = b.tools || []
+    L.push(`\n## tool definitions: ${tools.length}, ${Math.round(b.toolsTokens || 0)} tokens, ${tools.filter((x) => !called.has(x.name)).length} never called`)
+    for (const x of tools.slice(0, 15)) L.push(`- ${x.name}${x.kind === 'mcp' ? ` [mcp:${x.server}]` : ''}: ${Math.round(x.tokens)}${called.has(x.name) ? '' : ' (never called)'}`)
+    L.push('\n## tool usage (calls · call tokens · result tokens · max result)')
+    const errBy = {}
+    for (const x of b.invocations || []) if (x.isError) errBy[x.name] = (errBy[x.name] || 0) + 1
+    for (const x of (b.toolStats || []).slice(0, 12)) L.push(`- ${x.name}: ${x.calls} · ${Math.round(x.callTokens)} · ${Math.round(x.resultTokens)} · ${Math.round(x.maxResult)}${errBy[x.name] ? ` · ${errBy[x.name]} errors` : ''}`)
+    const seen = new Map()
+    for (const x of b.invocations || []) { const k = x.name + ' ' + (x.args || ''); seen.set(k, (seen.get(k) || 0) + 1) }
+    const reps = [...seen.entries()].filter(([, n]) => n >= 2).sort((a, c) => c[1] - a[1]).slice(0, 8)
+    if (reps.length) { L.push('\n## repeated identical calls'); for (const [k, n] of reps) L.push(`- ×${n} ${clip(k, 140)}`) }
+    if (f?.steps?.length) {
+      L.push('\n## steps (turn.step · tools · prompt tokens · status)')
+      for (const st of f.steps.slice(-30)) L.push(`- ${st.turn}.${st.step} · ${(st.tools || []).join(',') || 'text'} · ${st.promptTokens ?? '?'} · ${st.status}${st.errors ? ` · ${st.errors} errors` : ''}`)
+    }
+    L.push('\n## biggest messages (#seq category tool tokens preview)')
+    for (const n of [...(b.nodes || [])].sort((a, c) => c.tokensCal - a.tokensCal).slice(0, 25)) L.push(`- #${n.seq} ${n.category}${n.tool ? ' ' + n.tool : ''} ${Math.round(n.tokensCal)} ${clip(n.preview, 120)}`)
+    const mem = (b.memoryFiles || []).slice(0, 10).map((m) => `${m.displayPath || m.path || m.name}: ${Math.round(m.tokens)}`)
+    if (mem.length) L.push('\n## memory files\n' + mem.map((x) => '- ' + x).join('\n'))
+    const sk = (b.skills || []).slice(0, 15).map((m) => `${m.name}: ${Math.round(m.tokens)}`)
+    if (sk.length) L.push('\n## skills in context\n' + sk.map((x) => '- ' + x).join('\n'))
+    if (include?.system) {
+      L.push('\n## system prompt (full)')
+      for (const n of (b.nodes || []).filter((x) => x.category === 'system').slice(0, 3)) L.push(clip(partsText(safe(() => nodeDetail(session, n.seq))), 9000))
+    }
+    if (include?.tools) {
+      L.push('\n## tool descriptions')
+      for (const x of (safe(() => session.requestHeader())?.tools || []).slice(0, 60)) L.push(`- ${x.name}: ${clip(x.description, 280)}`)
+    }
+    for (const seq of (Array.isArray(include?.seqs) ? include.seqs : []).slice(0, 6)) {
+      if (typeof seq !== 'number') continue
+      L.push(`\n## message #${seq} (full)`)
+      L.push(clip(partsText(safe(() => nodeDetail(session, seq))), 6000))
+    }
+    return L.join('\n')
+  }
+  const buildAnalysis = (session, { question, history, include, lang }) => {
+    const report = reportFor(session, include)
+    const system = ANALYZE_SYS[lang === 'en' ? 'en' : 'zh']
+    const turns = (Array.isArray(history) ? history : []).slice(-8).map((m) => `[${m.role === 'assistant' ? 'assistant' : 'user'}] ${clip(m.text, 4000)}`).join('\n\n')
+    const input = `<context-report>\n${report}\n</context-report>\n\n${turns ? turns + '\n\n' : ''}[user] ${clip(question, 4000)}`
+    const b = breakdown(session)
+    const route = safe(() => session.requestHeader())?.config
+    return { system, input, provider: route?.provider ?? b.provider, model: route?.model ?? b.model, tokens: estText(system) + estText(input) }
+  }
+  const startAnalysis = (session, args) => {
+    const llm = llmRef.current
+    if (!llm) throw new Error('llm service unavailable')
+    const built = buildAnalysis(session, args)
+    if (!built.provider || !built.model) throw new Error('this session has no model route yet; send one message first')
+    const now = Date.now()
+    for (const [id, j] of jobs) if (j.done && now - j.updated > 600000) jobs.delete(id)
+    if (jobs.size > 12) throw new Error('too many analyses; try again shortly')
+    const id = `a${now.toString(36)}${Math.random().toString(36).slice(2, 7)}`
+    const job = { id, text: '', reasoning: '', done: false, error: null, usage: null, inputTokens: built.tokens, model: built.model, updated: now, abort: new AbortController() }
+    jobs.set(id, job)
+    ;(async () => {
+      try {
+        const call = await llm.prepareCall({ provider: built.provider, model: built.model, maxTokens: 4096 }, job.abort.signal)
+        const messages = [{ role: 'user', content: [{ type: 'text', text: built.input }] }]
+        for await (const chunk of call.stream({ ...call.config, messages, system: built.system, signal: job.abort.signal })) {
+          job.updated = Date.now()
+          if (chunk.type === 'text-delta') job.text += chunk.text
+          else if (chunk.type === 'reasoning-delta') job.reasoning += chunk.text
+          else if (chunk.type === 'usage') job.usage = chunk.usage
+          else if (chunk.type === 'finish' && (chunk.reason?.kind === 'error' || chunk.reason?.kind === 'aborted')) job.error = chunk.reason?.failure?.message || chunk.reason.kind
+        }
+      } catch (error) {
+        job.error = errorText(error)
+      } finally {
+        job.done = true
+        job.updated = Date.now()
+      }
+    })()
+    return job
+  }
+
   const handlers = {
+    'analyze-preview': async (req) => {
+      const { sessionId, include, question, history } = await body(req)
+      const session = await getLiveSession(sessionId)
+      if (!session) return unavailable(sessionId)
+      const built = buildAnalysis(session, { question: question || '', history, include })
+      return ok({ ready: !!llmRef.current, provider: built.provider, model: built.model, tokens: built.tokens })
+    },
+    'analyze-start': async (req) => {
+      const { sessionId, question, history, include, lang } = await body(req)
+      const session = await getLiveSession(sessionId)
+      if (!session) return unavailable(sessionId)
+      if (typeof question !== 'string' || !question.trim()) return fail('empty-question', 'empty question')
+      const job = startAnalysis(session, { question, history, include, lang })
+      return ok({ jobId: job.id, inputTokens: job.inputTokens, model: job.model })
+    },
+    'analyze-poll': async (req) => {
+      const { jobId } = await body(req)
+      const job = jobs.get(jobId)
+      if (!job) return fail('job-not-found', 'analysis not found (it may have expired)')
+      return ok({ text: job.text, reasoning: job.reasoning, done: job.done, error: job.error, usage: job.usage, inputTokens: job.inputTokens })
+    },
+    'analyze-stop': async (req) => {
+      const { jobId } = await body(req)
+      const job = jobs.get(jobId)
+      if (job && !job.done) job.abort.abort()
+      return ok({ stopped: !!job })
+    },
     breakdown: async (req) => {
       const { sessionId } = await body(req)
       const session = await getLiveSession(sessionId)
@@ -1610,6 +1781,11 @@ export function apply(ctx) {
   }
 
   // The skills registry and agents service are optional: read them while they are there.
+  ctx.inject(['llm'], (inner) => {
+    const svc = inner.get('llm')
+    llmRef.current = svc
+    inner.effect(() => () => { if (llmRef.current === svc) llmRef.current = undefined }, 'context-lens: llm ref')
+  })
   ctx.inject(['agents'], (inner) => {
     const svc = inner.get('agents')
     agentsRef.current = svc
