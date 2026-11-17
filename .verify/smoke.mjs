@@ -80,7 +80,7 @@ const ctx = {
 mod.factory(() => ReactStub, kit).apply(ctx)
 
 const expectedSlots = [
-  'locale context-lens 619',
+  'locale context-lens 671',
   'slot conversation.composer.dock context-lens 1000',
   'slot conversation.view context-lens 25',
 ]

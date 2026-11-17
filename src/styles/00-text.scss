@@ -5608,3 +5608,230 @@
   color: var(--dsw-alias-state-business-primary);
   background: var(--dsw-alias-interactive-bg-hover);
 }
+
+.clx-pv-tools {
+  display: flex;
+  justify-content: flex-end;
+  margin: -4px 0 6px;
+}
+
+.clx-az-foot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.clx-az-foot .clx-chipbtn {
+  margin-left: auto;
+}
+
+.clx-pv-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.clx-pv-bar .clx-msgsearch {
+  flex: 1 1 200px;
+  min-width: 0;
+}
+
+// ---- prompt view v2: one toolbar block, single-line rows with size bars
+.clx-pv-top {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.clx-pv-title {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+  font-size: 13px;
+}
+
+.clx-pv-title .clx-muted {
+  font-size: 11.5px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.clx-pv-title .clx-chipbtn {
+  margin-left: auto;
+  flex: none;
+}
+
+.clx-pv-top .clx-pv-bar {
+  margin-top: 0;
+}
+
+.clx-pv-top .clx-pv-chips {
+  margin-top: 0;
+  flex: 1 1 100%;
+}
+
+.clx-pv-head .clx-pv-pre {
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  color: var(--dsw-alias-label-secondary);
+}
+
+.clx-pv-head .bar {
+  flex: none;
+  width: 54px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--dsw-alias-border-l1);
+  overflow: hidden;
+}
+
+.clx-pv-head .bar i {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--cat);
+}
+
+.clx-pv-head .tk {
+  flex: none;
+  min-width: 64px;
+  text-align: right;
+}
+
+.clx-pv-head .tk {
+  margin-left: 0;
+}
+
+.clx-pv-item.open {
+  background: color-mix(in srgb, var(--cat) 6%, var(--dsw-alias-settings-card-fill));
+}
+
+.clx-pv-item.open > .clx-pv-head {
+  position: sticky;
+  top: 56px;
+  z-index: 2;
+  background: inherit;
+  border-radius: 2px 8px 0 0;
+  border-bottom: 1px solid var(--dsw-alias-border-l1);
+}
+
+.clx-pv-fixed {
+  border-left: 3px solid var(--dsw-alias-label-tertiary);
+  border-radius: 2px 8px 8px 2px;
+  border-top: 1px solid var(--dsw-alias-border-l1);
+  border-right: 1px solid var(--dsw-alias-border-l1);
+  border-bottom: 1px solid var(--dsw-alias-border-l1);
+  background: var(--dsw-alias-interactive-bg-hover);
+}
+
+.clx-pv-fixed-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 8px 8px;
+}
+
+.clx-pv-text.open {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  cursor: default;
+}
+
+.clx-pv-resp {
+  margin-top: 4px;
+}
+
+// ---- efficiency page
+.clx-eff-bustgo {
+  display: flex;
+  gap: 4px;
+}
+
+.clx-eff-bustflag {
+  color: var(--dsw-alias-state-error-primary);
+}
+
+.clx-eff .clx-diag-row {
+  cursor: default;
+}
+
+.clx-etab {
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.clx-etab-head,
+.clx-etab-row {
+  display: grid;
+  grid-template-columns: 48px 44px minmax(130px, 1.4fr) 84px 72px 60px 48px 72px;
+  gap: 8px;
+  align-items: center;
+  min-width: 660px;
+}
+
+.clx-etab-head {
+  padding: 4px 8px;
+  font-size: 11px;
+  color: var(--dsw-alias-label-tertiary);
+}
+
+.clx-etab-row {
+  width: 100%;
+  padding: 7px 8px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--dsw-alias-label-secondary);
+  text-align: left;
+  cursor: pointer;
+}
+
+.clx-etab-row:hover {
+  background: var(--dsw-alias-interactive-bg-hover);
+}
+
+.clx-etab-row.top {
+  background: color-mix(in srgb, var(--dsw-alias-state-warn-primary) 7%, transparent);
+}
+
+.clx-etab-row.top:hover {
+  background: color-mix(in srgb, var(--dsw-alias-state-warn-primary) 12%, transparent);
+}
+
+.clx-etab-row .add {
+  position: relative;
+  display: block;
+  padding: 2px 6px;
+}
+
+.clx-etab-row .add > i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--dsw-alias-state-business-primary) 18%, transparent);
+}
+
+.clx-etab-row .add > b {
+  position: relative;
+  font-weight: 600;
+  color: var(--dsw-alias-label-primary);
+}
+
+.clx-etab-row .err {
+  color: var(--dsw-alias-state-error-primary);
+}

@@ -538,7 +538,7 @@ function StepBar({ series, diff, onSel, t, onNav, stepOnly, setStepOnly, nav }) 
     h("div", { className: "clx-stepbar-diff" },
       h("span", { className: "clx-muted" }, t("sd.added")),
       diff.added.length
-        ? h("button", { className: `clx-chipbtn${stepOnly && nav === "messages" ? " on" : ""}`, "aria-pressed": stepOnly, onClick: () => { setStepOnly(true); onNav("messages") }, title: t("sd.onlyNew") },
+        ? h("button", { className: `clx-chipbtn${stepOnly && nav === "prompt" ? " on" : ""}`, "aria-pressed": stepOnly, onClick: () => { setStepOnly(true); onNav("prompt") }, title: t("sd.onlyNew") },
           fmt(t("sd.items"), { n: diff.added.length, k: fmtK(diff.addedTok) }))
         : h("span", { className: "clx-muted" }, t("sd.none")),
       diff.byCat.sort((a, b) => Math.abs(b.d) - Math.abs(a.d)).slice(0, 5).map((g) => h("span", { key: g.k, className: "clx-stchip" },
@@ -783,7 +783,7 @@ function MessagesPeek({ data, t, onJump, onNav }) {
   const top = [...nodes].sort((a, b) => b.tokensCal - a.tokensCal).slice(0, 6)
   const sum = nodes.reduce((a, n) => a + n.tokensCal, 0)
   return h('div', { className: 'clx-card clx-peek' },
-    h(CardHead, { t, icon: 'messages', title: t('ov.peek.bigMsgs'), meta: fmt(t('msg.count'), { n: nodes.length, t: fmtK(sum) }), more: () => onNav('messages') }),
+    h(CardHead, { t, icon: 'messages', title: t('ov.peek.bigMsgs'), meta: fmt(t('msg.count'), { n: nodes.length, t: fmtK(sum) }), more: () => onNav('prompt') }),
     top.map((n) => h('div', { key: n.seq, className: 'clx-mrow clx-peekrow', role: 'button', tabIndex: 0, onClick: () => onJump(n.seq), title: `#${n.seq}` },
       h('span', { className: 'clx-mrow-kind', style: { '--cat': CAT_COLOR[n.category] || CAT_COLOR.other } }, t(`k.${n.category}`)),
       h('span', { className: 'clx-mrow-text' }, n.tool ? h('b', { className: 'clx-mrow-tool' }, `${n.tool} `) : null, n.preview || '—'),
@@ -842,10 +842,15 @@ function StepStory({ bd, st, t, onJump }) {
 }
 
 /** The prompt the model read, in the order it read it; picking a step shows that request. */
-function PromptView({ data, t, diff, series, onSel, sessionId, ctx, cwd, onJump, onAsk }) {
-  const [open, setOpen] = useState<number | null>(null)
+function PromptView({ data, t, diff, series, onSel, sessionId, ctx, cwd, onJump, onAsk, focus, preset, stepOnly }) {
+  const [open, setOpen] = useState<number | null>(focus ?? null)
+  const [query, setQuery] = useState("")
+  const [sort, setSort] = useState<"order" | "size">("order")
   const [hide, setHide] = useState<Record<string, boolean>>({})
   const [toolsOpen, setToolsOpen] = useState(false)
+  const [fixedOpen, setFixedOpen] = useState(false)
+  const [roomy, setRoomy] = useState(false)
+  const [limit, setLimit] = useState(150)
   const all = data.nodes || []
   const cut = diff && !diff.last ? diff.cut : Infinity
   const sent = all.filter((n) => n.seq < cut)
@@ -859,6 +864,13 @@ function PromptView({ data, t, diff, series, onSel, sessionId, ctx, cwd, onJump,
   const present = {}
   for (const n of sent) present[n.category] = (present[n.category] || 0) + 1
   const shown = (n) => !hide[n.category]
+  const q = query.trim().toLowerCase()
+  const match = (n) => !q || (n.preview || "").toLowerCase().includes(q) || (n.tool || "").toLowerCase().includes(q) || (n.tools || []).some((x) => x.toLowerCase().includes(q)) || String(n.seq) === q
+  const stepFilter = !!stepOnly && !!diff
+  const inStep = (n) => !!diff && n.seq >= diff.prevCut && n.seq < diff.cut
+  const flat = !!q || sort === "size" || stepFilter
+  const listed = rest.filter((n) => shown(n) && match(n) && (!stepFilter || inStep(n)))
+  const ordered = sort === "size" ? [...listed].sort((x, y) => y.tokensCal - x.tokensCal) : listed
   const cutOf = (x) => x.st.requestSeq ?? x.st.endSeq ?? x.st.startSeq
   const dividers = new Map()
   for (const x of series) {
@@ -868,62 +880,166 @@ function PromptView({ data, t, diff, series, onSel, sessionId, ctx, cwd, onJump,
     if (!dividers.has(key)) dividers.set(key, [])
     dividers.get(key).push(x)
   }
-  const goto = (id) => document.getElementById(id)?.scrollIntoView({ block: "center", behavior: "smooth" })
+  const from = sort === "size" ? 0 : Math.max(0, ordered.length - limit)
+  const vis = sort === "size" ? ordered.slice(0, limit) : ordered.slice(from)
+  const hidden = sort === "size" ? Math.max(0, ordered.length - limit) : from
+  const goto = (id) => {
+    const el = document.getElementById(id)
+    if (el) { el.scrollIntoView({ block: "center", behavior: "smooth" }); return }
+    const seq = Number(String(id).replace("pv-", ""))
+    const idx = ordered.findIndex((n) => n.seq === seq)
+    if (idx < 0) return
+    setLimit(sort === "size" ? idx + 40 : ordered.length - idx + 40)
+    requestAnimationFrame(() => requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ block: "center" })))
+  }
+  // a jump from elsewhere opens its item; a category preset narrows the list to it
+  useEffect(() => {
+    if (focus === undefined || focus === null) return
+    setOpen(focus)
+    setQuery("")
+    setHide({})
+    requestAnimationFrame(() => requestAnimationFrame(() => goto(`pv-${focus}`)))
+  }, [focus])
+  useEffect(() => { if (stepOnly) { setHide({}); setQuery(""); setSort("order") } }, [stepOnly])
+  useEffect(() => {
+    if (!preset) return
+    const only = {}
+    for (const k of CATS) if (k !== preset.cat) only[k] = true
+    setHide(only)
+    setSort("size")
+    setQuery("")
+  }, [preset])
   const segs = [
     ...sys.map((n) => ({ id: `pv-${n.seq}`, w: n.tokensCal, c: CAT_COLOR.system, title: `${t("c.system")} · ${fmtInt(n.tokensCal)}` })),
     { id: "pv-tools", w: toolTok, c: CAT_COLOR.systemTools, title: `${t("c.systemTools")} · ${fmtInt(toolTok)}` },
-    ...rest.map((n) => ({ id: `pv-${n.seq}`, w: n.tokensCal, c: CAT_COLOR[n.category] || CAT_COLOR.other, title: `#${n.seq} ${t(`c.${n.category}`)} · ${fmtInt(n.tokensCal)}` })),
+    ...bucket(rest).map((b) => ({ id: `pv-${b.first.seq}`, w: b.w, c: CAT_COLOR[b.top] || CAT_COLOR.other, title: b.n > 1 ? `#${b.first.seq}–#${b.last.seq} · ${b.n} · ${fmtInt(b.w)}` : `#${b.first.seq} ${t(`c.${b.first.category}`)} · ${fmtInt(b.w)}` })),
   ].filter((x) => x.w > 0)
+  function bucket(list) {
+    const MAX = 160
+    if (list.length <= MAX) return list.map((n) => ({ first: n, last: n, n: 1, w: n.tokensCal, top: n.category }))
+    const size = Math.ceil(list.length / MAX)
+    const out = []
+    for (let i = 0; i < list.length; i += size) {
+      const part = list.slice(i, i + size)
+      const by: Record<string, number> = {}
+      for (const n of part) by[n.category] = (by[n.category] || 0) + n.tokensCal
+      out.push({ first: part[0], last: part[part.length - 1], n: part.length, w: part.reduce((a, n) => a + n.tokensCal, 0), top: Object.entries(by).sort((a, b) => b[1] - a[1])[0][0] })
+    }
+    return out
+  }
+  const maxTok = Math.max(1, ...sent.map((n) => n.tokensCal))
   const itemEl = (n) => {
     const isOpen = open === n.seq
     const color = CAT_COLOR[n.category] || CAT_COLOR.other
     const fresh = diff && n.seq >= diff.prevCut && n.seq < diff.cut
+    const toggle = () => setOpen(isOpen ? null : n.seq)
     return h("div", { key: n.seq, id: `pv-${n.seq}`, className: `clx-pv-item${isOpen ? " open" : ""}${fresh ? " fresh" : ""}`, style: { "--cat": color } },
-      h("div", { className: "clx-pv-head", role: "button", tabIndex: 0, onClick: () => setOpen(isOpen ? null : n.seq),
-        onKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setOpen(isOpen ? null : n.seq) } } },
+      h("div", { className: "clx-pv-head", role: "button", tabIndex: 0, "aria-expanded": isOpen, onClick: toggle,
+        onKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle() } } },
         h(Chevron, { open: isOpen, size: 10 }),
         h("span", { className: "clx-mrow-kind", style: { "--cat": color } }, t(`k.${n.category}`)),
         n.tool ? h("b", { className: "clx-mrow-tool" }, n.tool) : null,
         (n.tools || []).length ? h("b", { className: "clx-mrow-tool" }, groupNames(n.tools)) : null,
+        h("span", { className: "clx-pv-pre" }, isOpen || roomy ? "" : n.preview || "—"),
         fresh ? h("span", { className: "clx-pill" }, t("sd.fresh")) : null,
         h("span", { className: "sq" }, `#${n.seq}`),
         h("button", { className: "clx-pv-ask", title: t("az.askThis"), onClick: (e) => { e.stopPropagation(); onAsk(n.seq) } }, "✦"),
+        h("span", { className: "bar" }, h("i", { style: { width: `${Math.max(2, n.tokensCal / maxTok * 100)}%` } })),
         h("span", { className: "tk" }, fmtK(n.tokensCal), h("small", null, ` ${pct(n.tokensCal, total, 1)}`))),
       isOpen ? h("div", { className: "clx-pv-body" }, h(NodeDetail, { sessionId, seq: n.seq, t, ctx, cwd }))
-        : h("div", { className: "clx-pv-text", onClick: () => setOpen(n.seq) }, n.preview || "—"))
+        : roomy ? h("div", { className: "clx-pv-text", onClick: toggle }, n.preview || "—") : null)
   }
-  const rows = []
-  for (const n of sys) if (shown(n)) rows.push(itemEl(n))
-  rows.push(h("div", { key: "tools", id: "pv-tools", className: `clx-pv-item tools${toolsOpen ? " open" : ""}`, style: { "--cat": CAT_COLOR.systemTools } },
-    h("div", { className: "clx-pv-head", role: "button", tabIndex: 0, onClick: () => setToolsOpen(!toolsOpen) },
+  const toolsRow = h("div", { key: "tools", id: "pv-tools", className: `clx-pv-item tools${toolsOpen ? " open" : ""}`, style: { "--cat": CAT_COLOR.systemTools } },
+    h("div", { className: "clx-pv-head", role: "button", tabIndex: 0, "aria-expanded": toolsOpen, onClick: () => setToolsOpen(!toolsOpen) },
       h(Chevron, { open: toolsOpen, size: 10 }),
       h("span", { className: "clx-mrow-kind", style: { "--cat": CAT_COLOR.systemTools } }, t("c.systemTools")),
-      h("span", { className: "clx-muted" }, fmt(t("sd.toolDefs"), { n: tools.length })),
+      h("span", { className: "clx-pv-pre" }, fmt(t("sd.toolDefs"), { n: tools.length })),
+      h("span", { className: "bar" }, h("i", { style: { width: `${Math.max(2, toolTok / maxTok * 100)}%` } })),
       h("span", { className: "tk" }, fmtK(toolTok), h("small", null, ` ${pct(toolTok, total, 1)}`))),
-    h("div", { className: "clx-pv-text" }, tools.slice().sort((a, b) => b.tokensCal - a.tokensCal).slice(0, toolsOpen ? 999 : 12).map((x) => h("code", { key: x.name, className: "clx-pv-tool" }, x.name, h("small", null, ` ${fmtK(x.tokensCal)}`))),
-      !toolsOpen && tools.length > 12 ? h("span", { className: "clx-muted" }, ` +${tools.length - 12}`) : null)))
-  for (const n of rest) {
-    const ds = dividers.get(n.seq)
-    if (ds) for (const x of ds) rows.push(h("div", { key: `d${x.st.startSeq}`, className: `clx-pv-div${diff && x.i === diff.idx ? " on" : ""}`, role: "button", onClick: () => onSel(x.i) },
-      h("span", null, fmt(t("flow.where"), { t: x.st.turn, s: x.st.step })), h("span", { className: "clx-muted" }, `${t("sd.request")} · ${fmtK(x.comp.total)}`)))
-    if (shown(n)) rows.push(itemEl(n))
+    toolsOpen ? h("div", { className: "clx-pv-text open" }, tools.slice().sort((a, b) => b.tokensCal - a.tokensCal).map((x) => h("code", { key: x.name, className: "clx-pv-tool" }, x.name, h("small", null, ` ${fmtK(x.tokensCal)}`)))) : null)
+  const rows = []
+  if (flat) {
+    for (const n of sys) if (shown(n) && match(n) && !stepFilter) rows.push(itemEl(n))
+  } else {
+    // the part that never changes between requests stays folded into one line
+    const fixedTok = sys.reduce((a, n) => a + n.tokensCal, 0) + toolTok
+    rows.push(h("div", { key: "fixed", className: `clx-pv-fixed${fixedOpen ? " open" : ""}` },
+      h("div", { className: "clx-pv-head", role: "button", tabIndex: 0, "aria-expanded": fixedOpen, onClick: () => setFixedOpen(!fixedOpen) },
+        h(Chevron, { open: fixedOpen, size: 10 }),
+        h("span", { className: "clx-mrow-kind", style: { "--cat": CAT_COLOR.system } }, t("sd.fixed")),
+        h("span", { className: "clx-pv-pre" }, fmt(t("sd.fixedSub"), { n: tools.length })),
+        h("span", { className: "tk" }, fmtK(fixedTok), h("small", null, ` ${pct(fixedTok, total, 1)}`))),
+      fixedOpen ? h("div", { className: "clx-pv-fixed-body" }, sys.map((n) => itemEl(n)), toolsRow) : null))
   }
-  const endDs = dividers.get("end")
-  if (endDs) for (const x of endDs) rows.push(h("div", { key: `d${x.st.startSeq}`, className: `clx-pv-div${diff && x.i === diff.idx ? " on" : ""}`, role: "button", onClick: () => onSel(x.i) },
-    h("span", null, fmt(t("flow.where"), { t: x.st.turn, s: x.st.step })), h("span", { className: "clx-muted" }, `${t("sd.request")} · ${fmtK(x.comp.total)}`)))
+  if (sort !== "size" && hidden > 0) rows.push(h("button", { key: "earlier", className: "clx-chipbtn clx-mmore", onClick: () => setLimit(limit + 200) }, fmt(t("sd.earlier"), { n: Math.min(200, hidden), t: hidden })))
+  const divEl = (x) => h("div", { key: `d${x.st.startSeq}`, className: `clx-pv-div${diff && x.i === diff.idx ? " on" : ""}`, role: "button", onClick: () => onSel(x.i) },
+    h("span", null, fmt(t("flow.where"), { t: x.st.turn, s: x.st.step })), h("span", { className: "clx-muted" }, `${t("sd.request")} · ${fmtK(x.comp.total)}`))
+  for (const n of vis) {
+    const ds = flat ? undefined : dividers.get(n.seq)
+    if (ds) for (const x of ds) rows.push(divEl(x))
+    rows.push(itemEl(n))
+  }
+  if (sort === "size" && hidden > 0) rows.push(h("button", { key: "more", className: "clx-chipbtn clx-mmore", onClick: () => setLimit(limit + 200) }, fmt(t("sd.earlier"), { n: Math.min(200, hidden), t: hidden })))
+  const endDs = flat ? undefined : dividers.get("end")
+  if (endDs) for (const x of endDs) rows.push(divEl(x))
+  const viewing = diff && !diff.last
   return h("div", { className: "clx-pv" },
-    h("div", { className: "clx-card" },
-      h(CardHead, { t, icon: "messages", title: t("sd.promptTitle"), meta: `${fmtK(total)} · ${fmt(t("sd.itemsN"), { n: sent.length })}` }),
-      h("div", { className: "clx-muted", style: { fontSize: 11.5, marginBottom: 6 } }, diff && !diff.last ? fmt(t("sd.promptAt"), { t: diff.cur.st.turn, s: diff.cur.st.step }) : t("sd.promptNow")),
+    h("div", { className: "clx-card clx-pv-top" },
+      h("div", { className: "clx-pv-title" },
+        h("b", null, t("sd.promptTitle")),
+        h("span", { className: "clx-muted", title: viewing ? fmt(t("sd.promptAt"), { t: diff.cur.st.turn, s: diff.cur.st.step }) : t("sd.promptNow") },
+          `${fmtK(total)} · ${fmt(t("sd.itemsN"), { n: sent.length })} · ${viewing ? fmt(t("flow.where"), { t: diff.cur.st.turn, s: diff.cur.st.step }) : t("sd.latest")}`),
+        h(CopyButton, { t, label: t("sd.copyPrompt"), get: () => call("prompt-text", { sessionId, cut: viewing ? diff.cut : undefined }) })),
       h("div", { className: "clx-pv-map" }, segs.map((x, i) => h("button", { key: i, type: "button", title: x.title, style: { flexGrow: x.w, background: x.c }, onClick: () => goto(x.id) }))),
-      h("div", { className: "clx-pv-chips" }, CATS.filter((k) => present[k]).map((k) => h("button", {
-        key: k, type: "button", className: `clx-chipbtn${hide[k] ? "" : " on"}`, "aria-pressed": !hide[k], onClick: () => setHide({ ...hide, [k]: !hide[k] }),
-      }, h("i", { className: "clx-dot", style: { background: CAT_COLOR[k] } }), ` ${t(`c.${k}`)} ${present[k]}`)))),
-    diff ? h("div", { className: "clx-card" },
-      h(CardHead, { t, icon: "flow", title: t("sd.story"), meta: fmt(t("flow.where"), { t: diff.cur.st.turn, s: diff.cur.st.step }) }),
-      h(StepStory, { bd: data, st: diff.cur.st, t, onJump })) : null,
+      h("div", { className: "clx-pv-bar" },
+        h("div", { className: "clx-pv-chips" }, CATS.filter((k) => present[k]).map((k) => h("button", {
+          key: k, type: "button", className: `clx-chipbtn${hide[k] ? "" : " on"}`, "aria-pressed": !hide[k], onClick: () => setHide({ ...hide, [k]: !hide[k] }),
+        }, h("i", { className: "clx-dot", style: { background: CAT_COLOR[k] } }), ` ${t(`c.${k}`)} ${present[k]}`))),
+        h("div", { className: "clx-msgsearch" },
+          h("svg", { width: 13, height: 13, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", "aria-hidden": true }, h("circle", { cx: 11, cy: 11, r: 6.5 }), h("path", { d: "M16 16l4 4" })),
+          h("input", { value: query, placeholder: t("msg.search"), onChange: (e) => setQuery(e.target.value) }),
+          query ? h("button", { className: "clx-msgclear", "aria-label": "×", onClick: () => setQuery("") }, "×") : null),
+        h("span", { className: "clx-segmini" },
+          h("button", { className: "clx-chipbtn", "aria-pressed": sort === "order", onClick: () => setSort("order") }, t("msg.sort.order")),
+          h("button", { className: "clx-chipbtn", "aria-pressed": sort === "size", onClick: () => setSort("size") }, t("msg.sort.size"))),
+        h("button", { className: `clx-chipbtn${roomy ? " on" : ""}`, "aria-pressed": roomy, title: t("sd.roomyHint"), onClick: () => setRoomy(!roomy) }, t("sd.roomy")),
+        flat ? h("span", { className: "clx-muted clx-msgcount" }, fmt(t("msg.count"), { n: listed.length, t: fmtK(listed.reduce((x, n) => x + n.tokensCal, 0)) })) : null)),
     h("div", { className: "clx-pv-list" }, rows),
+    viewing ? h("div", { className: "clx-card clx-pv-resp" },
+      h(CardHead, { t, icon: "flow", title: t("sd.respond"), meta: fmt(t("flow.where"), { t: diff.cur.st.turn, s: diff.cur.st.step }) }),
+      h(StepStory, { bd: data, st: diff.cur.st, t, onJump })) : null,
     later > 0 ? h("div", { className: "clx-muted clx-pv-later" }, fmt(t("sd.later"), { n: later, k: fmtK(laterTok) })) : null)
+}
+
+/** Copy text to the clipboard, with a fallback for contexts where the async API is blocked. */
+async function copyText(text) {
+  try { await navigator.clipboard.writeText(text); return true } catch {}
+  try {
+    const ta = document.createElement("textarea")
+    ta.value = text
+    ta.style.cssText = "position:fixed;opacity:0"
+    document.body.appendChild(ta)
+    ta.select()
+    const ok = document.execCommand("copy")
+    ta.remove()
+    return ok
+  } catch { return false }
+}
+
+function CopyButton({ get, label, t, className = "clx-chipbtn" }) {
+  const [st, setSt] = useState<string>("")
+  return h("button", {
+    className, title: label,
+    onClick: async (e) => {
+      e.stopPropagation()
+      setSt("…")
+      try {
+        const v = await get()
+        setSt((await copyText(v.text ?? v)) ? `${t("ui.copied")}${v.chars ? ` · ${fmtK(v.chars / 3)}` : ""}` : t("ui.copyFail"))
+      } catch (err) { setSt(t("ui.copyFail")) }
+      setTimeout(() => setSt(""), 2200)
+    },
+  }, st || label)
 }
 
 /** Ask the session's model about this context. Off until enabled; each send is one explicit call. */
@@ -933,9 +1049,11 @@ function AnalyzeView({ data, t, sessionId, onJump, seqs, setSeqs }) {
   const key = `dsh-context-lens:az:${sessionId}`
   const [enabled, setEnabledState] = useState(() => { try { return sessionStorage.getItem(key) === "1" } catch { return false } })
   const setEnabled = (v) => { setEnabledState(v); try { sessionStorage.setItem(key, v ? "1" : "0") } catch {} }
-  const [msgs, setMsgs] = useState<any[]>([])
+  const msgKey = `dsh-context-lens:az-msgs:${sessionId}`
+  const [msgs, setMsgs] = useState<any[]>(() => { try { const v = JSON.parse(localStorage.getItem(msgKey) || "[]"); return Array.isArray(v) ? v.filter((m) => m && !m.busy) : [] } catch { return [] } })
   const [input, setInput] = useState("")
   const [inc, setInc] = useState({ system: false, tools: false })
+  const [deep, setDeep] = useState(false)
   const [prev, setPrev] = useState<any>(null)
   const [busy, setBusy] = useState(false)
   const job = useRef<string | null>(null)
@@ -954,6 +1072,11 @@ function AnalyzeView({ data, t, sessionId, onJump, seqs, setSeqs }) {
   }, [sessionId, inc.system, inc.tools, seqs.join(","), msgs.length, input.length > 0])
   useEffect(() => () => { if (job.current) call("analyze-stop", { jobId: job.current }).catch(() => {}) }, [])
   useEffect(() => { endRef.current?.scrollIntoView({ block: "nearest" }) }, [msgs])
+  // keep finished answers so a reload does not lose them
+  useEffect(() => {
+    if (msgs.some((m) => m.busy)) return
+    try { if (msgs.length) localStorage.setItem(msgKey, JSON.stringify(msgs.slice(-24))); else localStorage.removeItem(msgKey) } catch {}
+  }, [msgs])
 
   const patch = (id, v) => setMsgs((xs) => xs.map((m) => (m.id === id ? { ...m, ...v } : m)))
   const send = async (q?: string) => {
@@ -966,7 +1089,7 @@ function AnalyzeView({ data, t, sessionId, onJump, seqs, setSeqs }) {
     setInput("")
     setBusy(true)
     try {
-      const { jobId, inputTokens } = await call("analyze-start", { sessionId, question, history, include, lang })
+      const { jobId, inputTokens } = await call("analyze-start", { sessionId, question, history, include, lang, deep })
       job.current = jobId
       patch(aid, { inputTokens })
       for (;;) {
@@ -995,6 +1118,7 @@ function AnalyzeView({ data, t, sessionId, onJump, seqs, setSeqs }) {
       h("button", { className: "clx-chipbtn clx-az-go", disabled: !!prev && !prev.ready, onClick: () => setEnabled(true) }, t("az.enable")))
   }
   const tokens = prev?.tokens || 0
+  const spent = msgs.reduce((a, m) => ({ i: a.i + (m.usage ? (m.usage.inputTokens || 0) + (m.usage.cacheReadTokens || 0) + (m.usage.cacheWriteTokens || 0) : 0), o: a.o + (m.usage?.outputTokens || 0) }), { i: 0, o: 0 })
   const refs = (text) => [...new Set([...String(text || "").matchAll(/#(\d{1,6})/g)].map((m) => Number(m[1])))].filter((n) => (data.nodes || []).some((x) => x.seq === n)).slice(0, 8)
   return h("div", { className: "clx-az" },
     h("div", { className: "clx-card clx-az-bar" },
@@ -1004,7 +1128,8 @@ function AnalyzeView({ data, t, sessionId, onJump, seqs, setSeqs }) {
       h("button", { className: `clx-chipbtn${inc.system ? " on" : ""}`, "aria-pressed": inc.system, onClick: () => setInc({ ...inc, system: !inc.system }) }, t("az.sys")),
       h("button", { className: `clx-chipbtn${inc.tools ? " on" : ""}`, "aria-pressed": inc.tools, onClick: () => setInc({ ...inc, tools: !inc.tools }) }, t("az.toolDesc")),
       seqs.map((q) => h("button", { key: q, className: "clx-chipbtn on", title: t("az.detach"), onClick: () => setSeqs(seqs.filter((x) => x !== q)) }, `#${q} ×`)),
-      h("span", { className: "clx-az-tok clx-muted" }, tokens ? fmt(t("az.cost"), { k: fmtK(tokens) }) : ""),
+      h("button", { className: `clx-chipbtn${deep ? " on" : ""}`, "aria-pressed": deep, title: t("az.deepHint"), onClick: () => setDeep(!deep) }, t("az.deep")),
+      h("span", { className: "clx-az-tok clx-muted" }, [tokens ? fmt(t("az.cost"), { k: fmtK(tokens) }) : "", spent.i || spent.o ? fmt(t("az.spent"), { i: fmtK(spent.i), o: fmtK(spent.o) }) : ""].filter(Boolean).join(" · ")),
       msgs.length ? h("button", { className: "clx-chipbtn", disabled: busy, onClick: () => setMsgs([]) }, t("az.clear")) : null,
       h("button", { className: "clx-chipbtn", disabled: busy, onClick: () => { setEnabled(false); setMsgs([]) } }, t("az.off"))),
     msgs.length === 0 ? h("div", { className: "clx-card" },
@@ -1017,7 +1142,9 @@ function AnalyzeView({ data, t, sessionId, onJump, seqs, setSeqs }) {
         m.text ? h(RichText, { text: m.text, hint: "md", t, bare: true }) : m.busy ? h("div", { className: "clx-muted" }, t("az.working")) : null,
         m.error ? h("div", { className: "clx-err" }, fmt(t("failed"), { msg: m.error })) : null,
         !m.busy && refs(m.text).length ? h("div", { className: "clx-az-refs" }, h("span", { className: "clx-muted" }, t("az.refs")), refs(m.text).map((n) => h("button", { key: n, className: "clx-chipbtn", onClick: () => onJump(n) }, `#${n}`))) : null,
-        m.usage ? h("div", { className: "clx-muted clx-az-use" }, fmt(t("az.usage"), { i: fmtK((m.usage.inputTokens || 0) + (m.usage.cacheReadTokens || 0)), o: fmtK(m.usage.outputTokens || 0) })) : null)),
+        h("div", { className: "clx-az-foot" },
+          m.usage ? h("span", { className: "clx-muted clx-az-use" }, fmt(t("az.usage"), { i: fmtK((m.usage.inputTokens || 0) + (m.usage.cacheReadTokens || 0)), o: fmtK(m.usage.outputTokens || 0) })) : null,
+          !m.busy && m.text ? h(CopyButton, { t, label: t("ui.copy"), get: async () => ({ text: m.text }) }) : null))),
     h("div", { ref: endRef }),
     h("div", { className: "clx-card clx-az-input" },
       h("textarea", {
@@ -1029,7 +1156,7 @@ function AnalyzeView({ data, t, sessionId, onJump, seqs, setSeqs }) {
 }
 
 /** Plain-language findings: what is making the context heavy, and what to do about it. */
-function diagnose(data, s, series, t) {
+function diagnose(data, s, series, t, flow) {
   const out = []
   const used = s.used || 0
   if (!used) return out
@@ -1069,6 +1196,31 @@ function diagnose(data, s, series, t) {
   }
   const rep = [...seen.entries()].filter(([, n]) => n >= 3).sort((a, b) => b[1] - a[1])[0]
   if (rep) out.push({ id: "repeat", level: "warn", text: fmt(t("dg.repeat"), { n: rep[1], what: rep[0].slice(0, 70) }), nav: "tools" })
+  // the same content sitting in the context more than once
+  const dupKey = new Map()
+  for (const n of data.nodes || []) {
+    if (n.tokensCal < 300 || !n.preview || n.preview.length < 40 || n.category === "system") continue
+    const k = n.category + "|" + n.preview
+    if (!dupKey.has(k)) dupKey.set(k, [])
+    dupKey.get(k).push(n)
+  }
+  const dups = [...dupKey.values()].filter((g) => g.length >= 2)
+  if (dups.length) {
+    const waste = dups.reduce((a, g) => a + g.slice(1).reduce((x, n) => x + n.tokensCal, 0), 0)
+    const first = dups.sort((a, b) => b.length * b[0].tokensCal - a.length * a[0].tokensCal)[0]
+    out.push({ id: "dup", level: waste / used >= 0.05 ? "warn" : "info", text: fmt(t("dg.dup"), { n: dups.length, k: fmtK(waste), seqs: first.slice(0, 3).map((n) => "#" + n.seq).join(" ") }), seq: first[0].seq })
+  }
+  // a failed call repeated unchanged
+  const ordered = [...(data.invocations || [])].filter((x) => x.callSeq !== undefined).sort((a, b) => a.callSeq - b.callSeq)
+  let retries = 0
+  let retrySeq
+  for (let i = 0; i + 1 < ordered.length; i++) {
+    if (ordered[i].isError && ordered[i + 1].name === ordered[i].name && ordered[i + 1].args === ordered[i].args) { retries++; retrySeq ??= ordered[i].callSeq }
+  }
+  if (retries) out.push({ id: "retry", level: "warn", text: fmt(t("dg.retry"), { n: retries }), seq: retrySeq })
+  // how much of the context is the model thinking
+  const think = tok("reasoning")
+  if (think / used >= 0.25) out.push({ id: "think", level: "info", text: fmt(t("dg.think"), { p: pct(think, used, 0), k: fmtK(think) }), nav: "prompt" })
   // tool definitions nobody called
   const called = new Set((data.toolStats || []).map((x) => x.name))
   const idle = (data.tools || []).filter((x) => !called.has(x.name))
@@ -1083,11 +1235,17 @@ function diagnose(data, s, series, t) {
     const inTot = (u.inputTokens || 0) + (u.cacheReadTokens || 0) + (u.cacheWriteTokens || 0)
     if (inTot >= 4000 && (u.cacheReadTokens || 0) / inTot < 0.5) out.push({ id: "cache", level: "info", text: fmt(t("dg.cache"), { p: pct(u.cacheReadTokens || 0, inTot, 0) }), nav: "overview" })
   }
+  // cache hits that collapsed mid-session: the request prefix changed and the cache was lost
+  const eff = effStats(data, series, flow)
+  if (eff.busts.length) {
+    const w = eff.busts[0]
+    out.push({ id: "bust", level: "warn", text: fmt(t("dg.bust"), { n: eff.busts.length, a: pct(w.prevHit, 1, 0), b: pct(w.hit, 1, 0) }), nav: "efficiency" })
+  }
   return out
 }
 
-function DiagnosisCard({ data, s, series, t, onJump, onNav }) {
-  const items = useMemo(() => diagnose(data, s, series, t), [data, s, series, t])
+function DiagnosisCard({ data, s, series, t, onJump, onNav, flow }) {
+  const items = useMemo(() => diagnose(data, s, series, t, flow), [data, s, series, t, flow])
   return h("div", { className: "clx-card clx-diag span2" },
     h(CardHead, { t, icon: "gauge", title: t("dg.title"), meta: items.length ? fmt(t("dg.count"), { n: items.length }) : null }),
     items.length
@@ -1141,7 +1299,7 @@ function Overview({ data, flow, t, onJump, onShowCat, onNav, sessionId, liveKey,
         h('b', null, t('flow.goal')),
         h('span', { className: 'clx-pill' }, `${t(`flow.phase.${g.phase}`) || g.phase} · ${g.roundsStarted ?? 0}/${g.maxGoalRounds ?? '∞'}`),
         h('span', { className: 'txt' }, g.objective)) : null),
-    h(DiagnosisCard, { data, s, series, t, onJump, onNav }),
+    h(DiagnosisCard, { data, s, series, t, onJump, onNav, flow }),
     h(CompositionCard, { data, s: sView, t, onShowCat, stepLabel: diff && !diff.last ? fmt(t('flow.where'), { t: diff.cur.st.turn, s: diff.cur.st.step }) : null }),
     h(StepTrend, { data, flow, t, onJump, series, pickIdx: diff ? diff.idx : 0, onSel }),
     h(ToolsPeek, { data, t, onNav }),
@@ -1424,240 +1582,6 @@ function ToolInvocations({ data, name, sessionId, t, ctx, cwd }) {
 }
 
 /** A message on one line: what kind it is, what it says, what it costs. A call carries its results. */
-function MsgRow({ n, t, open, onClick, invs, merged }) {
-  // a message that made calls reads as the call, whatever else it says
-  const kind = invs && invs.length ? 'toolCalls' : n.category
-  const color = CAT_COLOR[kind] || CAT_COLOR.other
-  let text: any = n.preview || ''
-  let extra = null
-  let tok = n.tokensCal
-  if (invs && invs.length) {
-    const first = invs[0]
-    text = h(React.Fragment, null,
-      h('b', { className: 'clx-mrow-tool' }, first.name),
-      ` ${first.args || ''}`,
-      invs.length > 1 ? h('span', { className: 'clx-muted' }, `  +${groupNames(invs.slice(1).map((x) => x.name))}`) : null)
-    if (merged) {
-      const res = invs.reduce((s, x) => s + (x.resultTokens || 0), 0)
-      const errs = invs.filter((x) => x.isError).length
-      const pending = invs.some((x) => x.resultSeq === undefined)
-      tok += res
-      extra = h('span', { className: `clx-mrow-res${errs ? ' err' : ''}`, title: `${t('pair.call')} ${fmtInt(n.tokensCal)} + ${t('pair.result')} ${fmtInt(res)}` },
-        h('i', { className: 'clx-dot', style: { background: CAT_COLOR.toolResults } }),
-        errs ? `⚠ ${t('pair.error')}` : pending ? t('pair.pending') : fmtK(res))
-    }
-  } else if (n.category === 'toolResults' && n.tool) {
-    text = h(React.Fragment, null, h('b', { className: 'clx-mrow-tool' }, n.tool), ` ${n.preview || ''}`)
-  }
-  return h('div', {
-    className: `clx-mrow${open ? ' open' : ''}`, onClick, role: 'button', tabIndex: 0, 'aria-expanded': !!open,
-    title: `#${n.seq}${n.time ? ` · ${new Date(n.time).toLocaleString()}` : ''}`,
-    onKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick?.() } },
-  },
-    h(Chevron, { open, size: 10 }),
-    h('span', { className: 'clx-mrow-kind', style: { '--cat': color } }, t(`k.${kind}`)),
-    h('span', { className: 'clx-mrow-text' }, text || h('span', { className: 'clx-muted' }, '—')),
-    extra,
-    h('span', { className: 'clx-mrow-tok' }, fmtK(tok)))
-}
-
-
-function Messages({ data, flow, t, focus, sessionId, preset, ctx, cwd, diff, stepOnly }) {
-  const [query, setQuery] = useState('')
-  const [sort, setSort] = useState('order')
-  const [cat, setCat] = useState('')
-  const [limit, setLimit] = useState(300)
-  const [openSeq, setOpenSeq] = useState(focus ?? null)
-  const [openTurns, setOpenTurns] = useState<Record<string, boolean>>({})
-  const fromJump = useRef(false)
-  useEffect(() => { if (focus !== undefined && focus !== null) { fromJump.current = true; setOpenSeq(focus) } }, [focus])
-  useEffect(() => {
-    if (!preset) return
-    setCat(preset.cat)
-    setSort('size')
-    setQuery('')
-  }, [preset])
-  const nodes = data.nodes || []
-  const present = useMemo(() => {
-    const m = {}
-    for (const n of nodes) m[n.category] = (m[n.category] || 0) + n.tokensCal
-    return m
-  }, [nodes])
-  // calls by the node that made them, so a call row can carry its results
-  const invsBySeq = useMemo(() => {
-    const m = new Map()
-    for (const x of data.invocations || []) {
-      if (x.callSeq === undefined) continue
-      if (!m.has(x.callSeq)) m.set(x.callSeq, [])
-      m.get(x.callSeq).push(x)
-    }
-    return m
-  }, [data.invocations])
-  const stepMode = !!diff && !diff.last
-  const inStep = (n) => !!diff && n.seq >= diff.prevCut && n.seq < diff.cut
-  const stepFilter = !!stepOnly && !!diff
-  const filtering = !!query.trim() || !!cat || stepFilter
-  const list = useMemo(() => {
-    const q = query.trim().toLowerCase()
-    const inCat = (n) => n.category === cat || (n.split && (n.split[cat] || 0) > 0)
-    let out = nodes.filter((n) => (!cat || inCat(n)) && (!stepFilter || inStep(n))
-      && (!q || (n.preview || '').toLowerCase().includes(q) || (n.tool || '').toLowerCase().includes(q)
-        || (n.tools || []).some((x) => x.toLowerCase().includes(q)) || String(n.seq) === q))
-    if (sort === 'size') out = [...out].sort((a, b) => b.tokensCal - a.tokensCal)
-    return out
-  }, [nodes, query, sort, cat, stepFilter, diff?.prevCut, diff?.cut])
-  // in order, a result whose call is listed folds into the call's row
-  const shownSet = useMemo(() => new Set(list.map((n) => n.seq)), [list])
-  const rows = useMemo(() => (sort === 'order'
-    ? list.filter((n) => !(n.category === 'toolResults' && n.callSeq !== undefined && shownSet.has(n.callSeq) && invsBySeq.has(n.callSeq)))
-    : list), [list, sort, shownSet, invsBySeq])
-  const total = list.reduce((s, n) => s + n.tokensCal, 0)
-
-  // turn → step grouping (order only)
-  const stepsByTurn = useMemo(() => {
-    const m = new Map()
-    for (const st of flow?.steps || []) {
-      if (!m.has(st.turn)) m.set(st.turn, [])
-      m.get(st.turn).push(st)
-    }
-    return m
-  }, [flow])
-  const turnInfo = useMemo(() => new Map((flow?.turns || []).map((x) => [x.turn, x])), [flow])
-  const stepOf = (n) => {
-    const ss = stepsByTurn.get(n.turn)
-    if (!ss) return null
-    let hit = null
-    for (const st of ss) if (st.startSeq <= n.seq) hit = st
-    return hit
-  }
-  const lastTurn = useMemo(() => {
-    let x
-    for (const n of nodes) if (n.turn !== undefined) x = n.turn
-    return x
-  }, [nodes])
-  const focusTurn = useMemo(() => {
-    const n = openSeq !== null ? nodes.find((y) => y.seq === openSeq) : null
-    if (!n) return undefined
-    if (n.category === 'toolResults' && n.callSeq !== undefined) return nodes.find((y) => y.seq === n.callSeq)?.turn ?? n.turn
-    return n.turn
-  }, [openSeq, nodes])
-  const keyOf = (turn) => (turn === undefined ? 'pre' : String(turn))
-  const isOpen = (k) => openTurns[k] ?? (filtering || k === keyOf(lastTurn) || k === keyOf(focusTurn))
-  const from = sort === 'order' ? Math.max(0, rows.length - limit) : 0
-  const visible = sort === 'order' ? rows.slice(from) : rows.slice(0, limit)
-
-  // a jump opens its row, and a result jump lands on the call that carries it
-  useEffect(() => {
-    if (openSeq === null || openSeq === undefined) return
-    const n = nodes.find((y) => y.seq === openSeq)
-    if (n && sort === 'order' && n.category === 'toolResults' && n.callSeq !== undefined && invsBySeq.has(n.callSeq) && shownSet.has(n.callSeq)) {
-      setOpenSeq(n.callSeq)
-      return
-    }
-    const idx = rows.findIndex((y) => y.seq === openSeq)
-    if (sort === 'order' && idx >= 0 && idx < rows.length - limit) setLimit(rows.length - idx + 20)
-    else if (sort !== 'order' && idx >= limit) setLimit(idx + 50)
-    if (!fromJump.current) return
-    fromJump.current = false
-    requestAnimationFrame(() => requestAnimationFrame(() => document.getElementById(`clx-node-${openSeq}`)?.scrollIntoView({ block: 'center' })))
-  }, [openSeq])
-
-  const rowEl = (n, i) => {
-    const open = openSeq === n.seq
-    const invs = invsBySeq.get(n.seq)
-    return h('div', { key: n.seq, id: `clx-node-${n.seq}`, className: `clx-mnode${open ? ' open' : ''}${diff && inStep(n) && !stepFilter ? ' instep' : ''}${stepMode && diff && n.seq >= diff.cut ? ' later' : ''}`, style: { '--cat': CAT_COLOR[invs ? 'toolCalls' : n.category] || CAT_COLOR.other } },
-      h(MsgRow, { n, t, open, invs, merged: sort === 'order', onClick: () => setOpenSeq(open ? null : n.seq) }),
-      open ? h('div', { className: 'clx-mopen' },
-        h(NodeDetail, { sessionId, seq: n.seq, t, ctx, cwd }),
-        h('button', { className: 'clx-mopen-close', onClick: () => { setOpenSeq(null); requestAnimationFrame(() => { const el = document.getElementById(`clx-node-${n.seq}`); if (el && el.getBoundingClientRect().top < 60) el.scrollIntoView({ block: 'center' }) }) } }, t('msg.collapse'))) : null)
-  }
-
-  let body
-  if (sort !== 'order') {
-    body = h('div', { className: 'clx-mlist' }, visible.map(rowEl))
-  } else {
-    // consecutive runs of one turn, then of one step inside it
-    const groups = []
-    for (const n of visible) {
-      const k = keyOf(n.turn)
-      let g = groups[groups.length - 1]
-      if (!g || g.key !== k) groups.push(g = { key: k, turn: n.turn, items: [], tok: 0 })
-      g.items.push(n)
-      g.tok += n.tokensCal + (invsBySeq.get(n.seq) || []).reduce((s, x) => s + (x.resultTokens || 0), 0)
-    }
-    body = h('div', { className: 'clx-mlist' }, groups.map((g, gi) => {
-      const opened = isOpen(g.key)
-      const tu: any = g.turn !== undefined ? turnInfo.get(g.turn) || {} : {}
-      const ss = g.turn !== undefined ? stepsByTurn.get(g.turn) || [] : []
-      const children = []
-      if (opened) {
-        let curStep
-        for (const n of g.items) {
-          const st = stepOf(n)
-          if (st && st !== curStep) {
-            curStep = st
-            children.push(h('div', { key: `s${st.startSeq}`, className: 'clx-mstep' },
-              h('span', { className: 'n' }, fmt(t('msg.step'), { n: st.step })),
-              st.tools.length ? h('span', { className: 'tools' }, groupNames(st.tools)) : h('span', { className: 'tools clx-muted' }, st.stages.includes('assistant') ? t('flow.textOnly') : ''),
-              st.errors ? h('span', { className: 'clx-err' }, `⚠${st.errors}`) : null,
-              st.promptTokens ? h('span', { className: 'ctx', title: t('st.ctx') }, fmtK(st.promptTokens)) : null))
-          }
-          children.push(rowEl(n, 0))
-        }
-      }
-      return h('section', { key: `${g.key}-${gi}`, className: `clx-mturn${opened ? ' open' : ''}` },
-        h('div', {
-          className: 'clx-mturn-head', role: 'button', tabIndex: 0, 'aria-expanded': opened,
-          onClick: () => setOpenTurns({ ...openTurns, [g.key]: !opened }),
-          onKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpenTurns({ ...openTurns, [g.key]: !opened }) } },
-        },
-          h(Chevron, { open: opened }),
-          h('b', null, g.turn === undefined ? t('msg.pre') : fmt(t('msg.turn'), { n: g.turn })),
-          h('span', { className: 'clx-mturn-prompt' }, tu.prompt || ''),
-          h('span', { className: 'clx-mturn-meta' },
-            [ss.length ? fmt(t('msg.stepsN'), { n: ss.length }) : fmt(t('msg.itemsN'), { n: g.items.length }), tu.start && tu.end ? fmtDur(tu.end - tu.start) : null].filter(Boolean).join(' · ')),
-          h('span', { className: 'clx-mturn-tok' }, fmtK(g.tok))),
-        opened ? h('div', { className: 'clx-mturn-body' }, children) : null)
-    }))
-  }
-
-  const allTok = nodes.reduce((a, n) => a + n.tokensCal, 0)
-  const biggest = nodes.reduce((a, n) => (!a || n.tokensCal > a.tokensCal ? n : a), null)
-  const turnsN = (flow?.turns || []).length || new Set(nodes.map((n) => n.turn).filter((x) => x !== undefined)).size
-  return h(React.Fragment, null,
-    h('div', { className: 'clx-tiles clx-tsum' },
-      h(Stat, { k: t('msg.sum.nodes'), v: fmtInt(nodes.length) }),
-      h(Stat, { k: t('msg.sum.tok'), v: fmtK(allTok) }),
-      h(Stat, { k: t('msg.sum.turns'), v: fmtInt(turnsN) }),
-      h(Stat, { k: t('msg.sum.steps'), v: flow ? fmtInt((flow.steps || []).length) : '—' }),
-      h(Stat, { k: t('msg.sum.calls'), v: fmtInt((data.invocations || []).length) }),
-      biggest ? h('div', { className: 'clx-stat clx-stat-link', role: 'button', tabIndex: 0, onClick: () => { fromJump.current = true; setOpenSeq(biggest.seq) }, title: biggest.preview },
-        h('div', { className: 'k' }, t('msg.sum.max')),
-        h('div', { className: 'v' }, fmtK(biggest.tokensCal), h('small', null, ` #${biggest.seq}`))) : null),
-  h('div', { className: 'clx-msgs' },
-    h('div', { className: 'clx-mmain' },
-    h('div', { className: 'clx-msgbar' },
-      h('div', { className: 'clx-msgsearch' },
-        h('svg', { width: 13, height: 13, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', 'aria-hidden': true }, h('circle', { cx: 11, cy: 11, r: 6.5 }), h('path', { d: 'M16 16l4 4' })),
-        h('input', { value: query, placeholder: t('msg.search'), onChange: (e) => setQuery(e.target.value) }),
-        query ? h('button', { className: 'clx-msgclear', 'aria-label': '×', onClick: () => setQuery('') }, '×') : null),
-      h('span', { className: 'clx-segmini' },
-        h('button', { className: 'clx-chipbtn', 'aria-pressed': sort === 'order', onClick: () => setSort('order') }, t('msg.sort.order')),
-        h('button', { className: 'clx-chipbtn', 'aria-pressed': sort === 'size', onClick: () => setSort('size') }, t('msg.sort.size'))),
-      h('label', { className: 'clx-msgcat', style: { '--cat': cat ? CAT_COLOR[cat] : 'transparent' } },
-        h('i', { className: 'clx-dot' }),
-        h('select', { value: cat, onChange: (e) => setCat(e.target.value) },
-          h('option', { value: '' }, t('msg.allCats')),
-          CATS.filter((k) => present[k]).map((k) => h('option', { key: k, value: k }, `${t(`c.${k}`)} · ${fmtK(present[k])}`)))),
-      h('span', { className: 'clx-msgcount' },
-        fmt(t('msg.count'), { n: list.length, t: fmtK(total) }),
-        data.nodesTruncated ? ` · ${fmt(t('msg.trunc'), { n: data.nodesTruncated })}` : '')),
-    sort === 'order' && from > 0 ? h('button', { className: 'clx-chipbtn clx-mmore', onClick: () => setLimit(limit + 300) }, fmt(t('msg.earlier'), { n: Math.min(300, from) })) : null,
-    rows.length ? body : h('div', { className: 'clx-muted', style: { fontSize: 12, padding: '12px 2px' } }, t('msg.none')),
-    sort !== 'order' && rows.length > limit ? h('button', { className: 'clx-chipbtn clx-mmore', onClick: () => setLimit(limit + 300) },
-      fmt(t('msg.more'), { n: Math.min(300, rows.length - limit) })) : null)))
-}
-
 /** A tool's full definition, fetched when its row is opened. */
 function ToolDetail({ sessionId, name, t }) {
   const [st, setSt] = useState<any>({ loading: true })
@@ -2513,6 +2437,247 @@ function Trend({ data, t, onJump }) {
         CATS.filter((k) => s.byCat[k]?.count).map((k) => h('span', { key: k }, h('i', { className: 'clx-dot', style: { background: CAT_COLOR[k] } }), t(`c.${k}`))))))
 }
 
+// ================================================================== efficiency
+// Per-request cost and cache behaviour, from the provider usage each step carries.
+
+const EFF_COLOR = {
+  cr: 'var(--dsw-alias-state-success-primary)',
+  cw: 'var(--dsw-alias-state-warn-primary)',
+  in: 'var(--dsw-alias-state-business-primary)',
+  out: '#B07AA1',
+}
+
+/** Per-step hit rates, cache breaks (a collapse no compaction explains), cost totals, per-turn figures. */
+function effStats(bd, series, flow) {
+  const comps = bd.compactionEvents || []
+  const switches = (flow?.events || []).filter((e) => e.stage === 'modelSwitch')
+  const cutOf = (x) => x.st.requestSeq ?? x.st.endSeq ?? x.st.startSeq
+  const steps = series.map((x) => {
+    const st = x.st
+    const u = st.usage
+    const prompt = st.promptTokens || (u ? (u.input || 0) + (u.cacheRead || 0) + (u.cacheWrite || 0) : 0)
+    return { i: x.i, st, u, prompt, cut: cutOf(x), hit: u && prompt > 0 ? (u.cacheRead || 0) / prompt : null, compacted: false, bust: false, prevHit: null, cause: null }
+  })
+  for (let i = 1; i < steps.length; i++) {
+    const a = steps[i - 1].cut
+    const b = Math.max(steps[i].cut, steps[i].st.endSeq ?? steps[i].cut)
+    steps[i].compacted = comps.some((c) => c.seq >= a && c.seq <= b)
+  }
+  let prev = null
+  for (const x of steps) {
+    if (x.hit === null) continue
+    if (prev && x.prompt >= 4000 && prev.hit >= 0.5 && x.hit <= prev.hit - 0.25) {
+      const between = (e) => e.seq >= prev.cut && e.seq <= x.cut
+      if (!comps.some(between)) {
+        x.bust = true
+        x.prevHit = prev.hit
+        x.cause = switches.some(between) ? 'model' : 'prefix'
+      }
+    }
+    prev = x
+  }
+  const tot = { prompt: 0, cr: 0, cw: 0, in: 0, out: 0, n: 0, hit: null }
+  for (const x of steps) {
+    if (!x.u) continue
+    tot.n++
+    tot.prompt += x.prompt
+    tot.cr += x.u.cacheRead || 0
+    tot.cw += x.u.cacheWrite || 0
+    tot.in += x.u.input || 0
+    tot.out += x.u.output || 0
+  }
+  tot.hit = tot.prompt ? tot.cr / tot.prompt : null
+  const busts = steps.filter((x) => x.bust).sort((a, b) => (b.prevHit - b.hit) - (a.prevHit - a.hit))
+  const turns = []
+  for (const x of steps) {
+    let tu = turns[turns.length - 1]
+    if (!tu || tu.turn !== x.st.turn) { tu = { turn: x.st.turn, steps: [], firstIdx: x.i, lastIdx: x.i }; turns.push(tu) }
+    tu.steps.push(x)
+    tu.lastIdx = x.i
+  }
+  const addedBy = new Map()
+  for (const n of bd.nodes || []) if (n.turn !== undefined) addedBy.set(n.turn, (addedBy.get(n.turn) || 0) + n.tokensCal)
+  for (const tu of turns) {
+    tu.added = addedBy.get(tu.turn) || 0
+    tu.prompt = 0
+    tu.cr = 0
+    tu.uncached = 0
+    tu.out = 0
+    tu.errs = 0
+    for (const x of tu.steps) {
+      tu.errs += x.st.errors || 0
+      if (!x.u) continue
+      tu.prompt += x.prompt
+      tu.cr += x.u.cacheRead || 0
+      tu.uncached += (x.u.input || 0) + (x.u.cacheWrite || 0)
+      tu.out += x.u.output || 0
+    }
+    tu.hit = tu.prompt ? tu.cr / tu.prompt : null
+    const t0 = tu.steps[0].st.startTime
+    const t1 = tu.steps[tu.steps.length - 1].st.endTime
+    tu.dur = t0 && t1 && t1 >= t0 ? t1 - t0 : null
+  }
+  return { steps, tot, busts, turns }
+}
+
+/** The hit-rate line: turn boundaries, compaction marks, bust points; click selects the step. */
+function EffCacheCard({ eff, t, pickIdx, onSel }) {
+  const [boxRef, boxW] = useWidth(640)
+  const [hover, setHover] = useState(null)
+  const steps = eff.steps
+  const W = Math.max(320, boxW)
+  const H = 210
+  const P = { l: 40, r: 12, t: 14, b: 26 }
+  const x = (i) => P.l + (W - P.l - P.r) * (steps.length <= 1 ? 0.5 : i / (steps.length - 1))
+  const y = (v) => P.t + (H - P.t - P.b) * (1 - Math.max(0, Math.min(1, v)))
+  const segs = []
+  let run = []
+  for (const s of steps) {
+    if (s.hit === null) { if (run.length) segs.push(run); run = [] } else run.push(s)
+  }
+  if (run.length) segs.push(run)
+  const path = (g) => g.map((s, j) => `${j ? 'L' : 'M'}${x(s.i).toFixed(1)},${y(s.hit).toFixed(1)}`).join(' ')
+  const turnStarts = steps.filter((s) => s.i === 0 || steps[s.i - 1].st.turn !== s.st.turn)
+  const every = turnStarts.length <= 40 ? 1 : Math.ceil(turnStarts.length / 40)
+  const avg = eff.tot.hit
+  const hv = hover !== null ? steps[hover] : null
+  const onMove = (e) => {
+    const r = e.currentTarget.getBoundingClientRect()
+    const px = (e.clientX - r.left) / r.width * W
+    const i = Math.round((px - P.l) / (W - P.l - P.r) * (steps.length - 1))
+    setHover(i >= 0 && i < steps.length ? i : null)
+  }
+  return h('div', { className: 'clx-card span2', ref: boxRef },
+    h(CardHead, { t, icon: 'trend', title: t('ef.cache.title'), meta: avg === null ? null : `${t('ef.cache.avg')} ${pct(avg, 1, 0)}` }),
+    h('svg', { className: 'clx-svg', viewBox: `0 0 ${W} ${H}`, width: '100%', style: { display: 'block', cursor: 'crosshair' }, onMouseMove: onMove, onMouseLeave: () => setHover(null), onClick: () => { if (hv) onSel(hv.i) } },
+      [0, 0.25, 0.5, 0.75, 1].map((f) => h('g', { key: f },
+        h('line', { x1: P.l, x2: W - P.r, y1: y(f), y2: y(f), stroke: 'var(--dsw-alias-border-l1)' }),
+        h('text', { x: P.l - 6, y: y(f) + 3, textAnchor: 'end' }, `${f * 100}%`))),
+      avg !== null ? h('line', { x1: P.l, x2: W - P.r, y1: y(avg), y2: y(avg), stroke: 'var(--dsw-alias-label-tertiary)', strokeDasharray: '3 4' }) : null,
+      turnStarts.map((s, ti) => ti % every === 0 ? h('g', { key: `t${s.i}` },
+        s.i > 0 ? h('line', { x1: x(s.i), x2: x(s.i), y1: P.t, y2: H - P.b, stroke: 'var(--dsw-alias-border-l1)', strokeDasharray: '2 4' }) : null,
+        h('text', { x: x(s.i) + 3, y: H - P.b + 13 }, `T${s.st.turn}`)) : null),
+      steps.filter((s) => s.compacted).map((s) => h('g', { key: `c${s.i}` },
+        h('line', { x1: x(s.i), x2: x(s.i), y1: P.t, y2: H - P.b, stroke: 'var(--dsw-alias-state-warn-primary)', strokeDasharray: '4 3', opacity: 0.7 }),
+        h('text', { x: x(s.i), y: P.t - 3, textAnchor: 'middle', fill: 'var(--dsw-alias-state-warn-primary)' }, '✂'))),
+      segs.map((g, gi) => h('path', { key: gi, className: 'clx-trend-line', pathLength: 1, d: path(g), fill: 'none', stroke: 'var(--dsw-alias-state-business-primary)', strokeWidth: 1.6 })),
+      steps.filter((s) => s.hit !== null).map((s) => h('circle', { key: s.i, cx: x(s.i), cy: y(s.hit), r: s.bust ? 3.5 : 2, fill: s.bust ? 'var(--dsw-alias-state-error-primary)' : 'var(--dsw-alias-state-business-primary)' },
+        h('title', null, `${fmt(t('flow.where'), { t: s.st.turn, s: s.st.step })} · ${pct(s.hit, 1, 0)}`))),
+      pickIdx !== null && steps[pickIdx] ? h('line', { x1: x(pickIdx), x2: x(pickIdx), y1: P.t, y2: H - P.b, stroke: 'var(--dsw-alias-label-tertiary)', strokeWidth: 0.8 }) : null,
+      hv && hv.hit !== null ? h('circle', { cx: x(hv.i), cy: y(hv.hit), r: 4, fill: 'none', stroke: 'var(--dsw-alias-label-primary)', strokeWidth: 1.2 }) : null),
+    h('div', { className: 'clx-tip' }, hv
+      ? h(React.Fragment, null,
+        h('b', null, fmt(t('flow.where'), { t: hv.st.turn, s: hv.st.step })),
+        hv.hit !== null ? ` · ${t('st.cache')} ${pct(hv.hit, 1, 0)} · ${t('ef.prompt')} ${fmtK(hv.prompt)}` : ` · ${t('ef.noUsage')}`,
+        hv.u ? h('span', { className: 'clx-muted' }, ` · ${t('ov.cacheRead')} ${fmtK(hv.u.cacheRead || 0)} · ${t('ov.cacheWrite')} ${fmtK(hv.u.cacheWrite || 0)} · ${t('ov.uncached')} ${fmtK(hv.u.input || 0)} · ${t('ov.output')} ${fmtK(hv.u.output || 0)}`) : null,
+        hv.bust ? h('span', { className: 'clx-eff-bustflag' }, ` ⚠ ${t(`ef.bust.cause.${hv.cause}`)}`) : null)
+      : h('span', { className: 'clx-muted' }, t('ef.cache.hint'))))
+}
+
+/** The steps where the cache collapsed, each with a jump to the step and its messages. */
+function EffBustCard({ data, eff, t, onSel, onJump }) {
+  return h('div', { className: 'clx-card' },
+    h(CardHead, { t, icon: 'compress', title: t('ef.bust.title'), meta: eff.busts.length ? fmt(t('dg.count'), { n: eff.busts.length }) : null }),
+    h('div', { className: 'clx-note', style: { marginBottom: 6 } }, t('ef.bust.hint')),
+    eff.busts.length ? eff.busts.map((x) => h('div', { key: x.i, className: 'clx-diag-row warn' },
+      h('i', { className: 'clx-dot' }),
+      h('span', { className: 'tx' },
+        h('b', null, fmt(t('flow.where'), { t: x.st.turn, s: x.st.step })),
+        ` ${pct(x.prevHit, 1, 0)} → ${pct(x.hit, 1, 0)} · ${fmtK(x.prompt)} · ${t(`ef.bust.cause.${x.cause}`)}`),
+      h('span', { className: 'clx-eff-bustgo' },
+        h('button', { className: 'clx-chipbtn', onClick: () => onSel(x.i) }, t('ef.viewStep')),
+        h('button', { className: 'clx-chipbtn', onClick: () => onJump(stepNode(data, x.st)) }, t('st.viewMsgs')))))
+      : h('div', { className: 'clx-muted clx-tempty' }, t('ef.bust.none')))
+}
+
+/** What each request cost: input split by cache behaviour, plus output, as per-step bars. */
+function EffCostCard({ eff, t, pickIdx, onSel }) {
+  const scroller = useRef(null)
+  const steps = eff.steps
+  useLayoutEffect(() => {
+    const el = scroller.current
+    if (el) el.scrollLeft = el.scrollWidth
+  }, [steps.length])
+  const peak = Math.max(1, ...steps.map((x) => x.prompt + (x.u?.output || 0)))
+  const segsOf = (x) => x.u ? [
+    { k: 'cr', v: x.u.cacheRead || 0 }, { k: 'cw', v: x.u.cacheWrite || 0 }, { k: 'in', v: x.u.input || 0 }, { k: 'out', v: x.u.output || 0 },
+  ] : []
+  const label = { cr: 'ov.cacheRead', cw: 'ov.cacheWrite', in: 'ov.uncached', out: 'ov.output' }
+  return h('div', { className: 'clx-card' },
+    h(CardHead, { t, icon: 'stats', title: t('ef.cost.title') }),
+    h('div', { className: 'clx-stbars-wrap' },
+      h('div', { className: 'clx-stbars', ref: scroller },
+        steps.map((x) => {
+          const newTurn = x.i === 0 || steps[x.i - 1].st.turn !== x.st.turn
+          const total = x.prompt + (x.u?.output || 0)
+          return h('button', {
+            key: x.st.startSeq, type: 'button',
+            className: `clx-stbar${x.i === pickIdx ? ' on' : ''}${newTurn ? ' turn' : ''}${x.st.errors ? ' err' : ''}`,
+            title: `${fmt(t('flow.where'), { t: x.st.turn, s: x.st.step })} · ${x.u ? `${t('ef.prompt')} ${fmtK(x.prompt)} · ${t('ov.output')} ${fmtK(x.u.output || 0)}` : t('ef.noUsage')}`,
+            onClick: () => onSel(x.i),
+          },
+            h('span', { className: 'col', style: { height: `${Math.max(2, total / peak * 100)}%` } },
+              segsOf(x).map((g) => g.v > 0 ? h('i', { key: g.k, style: { flexGrow: g.v, background: EFF_COLOR[g.k] } }) : null)),
+            newTurn ? h('span', { className: 'lbl' }, `T${x.st.turn}`) : null)
+        }))),
+    h('div', { className: 'clx-stlegend', style: { marginTop: 6 } },
+      ['cr', 'cw', 'in', 'out'].map((k) => h('span', { key: k },
+        h('i', { className: 'clx-dot', style: { background: EFF_COLOR[k] } }), t(label[k]), h('b', null, fmtK(eff.tot[k]))))),
+    h('div', { className: 'clx-note' }, t('ef.cost.hint')))
+}
+
+/** One row per turn: what it added to the context and what its requests cost. */
+function EffTurnCard({ eff, t, onSel }) {
+  const [sort, setSort] = useState('time')
+  const turns = sort === 'added' ? [...eff.turns].sort((a, b) => b.added - a.added) : eff.turns
+  const max = Math.max(1, ...eff.turns.map((x) => x.added))
+  const worst = eff.turns.reduce((a, b) => (b.added > (a?.added || 0) ? b : a), null)
+  return h('div', { className: 'clx-card span2' },
+    h(CardHead, { t, icon: 'flow', title: t('ef.turn.title'), meta: fmt(t('ef.turn.count'), { n: eff.turns.length }) }),
+    h('div', { className: 'clx-segmini', style: { marginBottom: 6 } },
+      h('button', { className: 'clx-chipbtn', 'aria-pressed': sort === 'time', onClick: () => setSort('time') }, t('ef.turn.sort.time')),
+      h('button', { className: 'clx-chipbtn', 'aria-pressed': sort === 'added', onClick: () => setSort('added') }, t('ef.turn.sort.added'))),
+    h('div', { className: 'clx-etab' },
+      h('div', { className: 'clx-etab-head' },
+        h('span', null, t('ef.turn.turn')), h('span', null, t('ef.turn.steps')), h('span', null, t('ef.turn.added')),
+        h('span', null, t('ef.turn.uncached')), h('span', null, t('ef.turn.output')), h('span', null, t('ef.turn.hit')),
+        h('span', null, t('ef.turn.errs')), h('span', null, t('ef.turn.dur'))),
+      turns.map((tu) => h('button', {
+        key: tu.turn, type: 'button',
+        className: `clx-etab-row${worst && tu.turn === worst.turn && tu.added > 0 ? ' top' : ''}`,
+        title: t('ef.viewStep'), onClick: () => onSel(tu.lastIdx),
+      },
+        h('span', null, `T${tu.turn}`),
+        h('span', null, String(tu.steps.length)),
+        h('span', { className: 'add' }, h('i', { style: { width: `${tu.added / max * 100}%` } }), h('b', null, fmtK(tu.added))),
+        h('span', null, fmtK(tu.uncached)),
+        h('span', null, fmtK(tu.out)),
+        h('span', null, tu.hit === null ? '—' : pct(tu.hit, 1, 0)),
+        h('span', { className: tu.errs ? 'err' : undefined }, tu.errs ? String(tu.errs) : '—'),
+        h('span', null, tu.dur === null ? '—' : fmtDur(tu.dur))))),
+    h('div', { className: 'clx-note' }, t('ef.turn.note')))
+}
+
+function EfficiencyView({ data, flow, t, series, diff, onSel, onJump }) {
+  const eff = useMemo(() => effStats(data, series, flow), [data, series, flow])
+  const pickIdx = diff ? diff.idx : series.length - 1
+  if (!series.length) return h('div', { className: 'clx-card clx-muted' }, t('ef.empty'))
+  return h('div', { className: 'clx-dash clx-eff' },
+    h('div', { className: 'clx-card span2' },
+      h(CardHead, { t, icon: 'gauge', title: t('ef.title'), meta: fmt(t('ef.meta'), { n: eff.tot.n, all: series.length }) }),
+      h('div', { className: 'clx-tiles' },
+        h(Stat, { k: t('ef.stat.prompt'), v: fmtK(eff.tot.prompt) }),
+        h(Stat, { k: t('ef.stat.hit'), v: eff.tot.hit === null ? '—' : pct(eff.tot.hit, 1, 0) }),
+        h(Stat, { k: t('ef.stat.uncached'), v: fmtK(eff.tot.in + eff.tot.cw) }),
+        h(Stat, { k: t('ef.stat.output'), v: fmtK(eff.tot.out) }),
+        h(Stat, { k: t('ef.stat.busts'), v: String(eff.busts.length), tone: eff.busts.length ? 'warn' : '' })),
+      h('div', { className: 'clx-note', style: { marginTop: 6 } }, t('ef.note'))),
+    h(EffCacheCard, { eff, t, pickIdx, onSel }),
+    h(EffBustCard, { data, eff, t, onSel, onJump }),
+    h(EffCostCard, { eff, t, pickIdx, onSel }),
+    h(EffTurnCard, { eff, t, onSel }))
+}
+
 // ================================================================== execution flow
 // Lifecycle diagram of this conversation showing where it is now, or where a
 // chosen step of its trajectory went, with the context each stage holds.
@@ -2947,11 +3112,12 @@ const NAV_ICON = {
   flow: ['M6 4h5v5H6z', 'M13 15h5v5h-5z', 'M8.5 9v3.5h7V15', 'M17 6.5h3'],
   messages: ['M4 6h16', 'M4 11h16', 'M4 16h10'],
   tools: ['M8 5 4 12l4 7', 'M16 5l4 7-4 7', 'M13.5 5l-3 14'],
+  efficiency: ['M13 2 4 14h6l-1 8 9-12h-6l1-8z'],
   sources: ['M5 4h9a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z', 'M5 17a3 3 0 0 1 3-3h9', 'M19 7v13'],
 }
-const NAVS = ['overview', 'prompt', 'messages', 'tools', 'sources', 'analyze']
+const NAVS = ['overview', 'prompt', 'tools', 'efficiency', 'sources', 'analyze']
 const NAV_STORE = 'dsh-context-lens:nav'
-const NAV_OLD = { flow: 'overview', skills: 'sources', memory: 'sources', system: 'sources' }
+const NAV_OLD = { messages: 'prompt', flow: 'overview', skills: 'sources', memory: 'sources', system: 'sources' }
 
 function NavIcon({ k }) {
   return h('svg', { width: 15, height: 15, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true },
@@ -3033,14 +3199,17 @@ function DetailPane(props) {
 
   const [preset, setPreset] = useState(null)
   const jump = (seq) => {
+    // an item the picked step had not seen yet only exists in the latest request
+    if (diff && !diff.last && seq >= diff.cut) onSel(null)
     setFocus(null)
     requestAnimationFrame(() => setFocus(seq))
-    setNav('messages')
+    setNav('prompt')
   }
   const showCat = (cat) => {
     setFocus(null)
     setPreset({ cat })
-    setNav('messages')
+    if (diff && !diff.last) onSel(null)
+    setNav('prompt')
   }
 
   let body
@@ -3055,15 +3224,15 @@ function DetailPane(props) {
     body = h(React.Fragment, null,
       error ? h('div', { className: 'clx-err', style: { fontSize: 12, marginBottom: 8 } }, fmt(t('failed'), { msg: error })) : null,
       nav === 'analyze' ? h(AnalyzeView, { data, t, sessionId, onJump: jump, seqs: askSeqs, setSeqs: setAskSeqs })
-      : nav === 'prompt' ? h(PromptView, { data, t, diff, series, onSel, sessionId, ctx, cwd: data.cwd, onJump: jump, onAsk: ask })
-      : nav === 'messages' ? h(Messages, { data, flow, t, focus, sessionId, preset, ctx, cwd: data.cwd, diff, stepOnly })
+      : nav === 'prompt' ? h(PromptView, { data, t, diff, series, onSel, sessionId, ctx, cwd: data.cwd, onJump: jump, onAsk: ask, focus, preset, stepOnly })
         : nav === 'tools' ? h(Tools, { data, t, sessionId, ctx, cwd: data.cwd, diff })
+          : nav === 'efficiency' ? h(EfficiencyView, { data, flow, t, series, diff, onSel, onJump: jump })
           : nav === 'sources' ? h(SourcesTab, { sessionId, liveKey: live, bd: data, t, onJump: jump, ctx })
             : h(Overview, { data, flow, t, onJump: jump, onShowCat: showCat, onNav: setNav, sessionId, liveKey: live, series, diff, onSel }))
   }
   const s = data ? summarize(data) : null
   const counts = data ? {
-    messages: (data.nodes || []).length,
+    prompt: (data.nodes || []).length,
     tools: (data.invocations || []).length,
   } : {}
   const toolbar = h('div', { className: 'clx-toolbar' }, h('div', { className: 'clx-col clx-toolbar-in' },

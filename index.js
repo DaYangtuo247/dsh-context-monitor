@@ -1652,9 +1652,11 @@ export function apply(ctx) {
     }
     return L.join('\n')
   }
-  const buildAnalysis = (session, { question, history, include, lang }) => {
+  const BRIEF = { zh: '\n\n回答控制在 500 字以内，只写最关键的结论、证据和改法。', en: '\n\nKeep the answer under 250 words: only the key conclusion, evidence and fixes.' }
+  const buildAnalysis = (session, { question, history, include, lang, deep }) => {
     const report = reportFor(session, include)
-    const system = ANALYZE_SYS[lang === 'en' ? 'en' : 'zh']
+    const L = lang === 'en' ? 'en' : 'zh'
+    const system = ANALYZE_SYS[L] + (deep ? '' : BRIEF[L])
     const turns = (Array.isArray(history) ? history : []).slice(-8).map((m) => `[${m.role === 'assistant' ? 'assistant' : 'user'}] ${clip(m.text, 4000)}`).join('\n\n')
     const input = `<context-report>\n${report}\n</context-report>\n\n${turns ? turns + '\n\n' : ''}[user] ${clip(question, 4000)}`
     const b = breakdown(session)
@@ -1674,7 +1676,12 @@ export function apply(ctx) {
     jobs.set(id, job)
     ;(async () => {
       try {
-        const call = await llm.prepareCall({ provider: built.provider, model: built.model, maxTokens: 4096 }, job.abort.signal)
+        const brief = !args.deep
+        // brief: the model's least reasoning effort and a small output cap; deep keeps its defaults
+        const call = await llm.prepareCall({ provider: built.provider, model: built.model, maxTokens: brief ? 2048 : 6000 }, job.abort.signal, (controls, info) => {
+          const efforts = info?.reasoning?.efforts
+          return brief && efforts?.length ? { ...controls, reasoningEffort: efforts[0].id } : controls
+        })
         const messages = [{ role: 'user', content: [{ type: 'text', text: built.input }] }]
         for await (const chunk of call.stream({ ...call.config, messages, system: built.system, signal: job.abort.signal })) {
           job.updated = Date.now()
@@ -1694,6 +1701,30 @@ export function apply(ctx) {
   }
 
   const handlers = {
+    // the prompt the model read, as one Markdown document (for copying or diffing)
+    'prompt-text': async (req) => {
+      const { sessionId, cut } = await body(req)
+      const session = await getLiveSession(sessionId)
+      if (!session) return unavailable(sessionId)
+      const b = breakdown(session)
+      const nodes = (b.nodes || []).filter((n) => typeof cut !== 'number' || n.seq < cut)
+      const sys = nodes.filter((n) => n.category === 'system')
+      const rest = nodes.filter((n) => n.category !== 'system')
+      const out = [`# ${b.title || b.sessionId}\n\nmodel: ${b.provider || '?'}/${b.model || '?'} · ${nodes.length} messages${typeof cut === 'number' ? ` · before seq ${cut}` : ''}`]
+      let total = 0
+      let truncated = false
+      const add = (title, text) => {
+        if (total > 600000) { truncated = true; return }
+        const body = clip(text, 20000)
+        total += body.length
+        out.push(`## ${title}\n\n${body}`)
+      }
+      for (const n of sys) add(`system #${n.seq}`, partsText(safe(() => nodeDetail(session, n.seq))))
+      const tools = safe(() => session.requestHeader())?.tools || []
+      if (tools.length) add(`tool definitions (${tools.length})`, tools.map((x) => `- ${x.name}: ${clip(x.description, 300)}`).join('\n'))
+      for (const n of rest) add(`#${n.seq} ${n.category}${n.tool ? ' ' + n.tool : ''} (${Math.round(n.tokensCal)} tok)`, partsText(safe(() => nodeDetail(session, n.seq))))
+      return ok({ text: out.join('\n\n'), chars: total, count: nodes.length, truncated })
+    },
     'analyze-preview': async (req) => {
       const { sessionId, include, question, history } = await body(req)
       const session = await getLiveSession(sessionId)
@@ -1702,11 +1733,11 @@ export function apply(ctx) {
       return ok({ ready: !!llmRef.current, provider: built.provider, model: built.model, tokens: built.tokens })
     },
     'analyze-start': async (req) => {
-      const { sessionId, question, history, include, lang } = await body(req)
+      const { sessionId, question, history, include, lang, deep } = await body(req)
       const session = await getLiveSession(sessionId)
       if (!session) return unavailable(sessionId)
       if (typeof question !== 'string' || !question.trim()) return fail('empty-question', 'empty question')
-      const job = startAnalysis(session, { question, history, include, lang })
+      const job = startAnalysis(session, { question, history, include, lang, deep: deep === true })
       return ok({ jobId: job.id, inputTokens: job.inputTokens, model: job.model })
     },
     'analyze-poll': async (req) => {

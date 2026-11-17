@@ -36,9 +36,18 @@
   "scripts": {
     "build": "node build.mjs",
     "typecheck": "tsc -p . --noEmit",
-    "check": "node build.mjs && node ../dsh-claude-shared/verify-corner-shape.mjs . && node .verify/smoke.mjs"
+    "check": "node build.mjs && node ./scripts/verify-corner-shape.mjs . && node .verify/smoke.mjs"
   },
   "devDependencies": {
-    "sass": "1.108.2"
+    "sass": "1.108.2",
+    "typescript": "7.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DaYangtuo247/dsh-context-monitor.git"
+  },
+  "homepage": "https://github.com/DaYangtuo247/dsh-context-monitor#readme",
+  "bugs": {
+    "url": "https://github.com/DaYangtuo247/dsh-context-monitor/issues"
   }
 }

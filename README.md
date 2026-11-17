@@ -2,9 +2,18 @@
 
 Renamed from dsh-context-lens on 2026-11-11 and from dsh-claude-context on 2026-11-16 (its API routes, tab kind and saved state keep the context-lens names, so open tabs and preferences carry over).
 
-Each of these works on its own: dsh-composer-display (Claude 风格输入框: the input box and what sits on it), dsh-conversation-enhancer (Claude 风格对话显示: conversation content: work-details view, tool rows, plan card, typography, command colours), dsh-claude-shell (Claude 风格界面框架: new-session page, left sidebar, conversation header, window drag), dsh-whale-theme (Claude 风格主题: background, glass, fonts and its own Settings › 主题 page) and dsh-context-monitor (上下文透视: context usage ring and the 上下文透视 tab). Shared build tool: dsh-claude-shared.
+Part of a set of independent DeepSeek Harness UI bundles: **dsh-composer-display** (the input box and what sits on it), **dsh-conversation-enhancer** (the conversation view), **dsh-claude-shell** (the app frame), **dsh-whale-theme** (background, glass, fonts and its own Settings › 主题 page) and **dsh-context-monitor** (context usage in the composer and in a 上下文透视 tab). Each one works on its own; they share one build script, vendored here as `scripts/`.
 
 A DeepSeek Harness bundle that shows what is in a session's context, in two levels.
+
+## Install
+
+`client.js` is committed, so a checkout runs as-is — no build step is needed to use it.
+
+- **GUI:** 插件 → 添加插件 → 安装第三方插件, enter `github:DaYangtuo247/dsh-context-monitor` (or the absolute path of a local checkout), then enable the bundle in **设置 › 插件**.
+- **CLI:** `dsh plugin --profile <profile> add github:DaYangtuo247/dsh-context-monitor`, then enable it in **设置 › 插件**.
+
+Built and tested against DeepSeek Harness `0.2.2-rc.3` (DSH NEXT 2.0.23).
 
 ## Compact view
 
@@ -73,10 +82,10 @@ A session must be loaded on the Host. Opening it in the web UI is enough.
 Edit the sources under `src/` (TypeScript, checked by `tsc`), then rebuild `client.js`:
 
 ```bash
-pnpm install            # once: the shared build compiles SCSS with sass
-node build.mjs          # tsc -p . → .build/{lib,parts}, Sass → .build/styles, then client.js
-tsc -p . --noEmit       # types only
-npm run check           # build + corner-shape gate + .verify/smoke.mjs
+pnpm install            # once: sass + typescript
+pnpm build              # tsc -p . → .build/{lib,parts}, Sass → .build/styles, then client.js
+pnpm typecheck          # types only
+pnpm check              # build + corner-shape gate + .verify/smoke.mjs
 ```
 
 - `src/lib/` holds the dictionaries (`i18n.ts`) and the category palette and formatters (`data.ts`) — no `part()` call in there.
@@ -85,3 +94,7 @@ npm run check           # build + corner-shape gate + .verify/smoke.mjs
 - TypeScript runs in **script mode** — no `import`/`export` anywhere: build.mjs concatenates `src/lib/*.ts` then `src/parts/*.ts` into one IIFE, so all files share one global scope and `src/types.d.ts` describes what is already in scope (`part`, the `kit` surface, `Kit` / `PartContext` / `PartModule`).
 
 `.verify/smoke.mjs` is this bundle's gate: it loads `client.js` the way the harness does (stub React, stub page), then checks the module id, the locale namespace and its 444 keys, both slot registrations with their ids and orders, and compares the compiled stylesheet byte for byte with `.baseline/css.txt`. `.baseline/client.js` is the pre-migration bundle, kept for reference.
+
+## License
+
+MIT — see [LICENSE](LICENSE). Copyright (c) 2026 DaYangtuo247. DeepSeek Harness and the DeepSeek name belong to their owners; this bundle is an independent add-on and ships no DeepSeek code.
