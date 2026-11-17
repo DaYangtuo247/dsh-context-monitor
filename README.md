@@ -2,7 +2,7 @@
 
 Renamed from dsh-context-lens on 2026-11-11 and from dsh-claude-context on 2026-11-16 (its API routes, tab kind and saved state keep the context-lens names, so open tabs and preferences carry over).
 
-Part of a set of independent DeepSeek Harness UI bundles: **dsh-composer-display** (the input box and what sits on it), **dsh-conversation-enhancer** (the conversation view), **dsh-claude-shell** (the app frame), **dsh-whale-theme** (background, glass, fonts and its own Settings › 主题 page) and **dsh-context-monitor** (context usage in the composer and in a 上下文透视 tab). Each one works on its own; they share one build script, vendored here as `scripts/`.
+Part of a set of independent DeepSeek Harness UI bundles: [dsh-composer-display](https://github.com/DaYangtuo247/dsh-composer-display) (the input box and what sits on it), [dsh-conversation-enhancer](https://github.com/DaYangtuo247/dsh-conversation-enhancer) (the conversation view), [dsh-whale-theme](https://github.com/DaYangtuo247/dsh-whale-theme) (background, glass, fonts and its own Settings › 主题 page) and [dsh-context-monitor](https://github.com/DaYangtuo247/dsh-context-monitor) (context usage in the composer and in a 上下文透视 tab). Each one works on its own; they share one build script, vendored here as `scripts/`.
 
 A DeepSeek Harness bundle that shows what is in a session's context, in two levels.
 
