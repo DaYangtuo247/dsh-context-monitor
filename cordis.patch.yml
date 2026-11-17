@@ -1,5 +1,5 @@
 # Appends the Host half (read-only context breakdown routes); the dsh.client
 # declaration makes the web app load ./client (composer popover + sidebar tab).
 - insert:
-    - id: context-lens
-      name: dsh-context-lens
+    - id: context-monitor
+      name: dsh-context-monitor

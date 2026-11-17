@@ -1,5 +1,5 @@
 /**
- * Host half of dsh-context-lens.
+ * Host half of dsh-context-monitor.
  *
  * Serves read-only context breakdowns for a live session on exact routes
  * of the shared (owner-authenticated) connection:
@@ -7,7 +7,7 @@
  *   POST /api/context-lens/breakdown  { sessionId }      -> full per-category / per-node breakdown
  *   POST /api/context-lens/node       { sessionId, seq } -> one surface node's model-visible content
  *   POST /api/context-lens/flow       { sessionId }      -> lifecycle stages, steps, live state
- *   POST /api/context-lens/sources    { sessionId }      -> memory files, skills, runtime context
+ *   POST /api/context-lens/sources    { sessionId }      -> memory files, skills, runtime context, file structure
  *   POST /api/context-lens/skill      { sessionId, name } -> one skill's full instructions
  *   POST /api/context-lens/tool       { sessionId, name } -> one tool's full description and parameters
  *   POST /api/context-lens/sessions   {}                 -> live sessions the Host currently holds
@@ -23,7 +23,7 @@ import fs from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 
-export const name = 'dsh-context-lens'
+export const name = 'dsh-context-monitor'
 export const inject = ['sessions', 'tokenMeter']
 
 const BASE = '/api/context-lens'
@@ -158,20 +158,46 @@ function shellSegments(command) {
   return out.map((x) => x.trim()).filter(Boolean)
 }
 
+/** Drop heredoc bodies (<<EOF … EOF, <<-EOF, <<'EOF') so their lines are not read as
+ *  shell commands; the operator line stays, so its program (python3, cat …) still counts. */
+function stripHeredocs(command) {
+  const lines = String(command || '').split('\n')
+  const out = []
+  const pending = []
+  const OP = /(?<!<)<<(-?)\s*(['"]?)([A-Za-z_][A-Za-z0-9_]*)\2/g
+  for (const line of lines) {
+    if (pending.length) {
+      const { word, dash } = pending[0]
+      if ((dash ? line.replace(/^\t+/, '') : line).trim() === word) pending.shift()
+      continue
+    }
+    out.push(line)
+    OP.lastIndex = 0
+    let m
+    while ((m = OP.exec(line))) pending.push({ word: m[3], dash: m[1] === '-' })
+  }
+  return out.join('\n')
+}
+
 /** The programs a command line runs, in order (cd, assignments and shell keywords left out). */
 function shellPrograms(command) {
   const found = []
-  for (const seg of shellSegments(String(command || ''))) {
+  const vars = new Map()
+  for (const seg of shellSegments(stripHeredocs(String(command || '')))) {
     const words = seg.match(/"[^"]*"|'[^']*'|\S+/g) || []
     let i = 0
     while (i < words.length) {
-      const w = words[i].replace(/^["']|["']$/g, '')
-      if (/^[A-Za-z_][A-Za-z0-9_]*=/.test(w) || /^[{!]$/.test(w) || /^\d*[<>]/.test(w)) { i++; continue }
+      let w = words[i].replace(/^["']|["']$/g, '')
+      const assign = /^([A-Za-z_][A-Za-z0-9_]*)=(.*)$/.exec(w)
+      if (assign) { vars.set(assign[1], assign[2].replace(/^["']|["']$/g, '')); i++; continue }
+      if (/^[{!]$/.test(w) || /^\d*[<>]/.test(w)) { i++; continue }
       if (WRAPPERS.has(w)) {
         i++
         while (i < words.length && (/^-/.test(words[i]) || (w === 'timeout' && /^\d/.test(words[i])))) i++
         continue
       }
+      // a leading $VAR / ${VAR} stands for an assignment made earlier (PY=…; $PY - <<EOF)
+      w = w.replace(/^\$\{([A-Za-z_]\w*)\}|^\$([A-Za-z_]\w*)/, (m, a, b) => vars.get(a || b) ?? m)
       const name = w.split('/').pop()
       if (name && !NOT_PROGRAMS.has(name) && /^[\w.+-]+$/.test(name)) found.push(name)
       break
@@ -355,6 +381,42 @@ export function apply(ctx) {
   const getSession = (id) => {
     if (typeof id !== 'string' || id === '') return undefined
     return safe(() => ctx.sessions.get(id))
+  }
+  /**
+   * A session the Host has not resumed yet (fresh Host start, e.g. DSH NEXT, with this tab
+   * opened before the conversation) is not in ctx.sessions. Ask the session controller to
+   * resolve-or-resume it — the same path other Host APIs use — then read it again.
+   */
+  const resuming = new Map()
+  const resumeErrors = new Map()
+  const getLiveSession = async (id) => {
+    const live = getSession(id)
+    if (live || typeof id !== 'string' || id === '') return live
+    let controller
+    try { controller = ctx.get('sessionController') } catch (e) { resumeErrors.set(id, 'sessionController: ' + (e && e.message || e)); return undefined }
+    if (!controller || typeof controller.resolveAgent !== 'function') { resumeErrors.set(id, 'sessionController unavailable'); return undefined }
+    let p = resuming.get(id)
+    if (!p) {
+      p = Promise.resolve()
+        .then(() => controller.resolveAgent(id))
+        .catch((e) => { resumeErrors.set(id, (e && (e.code ? e.code + ': ' : '') + (e.message || e)) || 'resume failed'); return undefined })
+        .finally(() => resuming.delete(id))
+      resuming.set(id, p)
+    }
+    const r = await p
+    // the controller returns the Agent itself; the inner registry returns { agent } / { error }
+    const agent = r && (r.agent || (r.session ? r : undefined))
+    if (r && r.error) resumeErrors.set(id, String(r.error.message || r.error))
+    return (agent && agent.session) || getSession(id)
+  }
+  const unavailable = (sessionId) => {
+    const why = resumeErrors.get(sessionId) || ''
+    // two dsh hosts on one profile (e.g. the web app on :3080 and DSH NEXT) share ~/.dsh/sessions;
+    // only one process may own a session's log, so the other cannot open it
+    if (/active write handle|already owned/i.test(why)) {
+      return fail('session-busy', '这个会话正被另一个 dsh 进程占用（例如同一 profile 的网页版 dsh 或另一个客户端），在那边关闭该会话或退出那个进程后再看。 / This session is open in another dsh process on the same profile; close it there to view it here.')
+    }
+    return fail('session-unavailable', `session "${sessionId}" is not loaded on the Host` + (why ? ` (resume: ${why})` : ''))
   }
 
   const sessionTitle = (events) => {
@@ -856,6 +918,103 @@ export function apply(ctx) {
     }
   }
 
+  // ------------------------------------------------------------- file structure
+  // The files and folders dsh reads for this conversation, as a tree with what is on disk.
+  const statOf = async (p) => {
+    try {
+      const st = await fs.stat(p)
+      return { dir: st.isDirectory(), size: st.size, mtime: st.mtimeMs }
+    } catch {
+      return undefined
+    }
+  }
+  /** Skills in one skill root: `<name>/SKILL.md` bundles and flat `<name>.md` files. */
+  const skillsIn = async (dir) => {
+    let entries
+    try { entries = await fs.readdir(dir, { withFileTypes: true }) } catch { return undefined }
+    const out = []
+    for (const e of entries) {
+      if (e.name.startsWith('.')) continue
+      if (e.isDirectory()) {
+        if (await statOf(path.join(dir, e.name, 'SKILL.md'))) out.push({ name: e.name, path: path.join(dir, e.name), bundle: true })
+      } else if (e.isFile() && /\.md$/i.test(e.name)) out.push({ name: e.name.replace(/\.md$/i, ''), path: path.join(dir, e.name), bundle: false })
+    }
+    return out.sort((a, b) => a.name.localeCompare(b.name))
+  }
+  const profileDir = (dshHome) => {
+    // the launcher's profile context (what dsh-shell-env exports as DSH_PROFILE / DSH_PROFILE_DIR)
+    const pc = safe(() => ctx.get('profileContext'))
+    if (pc?.dir) return { name: pc.name ?? path.basename(pc.dir), dir: pc.dir }
+    if (process.env.DSH_PROFILE_DIR) return { name: process.env.DSH_PROFILE || path.basename(process.env.DSH_PROFILE_DIR), dir: process.env.DSH_PROFILE_DIR }
+    const base = path.join(dshHome, 'profiles') + path.sep
+    for (const a of [process.cwd(), ...process.argv]) {
+      if (typeof a === 'string' && a.startsWith(base)) {
+        const name = a.slice(base.length).split(path.sep)[0]
+        if (name && name !== 'node_modules') return { name, dir: path.join(base, name) }
+      }
+    }
+    return undefined
+  }
+  const fileStructure = async ({ cwd, root, dshHome, agentsHome, files, loadedAbs }) => {
+    const tokensOf = new Map()
+    for (const f of files) if (f.path && f.status === 'active') tokensOf.set(f.path, { tokens: f.tokens, seq: f.lastSeq })
+    const node = async (abs, name, role, extra = {}) => {
+      const st = await statOf(abs)
+      const n = { name, role, path: abs, dir: !!extra.dir, exists: !!st && (!!extra.dir === !!st.dir), size: st && !st.dir ? st.size : undefined }
+      if (loadedAbs.has(abs)) Object.assign(n, { loaded: true, ...tokensOf.get(abs) })
+      if (extra.children) n.children = extra.children
+      return n
+    }
+    const skillsNode = async (abs, role) => {
+      const n = await node(abs, 'skills/', role, { dir: true })
+      const list = n.exists ? await skillsIn(abs) : undefined
+      if (list) { n.count = list.length; n.items = list.slice(0, 40) }
+      return n
+    }
+    const memFiles = async (dir, scope) => Promise.all(INSTRUCTION_CANDIDATES.map((nm) => node(path.join(dir, nm), nm, nm.includes('.local.') ? 'memLocal' : nm === 'CLAUDE.md' ? 'memClaude' : scope)))
+    const trees = []
+    if (cwd) {
+      const top = root ?? cwd
+      const kids = [...await memFiles(top, 'memProject')]
+      kids.push(await node(path.join(top, '.git'), '.git/', root ? 'git' : 'gitMissing', { dir: true }))
+      kids.push(await node(path.join(top, '.dsh'), '.dsh/', 'projDsh', { dir: true, children: [await skillsNode(path.join(top, '.dsh', 'skills'), 'skillsProjectDsh')] }))
+      kids.push(await node(path.join(top, '.agents'), '.agents/', 'projAgents', { dir: true, children: [await skillsNode(path.join(top, '.agents', 'skills'), 'skillsProjectAgents')] }))
+      // levels between the project root and the working directory each add their own files
+      const rel = path.relative(top, cwd)
+      if (rel && !rel.startsWith('..')) {
+        let parent = { children: kids }
+        let dir = top
+        for (const part of rel.split(path.sep)) {
+          dir = path.join(dir, part)
+          const level = (await memFiles(dir, 'memNested')).filter((f) => f.exists || f.name === 'AGENTS.md')
+          const sub = await node(dir, `${part}/`, dir === cwd ? 'cwdDir' : 'subDir', { dir: true, children: level })
+          parent.children.push(sub)
+          parent = sub
+        }
+      }
+      trees.push(await node(top, `${path.basename(top)}/`, root ? 'projectRoot' : 'workdirRoot', { dir: true, children: kids }))
+    }
+    const prof = profileDir(dshHome)
+    const dshKids = [
+      await node(path.join(dshHome, 'AGENTS.md'), 'AGENTS.md', 'memGlobal'),
+      await skillsNode(path.join(dshHome, 'skills'), 'skillsUser'),
+      await node(path.join(dshHome, 'cordis.patch.yml'), 'cordis.patch.yml', 'patchGlobal'),
+    ]
+    if (prof) {
+      dshKids.push(await node(path.join(dshHome, 'profiles'), 'profiles/', 'profiles', { dir: true, children: [
+        await node(prof.dir, `${prof.name}/`, 'profile', { dir: true, children: [await node(path.join(prof.dir, 'cordis.patch.yml'), 'cordis.patch.yml', 'patchProfile')] }),
+      ] }))
+    }
+    dshKids.push(await node(path.join(dshHome, '.env'), '.env', 'env'))
+    dshKids.push(await node(path.join(dshHome, 'sessions'), 'sessions/', 'sessions', { dir: true }))
+    trees.push(await node(dshHome, `${path.basename(dshHome)}/`, 'dshHome', { dir: true, children: dshKids }))
+    trees.push(await node(agentsHome, `${path.basename(agentsHome)}/`, 'agentsHome', { dir: true, children: [
+      await node(path.join(agentsHome, 'AGENTS.md'), 'AGENTS.md', 'memShared'),
+      await skillsNode(path.join(agentsHome, 'skills'), 'skillsShared'),
+    ] }))
+    return { home: os.homedir(), profile: prof?.name, trees }
+  }
+
   const projectRootOf = async (cwd) => {
     let dir = cwd
     for (;;) {
@@ -996,6 +1155,8 @@ export function apply(ctx) {
     await probe(path.join(agentsHome, 'AGENTS.md'), 'agents-global')
     for (const dir of chain) for (const name of INSTRUCTION_CANDIDATES) await probe(path.join(dir, name), dir === cwd ? 'cwd' : 'project')
 
+    const structure = await fileStructure({ cwd, root, dshHome, agentsHome, files: [...files.values()], loadedAbs }).catch(() => undefined)
+
     // full skill registry (paths, providers, untruncated descriptions)
     let registry
     let registryError
@@ -1042,6 +1203,7 @@ export function apply(ctx) {
       },
       runtime,
       timeContext,
+      structure,
     }
   }
 
@@ -1390,41 +1552,41 @@ export function apply(ctx) {
   const handlers = {
     breakdown: async (req) => {
       const { sessionId } = await body(req)
-      const session = getSession(sessionId)
-      if (!session) return fail('session-unavailable', `session "${sessionId}" is not loaded on the Host`)
+      const session = await getLiveSession(sessionId)
+      if (!session) return unavailable(sessionId)
       return ok(breakdown(session))
     },
     node: async (req) => {
       const { sessionId, seq } = await body(req)
-      const session = getSession(sessionId)
-      if (!session) return fail('session-unavailable', `session "${sessionId}" is not loaded on the Host`)
+      const session = await getLiveSession(sessionId)
+      if (!session) return unavailable(sessionId)
       const detail = typeof seq === 'number' ? nodeDetail(session, seq) : undefined
       return detail ? ok(detail) : fail('node-not-found', `no event at seq ${seq}`)
     },
     flow: async (req) => {
       const { sessionId } = await body(req)
-      const session = getSession(sessionId)
-      if (!session) return fail('session-unavailable', `session "${sessionId}" is not loaded on the Host`)
+      const session = await getLiveSession(sessionId)
+      if (!session) return unavailable(sessionId)
       return ok(flow(session))
     },
     sources: async (req) => {
       const { sessionId } = await body(req)
-      const session = getSession(sessionId)
-      if (!session) return fail('session-unavailable', `session "${sessionId}" is not loaded on the Host`)
+      const session = await getLiveSession(sessionId)
+      if (!session) return unavailable(sessionId)
       return ok(await sources(session))
     },
     skill: async (req) => {
       const { sessionId, name: skillName } = await body(req)
-      const session = getSession(sessionId)
-      if (!session) return fail('session-unavailable', `session "${sessionId}" is not loaded on the Host`)
+      const session = await getLiveSession(sessionId)
+      if (!session) return unavailable(sessionId)
       if (!skillsRef.current) return fail('skills-unavailable', 'the skills registry is not available')
       const v = await skillBody(session, skillName)
       return v ? ok(v) : fail('skill-not-found', `no skill "${skillName}"`)
     },
     tool: async (req) => {
       const { sessionId, name: toolName } = await body(req)
-      const session = getSession(sessionId)
-      if (!session) return fail('session-unavailable', `session "${sessionId}" is not loaded on the Host`)
+      const session = await getLiveSession(sessionId)
+      if (!session) return unavailable(sessionId)
       const tool = (safe(() => session.requestHeader())?.tools || []).find((x) => x?.name === toolName)
       if (!tool) return fail('tool-not-found', `no tool "${toolName}" in the request header`)
       const schema = tool.parameters && typeof tool.parameters === 'object' ? tool.parameters : {}

@@ -1,7 +1,7 @@
 {
-  "name": "dsh-context-lens",
+  "name": "dsh-context-monitor",
   "version": "0.1.0",
-  "description": "Context usage for DeepSeek Harness sessions: a compact Claude-Code-style breakdown popover in the composer, plus a detailed 'Context Lens' tab in the conversation's top view row with every category, node, tool, system prompt section, skill and growth trend.",
+  "description": "Context usage for DeepSeek Harness sessions: a compact breakdown popover in the composer, plus a detailed 'Context Lens' tab in the conversation's top view row with every category, node, tool, system prompt section, skill and growth trend.",
   "private": true,
   "type": "module",
   "license": "MIT",
@@ -32,5 +32,13 @@
         "@deepseek-ai/dsh-client-ui-conversation"
       ]
     }
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "typecheck": "tsc -p . --noEmit",
+    "check": "node build.mjs && node ../dsh-claude-shared/verify-corner-shape.mjs . && node .verify/smoke.mjs"
+  },
+  "devDependencies": {
+    "sass": "1.108.2"
   }
 }
